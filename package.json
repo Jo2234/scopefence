@@ -1,0 +1,50 @@
+{
+  "name": "scopefence",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@12.11.2",
+  "scripts": {
+    "runtime:fetch": "node scripts/fetch-runtime.mjs",
+    "model:download": "node scripts/download-model.mjs",
+    "model:start": "node scripts/model-server.mjs start",
+    "model:stop": "node scripts/model-server.mjs stop",
+    "model:status": "node scripts/model-server.mjs status",
+    "smoke:live": "tsx scripts/smoke-live.ts",
+    "dev": "concurrently -k \"tsx watch src/server/main.ts\" \"vite\"",
+    "dev:fixture": "SCOPEFENCE_MODE=fixture pnpm dev",
+    "build": "vite build && tsc --noEmit",
+    "start": "NODE_ENV=production tsx src/server/main.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "eval": "tsx eval/run.ts",
+    "eval:report": "tsx eval/report.ts",
+    "fixtures:record": "tsx scripts/record-fixtures.ts",
+    "licenses": "pnpm licenses list --json > docs/licenses.json",
+    "check:machine": "node scripts/check-machine.mjs"
+  },
+  "dependencies": {
+    "hono": "4.13.13",
+    "@hono/node-server": "1.19.17",
+    "zod": "4.6.7",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "vite": "7.3.7",
+    "@vitejs/plugin-react": "5.2.0",
+    "typescript": "6.0.3",
+    "tsx": "4.23.15",
+    "vitest": "4.1.12",
+    "fast-check": "4.10.2",
+    "@playwright/test": "1.64.1",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "concurrently": "9.2.1"
+  }
+}
