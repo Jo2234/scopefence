@@ -54,11 +54,17 @@ All calls use temperature 0, seed 42, cache_prompt true, chat_template_kwargs.en
 | cpu | 2 | 65722 | 5 / 745 | 601 | 322.639 | 65324.898 | 9.185 | 1902244 | yes |
 | cpu | 3 | 58916 | 5 / 745 | 601 | 292.951 | 58544.764 | 10.249 | 1807900 | yes |
 | gpu | 1 | 109716 | 750 / 0 | 601 | 31882.325 | 77744.518 | 7.718 | 1932420 | yes |
+| cpu-short | 1 | 77185 | 735 / 0 | 613 | 17783.785 | 59293.836 | 10.321 | 2519184 | yes |
+| cpu-short-cap | 1 | 66359 | 5 / 730 | 607 | 352.439 | 65843.938 | 9.204 | 1946496 | yes |
+| cpu-short-cap-six | 1 | 65651 | 5 / 730 | 607 | 333.629 | 65161.083 | 9.300 | 2007364 | yes |
 
 The three default CPU runs have a median wall latency of **65,722 ms (65.722 s)**. Logical prompt length is 750 tokens in each default run; the second and third process only five new tokens with 745 cached. CPU RSS after load was **1,807,284 KiB (1.724 GiB)**. After calls it was 2,178,268, 1,902,244, and 1,807,900 KiB; the largest of those is **2.077 GiB**. A separate sample during prompt processing reached 2,621,032 KiB (2.500 GiB). RSS is process resident memory, not the model file size or total system memory.
 
-- cpu: RSS after load 1806960 KiB. Raw evidence: `$SCOPEFENCE_CACHE_DIR/logs/g0-cpu.json`.
-- gpu: RSS after load 2787452 KiB. Raw evidence: `$SCOPEFENCE_CACHE_DIR/logs/g0-gpu.json`.
+- cpu: RSS before configuration 1806960 KiB (fresh load only for cpu, gpu, cpu-short, and 1b). Raw evidence: `$SCOPEFENCE_CACHE_DIR/logs/g0-cpu.json`.
+- gpu: RSS before configuration 2787452 KiB (fresh load only for cpu, gpu, cpu-short, and 1b). Raw evidence: `$SCOPEFENCE_CACHE_DIR/logs/g0-gpu.json`.
+- cpu-short: RSS before configuration 2866788 KiB (fresh load only for cpu, gpu, cpu-short, and 1b). Raw evidence: `$SCOPEFENCE_CACHE_DIR/logs/g0-cpu-short.json`.
+- cpu-short-cap: RSS before configuration 2063492 KiB (fresh load only for cpu, gpu, cpu-short, and 1b). Raw evidence: `$SCOPEFENCE_CACHE_DIR/logs/g0-cpu-short-cap.json`.
+- cpu-short-cap-six: RSS before configuration 2046516 KiB (fresh load only for cpu, gpu, cpu-short, and 1b). Raw evidence: `$SCOPEFENCE_CACHE_DIR/logs/g0-cpu-short-cap-six.json`.
 
 ## Constrained decoding and thinking
 
