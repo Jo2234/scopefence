@@ -1,0 +1,12 @@
+node_modules/
+dist/
+build/
+.cache/
+coverage/
+*.log
+.env
+.env.*
+!.env.example
+models/
+*.gguf
+.DS_Store
