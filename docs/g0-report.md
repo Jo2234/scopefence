@@ -42,7 +42,7 @@ Subsequent starts add `--cors-origins '' --no-cors-credentials`. The GPU trial c
 | --cors-origins ORIGINS | comma-separated list of allowed origins for CORS (default: *) |
 | --cors-credentials, --no-cors-credentials | whether to allow credentials for CORS (default: enabled) |
 
-Cold CPU load (spawn to HTTP /health 200, excluding file hash verification): **12,521 ms**. GPU-flag load: **12,432 ms**. CPU restart for contingency experiments: **9,150 ms**. Only one llama-server ran at a time.
+Cold CPU load (spawn to HTTP /health 200, excluding file hash verification): **12,521 ms**. GPU-flag load: **12,432 ms**. CPU restart for contingency experiments: **9,150 ms**. Gemma 3 1B load: **1,570 ms**. Only one llama-server ran at a time.
 
 ## Every demo-1 timing
 
@@ -57,6 +57,9 @@ All calls use temperature 0, seed 42, cache_prompt true, chat_template_kwargs.en
 | cpu-short | 1 | 77185 | 735 / 0 | 613 | 17783.785 | 59293.836 | 10.321 | 2519184 | yes |
 | cpu-short-cap | 1 | 66359 | 5 / 730 | 607 | 352.439 | 65843.938 | 9.204 | 1946496 | yes |
 | cpu-short-cap-six | 1 | 65651 | 5 / 730 | 607 | 333.629 | 65161.083 | 9.300 | 2007364 | yes |
+| 1b | 1 | 58979 | 746 / 0 | 820 | 7788.483 | 51119.001 | 16.021 | 1132520 | yes |
+| 1b | 2 | 20086 | 5 / 741 | 323 | 249.403 | 19786.962 | 16.273 | 1177140 | yes |
+| 1b | 3 | 17476 | 1 / 745 | 306 | 67.663 | 17395.744 | 17.533 | 1188544 | yes |
 
 The three default CPU runs have a median wall latency of **65,722 ms (65.722 s)**. Logical prompt length is 750 tokens in each default run; the second and third process only five new tokens with 745 cached. CPU RSS after load was **1,807,284 KiB (1.724 GiB)**. After calls it was 2,178,268, 1,902,244, and 1,807,900 KiB; the largest of those is **2.077 GiB**. A separate sample during prompt processing reached 2,621,032 KiB (2.500 GiB). RSS is process resident memory, not the model file size or total system memory.
 
@@ -65,6 +68,7 @@ The three default CPU runs have a median wall latency of **65,722 ms (65.722 s)*
 - cpu-short: RSS before configuration 2866788 KiB (fresh load only for cpu, gpu, cpu-short, and 1b). Raw evidence: `$SCOPEFENCE_CACHE_DIR/logs/g0-cpu-short.json`.
 - cpu-short-cap: RSS before configuration 2063492 KiB (fresh load only for cpu, gpu, cpu-short, and 1b). Raw evidence: `$SCOPEFENCE_CACHE_DIR/logs/g0-cpu-short-cap.json`.
 - cpu-short-cap-six: RSS before configuration 2046516 KiB (fresh load only for cpu, gpu, cpu-short, and 1b). Raw evidence: `$SCOPEFENCE_CACHE_DIR/logs/g0-cpu-short-cap-six.json`.
+- 1b: RSS before configuration 982308 KiB (fresh load only for cpu, gpu, cpu-short, and 1b). Raw evidence: `$SCOPEFENCE_CACHE_DIR/logs/g0-1b.json`.
 
 ## Constrained decoding and thinking
 
@@ -78,15 +82,20 @@ The default E2B output labels the tagline size change as extra_work despite the 
 
 System-wide vm_stat showed active swapping: from the pre-CPU sample to the post-GPU sample, Swapins rose from 6,767,267 to 7,736,929 pages and Swapouts from 7,897,824 to 8,830,375 pages (4,096 bytes/page). These global deltas cannot be attributed solely to the model; RAM is shared. Servers were stopped between configurations, no Playwright browser was started, and live runs were serial. Measurements can vary with concurrent machine load.
 
+The Gemma 3 1B runs have a **20,086 ms (20.086 s) median**, with 982,308 KiB RSS after load and 1,132,520 / 1,177,140 / 1,188,544 KiB after the three calls. This is not an equal-quality speedup: the cold run emitted six confused/duplicated items and incorrectly included the social kit; both warm runs emitted only two items and omitted the tagline request. Quote/request associations were also wrong. Production remains on the original E2B/pv1 configuration pending dev-split evaluation.
+
+The separate **pnpm smoke:live** call used the actual LlamaServerAdapter against Gemma 3 1B, returned schema-valid JSON in **17,157 ms wall** (17,147 ms adapter latency), reported the registered filename, and recorded 5 processed prompt tokens / 323 predicted tokens, 133.369 ms prompt / 16,942.543 ms prediction. RSS sampled afterward was 1,225,852 KiB. This eleventh normal demo call is reported separately because it uses the adapter rather than the direct-response G0 probe.
+
 ## Operational checks and implementation status
 
 - The initial background shell jobs did not survive their launcher; relaunched them as detached Node child processes with log file descriptors. Both downloads then completed and verified.
 - The first contingency restart falsely matched its parent shell via pgrep -fl. Corrected by verifying candidate executable names with ps. A subsequent deliberate second-start attempt while pid 87039 was running was correctly refused. No second server was spawned.
 - All pinned npm versions installed. pnpm initially blocked esbuild; only esbuild was approved with pnpm approve-builds esbuild --yes. concurrently was corrected from 9.2.1 to registry-reported latest 9.x 9.2.5.
-- The server health, body limit, invalid-input envelope, adapter boundary, cancellation and prompt/schema unit tests run without a live model.
-- Domain stage A is not on main at report preparation. analyse.ts explicitly imports the specified domain names but remains a pending integration stub. A18–A22 and four domain-dependent server cases are explicit it.todo entries. Full /api/analyse is not yet operational and is not claimed verified.
+- Live Hono /api/health correctly reported ready, registered=true, is_gemma=true, and gemma-3-1b-it-Q4_K_M.gguf through the real adapter.
+- The server health, body limit, invalid-input envelope, static production serving, adapter boundary, cancellation and prompt/schema unit tests run without a live model.
+- Domain stage A is not on main at report preparation. analyse.ts explicitly imports the specified domain names but remains a pending integration stub. A18–A22 and four domain-dependent server cases are explicit it.todo entries. Full /api/analyse is not yet operational and is not claimed verified. The independent checks currently pass with 20 tests passed and 9 TODOs (Vitest lists the all-TODO analyse file as skipped).
 - smoke-live.ts currently has the authorised G0-only line splitter. Replace it with domain segmentBrief after stage A is merged.
 
 ## Decision
 
-Keep **-ngl 0**: the single -ngl 99 trial took 109,716 ms versus the 74,250 ms cold CPU baseline, and the x64 archive contains CPU/BLAS backends but no Metal backend. This is one comparison under changing shared-machine load, not a general GPU benchmark. Production prompt remains pv1. Further decisions about model choice and prompt quality require the lead's dev-split evaluation.
+Keep **-ngl 0**: the single -ngl 99 trial took 109,716 ms versus the 74,250 ms cold CPU baseline, and the x64 archive contains CPU/BLAS backends but no Metal backend. This is one comparison under changing shared-machine load, not a general GPU benchmark. Production prompt remains pv1. All contingency runs are shown above; no latency experiment was adopted into the production prompt. Further decisions about model choice and prompt quality require the lead's dev-split evaluation. The final model server was stopped with pnpm model:stop, model:status reports running=false, and pgrep -fl llama-server has no match. Runtime and both verified models remain in the shared cache.
