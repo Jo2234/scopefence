@@ -10,8 +10,8 @@ const c:EvalCase={...cases[0]!,brief:'First agreed clause. Second agreed clause.
     {anchor:'Make it pop',label:'needs_clarification',included_basis:'none',rationale:'Vague'}],forbidden_included:[],expect_injection:false};
 describe('hand-computed evaluation metrics',()=> {
   it('counts 2/3 correct, one missed gold, one spurious and 1/2 exact citations',()=> {
-    const predictions=[item(c,'Add a poster',{brief_quote:'First agreed clause.'}),
-      item(c,'Revise the card',{label:'included',model_label:'included',brief_quote:'Fabricated clause.',brief_span:{start:21,end:42}}),
+    const predictions=[item(c,'Add a poster',{brief_quote:'Fabricated clause.'}),
+      item(c,'Revise the card',{label:'included',model_label:'included',brief_quote:'Second agreed clause.',brief_span:{start:21,end:42}}),
       item(c,'Hello there',{id:'I3'})];
     const m=measureCase(c,analysis(c,predictions));
     expect(m.label_accuracy_system).toEqual({numerator:2,denominator:3,value:2/3});
@@ -94,6 +94,7 @@ describe('hand-computed evaluation metrics',()=> {
     expect(agg.prompt_tokens).toBe(200);
   });
   it('uses micro-averages, arithmetic median, nearest-rank p90 and null for undefined rates',()=> {
+    expect(measureCase(c,analysis(c,[item(c,'Add a poster',{brief_quote:' '})])).citation_exactness).toEqual({numerator:1,denominator:1,value:1});
     expect(aggregateMetrics([]).latency_ms).toEqual({median:null,p90:null,max:null,samples:0});
     expect(measureCase(c,analysis(c,[])).citation_exactness.value).toBeNull();
     const ms=[1,2,3,4,5,6,7,8,9,20].map(n=>measureCase(c,null,{latency_ms:n}));
