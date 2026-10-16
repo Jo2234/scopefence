@@ -14,3 +14,12 @@ export function deepFreeze<T>(value: T): T {
   if (value && typeof value === 'object') { Object.freeze(value); for (const child of Object.values(value)) deepFreeze(child); }
   return value;
 }
+export function analysisItem(overrides: Partial<import('../../src/domain').AnalysisItem> = {}): import('../../src/domain').AnalysisItem {
+  return {
+    id: 'I1', request: 'Enlarge the tagline', message_quote: 'make the tagline bigger', message_span: { start: 7, end: 30 },
+    model_label: 'extra_work', label: 'extra_work', reason: 'An additional request.', question: '', reason_codes: [],
+    model_clause_id: 'C1', clause_id: 'C1', brief_quote: 'Two logo concepts in full colour.', brief_span: { start: 0, end: 33 }, citation_status: 'verified',
+    included_basis: 'none', deliverable_id: 'custom', effort: 's', pricing: { mode: 'hourly', hours_hundredths: 250, quantity: 1 },
+    review: 'approved', edited: false, duplicate_of: null, injection_overlap: false, ...overrides,
+  };
+}

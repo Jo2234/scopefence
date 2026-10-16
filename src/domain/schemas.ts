@@ -19,7 +19,7 @@ export type ErrorCode = z.infer<typeof ErrorCodeSchema>;
 
 const nonnegativeInt = z.number().int().nonnegative().safe();
 const positiveMinor = z.number().int().min(1).max(100_000_000);
-export const HoursSchema = z.number().positive().max(500).refine(h => Math.abs(h * 100 - Math.round(h * 100)) < 1e-8, 'Hours must have at most two decimals');
+export const HoursSchema = z.number().positive().max(500).refine(h => Math.round(h * 100) / 100 === h, 'Hours must have at most two decimals');
 export type Hours = z.infer<typeof HoursSchema>;
 export const RateCardSchema = z.strictObject({
   currency: CurrencySchema,
