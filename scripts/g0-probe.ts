@@ -12,7 +12,7 @@ const short=label.includes('short');const capped=label.includes('cap');
 const system=short?SYSTEM_PROMPT.replace('rough effort for extra work or revisions: xs (<1h), s (1-2h), m (half day), l (full day), otherwise "none".','effort for extra work or revisions: xs, s, m, l, otherwise "none".'):SYSTEM_PROMPT;
 const schema=buildOutputSchema(clauses,demo.rate_card);if(capped)schema.properties.items.maxItems=6;
 const request={messages:[{role:'system',content:system},{role:'user',content:buildUserPrompt(clauses,demo.message,demo.rate_card)}],temperature:0,seed:42,max_tokens:capped?800:1100,cache_prompt:true,chat_template_kwargs:{enable_thinking:false},response_format:{type:'json_schema',json_schema:{name:'scopefence_analysis',strict:true,schema}}};
-const output:{label:string;prompt_version:string;rss_after_load_kib:number;runs:unknown[];schema_probe?:unknown}={label,prompt_version:PROMPT_VERSION,rss_after_load_kib:rss(),runs:[]};
+const output:{label:string;prompt_version:string;rss_after_load_kib:number;runs:unknown[];schema_probe?:unknown}={label,prompt_version:short?`${PROMPT_VERSION}-g0-short`:PROMPT_VERSION,rss_after_load_kib:rss(),runs:[]};
 const file=path.join(cache,'logs',`g0-${label}.json`);
 for(let i=0;i<Number(process.env.G0_RUNS??3);i++){
  const start=performance.now();const response=await fetch('http://127.0.0.1:8089/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(request),signal:AbortSignal.timeout(240000)});const data=await response.json() as any;
