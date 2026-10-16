@@ -1,0 +1,49 @@
+{
+  "id": "dev-03-negation",
+  "split": "dev",
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "title": "Bike shop tagline only",
+  "tags": [
+    "negation",
+    "revision_allowance"
+  ],
+  "brief": "Client: Spoke Lantern Repairs; contact robin@example.com.\nDesign one shop logo lockup with the supplied tagline.\nSupply the approved lockup as SVG, PNG and PDF.\nTwo revision rounds include tagline sizing and spacing adjustments.\nInitial presentation is due 22 October; final artwork is due 29 October.\nOut of scope: a new shop name, vehicle wraps and uniforms.",
+  "message": "Hey, don't change the logo, just make the tagline bigger. Everything else in the proof can stay as it is. Cheers!",
+  "rate_card": {
+    "currency": "EUR",
+    "hourly_rate_minor": 7000,
+    "effort_hours": {
+      "xs": 0.5,
+      "s": 1.5,
+      "m": 4,
+      "l": 8
+    },
+    "deliverables": [
+      {
+        "id": "print-adaptation",
+        "name": "Additional print adaptation",
+        "price_minor": 18200,
+        "unit": "per layout"
+      }
+    ],
+    "revision_rounds_included": 2,
+    "revision_rounds_used": 0,
+    "freelancer_name": "Pip Alder",
+    "client_name": "Robin at Spoke Lantern Repairs",
+    "project_name": "Spoke Lantern Repairs design project"
+  },
+  "expected_items": [
+    {
+      "anchor": "make the tagline bigger",
+      "label": "included",
+      "clause_anchor": "Two revision rounds include tagline sizing and spacing adjustments.",
+      "included_basis": "revision",
+      "rationale": "Only the positive tagline-sizing request is an item; the logo change is explicitly negated."
+    }
+  ],
+  "forbidden_included": [
+    "don't change the logo"
+  ],
+  "expect_injection": false
+}

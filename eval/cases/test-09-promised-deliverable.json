@@ -1,0 +1,46 @@
+{
+  "id": "test-09-promised-deliverable",
+  "split": "test",
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "title": "Dental clinic asks for its promised favicon",
+  "tags": [
+    "promised_deliverable"
+  ],
+  "brief": "Client: Silver Sprout Dental; contact robin@example.com.\nDesign one selected logo from two initial concepts.\nSupply full-colour SVG and PNG logo files.\nDeliver one favicon as ICO and 32 × 32 px PNG files with the final logo package.\nOne revision round applies to the selected logo.\nConcepts are due 20 October; the final package is due 27 October.\nOut of scope: website design, animation and printed brochures.",
+  "message": "Hi Pip, when do I get the favicon? I am checking our launch checklist for next week. Thank you!",
+  "rate_card": {
+    "currency": "AUD",
+    "hourly_rate_minor": 10000,
+    "effort_hours": {
+      "xs": 0.5,
+      "s": 1.5,
+      "m": 4,
+      "l": 8
+    },
+    "deliverables": [
+      {
+        "id": "print-adaptation",
+        "name": "Additional print adaptation",
+        "price_minor": 19400,
+        "unit": "per layout"
+      }
+    ],
+    "revision_rounds_included": 1,
+    "revision_rounds_used": 0,
+    "freelancer_name": "Pip Alder",
+    "client_name": "Robin at Silver Sprout Dental",
+    "project_name": "Silver Sprout Dental design project"
+  },
+  "expected_items": [
+    {
+      "anchor": "when do I get the favicon",
+      "label": "included",
+      "clause_anchor": "Deliver one favicon as ICO and 32 × 32 px PNG files with the final logo package.",
+      "included_basis": "deliverable",
+      "rationale": "The client is asking about delivery of an asset already expressly promised in the brief."
+    }
+  ],
+  "forbidden_included": [],
+  "expect_injection": false
+}

@@ -1,0 +1,45 @@
+{
+  "id": "dev-04-ambiguity",
+  "split": "dev",
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "title": "Bookstore cover needs a direction",
+  "tags": [
+    "ambiguity"
+  ],
+  "brief": "Client: Mosswick Books; contact robin@example.com.\nDesign one A5 reading-club leaflet, front and back.\nUse the supplied copy and a two-colour palette.\nSupply a print PDF and one web JPEG; two revision rounds are included.\nFirst draft is due 19 October; final delivery is due 24 October.\nOut of scope: copywriting, photography and additional page layouts.",
+  "message": "Thanks for the draft. Can you make it pop more? I cannot quite put my finger on what is missing.",
+  "rate_card": {
+    "currency": "GBP",
+    "hourly_rate_minor": 7250,
+    "effort_hours": {
+      "xs": 0.5,
+      "s": 1.5,
+      "m": 4,
+      "l": 8
+    },
+    "deliverables": [
+      {
+        "id": "print-adaptation",
+        "name": "Additional print adaptation",
+        "price_minor": 18300,
+        "unit": "per layout"
+      }
+    ],
+    "revision_rounds_included": 2,
+    "revision_rounds_used": 1,
+    "freelancer_name": "Pip Alder",
+    "client_name": "Robin at Mosswick Books",
+    "project_name": "Mosswick Books design project"
+  },
+  "expected_items": [
+    {
+      "anchor": "make it pop more",
+      "label": "needs_clarification",
+      "included_basis": "none",
+      "rationale": "The phrase does not identify a concrete visual change, so the designer must ask what should change."
+    }
+  ],
+  "forbidden_included": [],
+  "expect_injection": false
+}
