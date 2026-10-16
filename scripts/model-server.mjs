@@ -20,7 +20,7 @@ else if(action==='start'){
  await mkdir(run,{recursive:true});await mkdir(path.join(cache,'logs'),{recursive:true});
  const utc=new Date().toISOString().replaceAll(':','-');const log=path.join(cache,'logs',`llama-server-${utc}.log`);
  const ngl=process.env.SCOPEFENCE_GPU_LAYERS??'0';if(!['0','99'].includes(ngl))throw Error('SCOPEFENCE_GPU_LAYERS must be 0 or 99');
- const flags=['-m',modelPath,'--host','127.0.0.1','--port','8089','-c','8192','-t','4','-ngl',ngl,'-np','1','--jinja','--reasoning-budget','0','--no-webui','--seed','42'];
+ const flags=['-m',modelPath,'--host','127.0.0.1','--port','8089','-c','8192','-t','4','-ngl',ngl,'-np','1','--jinja','--reasoning-budget','0','--no-webui','--seed','42','--cors-origins','','--no-cors-credentials'];
  const fd=openSync(log,'a');const start=performance.now();const child=spawn(bin,flags,{detached:true,stdio:['ignore',fd,fd]});await new Promise((resolve,reject)=>{child.once('spawn',resolve);child.once('error',reject);});child.unref();await writeFile(pidFile,String(child.pid));
  await writeFile(path.join(run,'server.json'),JSON.stringify({pid:child.pid,model: model.slug,model_file:model.file,binary:bin,flags,log,started_at:new Date().toISOString()},null,2));
  try{while(performance.now()-start<180000){if(!alive(child.pid))throw Error(`Model exited; see ${log}`);try{const res=await fetch('http://127.0.0.1:8089/health',{signal:AbortSignal.timeout(1000)});if(res.status===200){console.log(JSON.stringify({status:'ready',pid:child.pid,load_ms:Math.round(performance.now()-start),log,flags}));process.exit(0);}}catch{}await new Promise(r=>setTimeout(r,250));}throw Error('Model health timeout (180 s)');}

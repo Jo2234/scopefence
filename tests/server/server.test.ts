@@ -1,0 +1,12 @@
+import {it,expect} from 'vitest';
+import {createApp} from '../../src/server/app.js';
+import {FixtureAdapter} from '../../src/model/fixture.js';
+const app=()=>createApp({adapter:new FixtureAdapter()});
+it('reports fixture mode, limits, and prompt version without a live server',async()=>{const response=await app().request('/api/health');expect(response.status).toBe(200);const data=await response.json();expect(data).toMatchObject({ok:true,mode:'fixture',model:{status:'ready'},limits:{brief_chars:8000,message_chars:4000},prompt_version:'pv1'});expect(response.headers.has('access-control-allow-origin')).toBe(false);});
+it('returns structured invalid input details on an empty brief',async()=>{const response=await app().request('/api/analyse',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({brief:' ',message:'Add a card',rate_card:{}})});expect(response.status).toBe(400);expect(await response.json()).toMatchObject({error:{code:'invalid_input',details:[{path:'brief'}]}});});
+it('rejects malformed JSON and handles unknown API paths as JSON',async()=>{const response=await app().request('/api/analyse',{method:'POST',body:'{'});expect(response.status).toBe(400);const missing=await app().request('/api/unknown');expect(missing.status).toBe(404);expect(missing.headers.get('Content-Type')).toContain('application/json');});
+it('rejects bodies over 256 KB',async()=>{const response=await app().request('/api/analyse',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({brief:'x'.repeat(262145),message:'message',rate_card:{}})});expect([400,413]).toContain(response.status);});
+it.todo('fixture hit → 200 with analysis.mode fixture (awaiting domain stage A)');
+it.todo('fixture miss → 404 fixture_missing (awaiting domain stage A)');
+it.todo('two concurrent analyses → one gets 429 (awaiting domain stage A)');
+it.todo('overall timeout and client abort release the mutex (awaiting domain stage A)');
