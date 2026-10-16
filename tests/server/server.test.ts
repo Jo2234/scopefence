@@ -1,3 +1,6 @@
+import {mkdtemp,writeFile,rm} from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
 import {it,expect} from 'vitest';
 import {createApp} from '../../src/server/app.js';
 import demo from '../../fixtures/demo/demo-1.json' with {type:'json'};
@@ -26,4 +29,4 @@ it.todo('overall timeout and client abort release the mutex (awaiting domain sta
  const abortApp=createApp({adapter:new Abortable([])});started=new Promise<void>(resolve=>{entered=resolve;});const controller=new AbortController();const pending=post(abortApp,demo,controller.signal);await started;controller.abort();expect((await pending).status).toBe(499);
  started=new Promise<void>(resolve=>{entered=resolve;});const nextController=new AbortController();const next=post(abortApp,demo,nextController.signal);await started;nextController.abort();expect((await next).status).toBe(499);
 });
-it('serves the built UI for production navigation and keeps API misses as JSON',async()=>{const prod=createApp({adapter:new FixtureAdapter(),config:loadConfig({NODE_ENV:'production'})});const page=await prod.request('/review/example');expect(page.status).toBe(200);expect(page.headers.get('content-type')).toContain('text/html');expect(await page.text()).toContain('ScopeFence');const api=await prod.request('/api/missing');expect(api.status).toBe(404);expect(api.headers.get('content-type')).toContain('application/json');});
+it('serves the built UI for production navigation and keeps API misses as JSON',async()=>{const directory=await mkdtemp(path.join(os.tmpdir(),'scopefence-static-'));try{await writeFile(path.join(directory,'index.html'),'<!doctype html><title>ScopeFence</title>');const prod=createApp({adapter:new FixtureAdapter(),config:{...loadConfig({NODE_ENV:'production'}),static_dir:directory}});const page=await prod.request('/review/example');expect(page.status).toBe(200);expect(page.headers.get('content-type')).toContain('text/html');expect(await page.text()).toContain('ScopeFence');const api=await prod.request('/api/missing');expect(api.status).toBe(404);expect(api.headers.get('content-type')).toContain('application/json');}finally{await rm(directory,{recursive:true,force:true});}});
