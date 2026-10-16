@@ -4,12 +4,13 @@ import {mkdir,readFile,writeFile,readdir,rm} from 'node:fs/promises';
 import registry from '../src/model/models.json' with {type:'json'};
 import {cache,path,verified} from './download-common.mjs';
 const run=path.join(cache,'run'), pidFile=path.join(run,'llama-server.pid');
-async function pid(){try{return Number(await readFile(pidFile,'utf8'));}catch{return null;}}
+async function pid(){try{const value=Number(await readFile(pidFile,'utf8'));return Number.isSafeInteger(value)&&value>1?value:null;}catch{return null;}}
+function isServer(id){if(!id||!alive(id))return false;try{return path.basename(execFileSync('ps',['-p',String(id),'-o','comm='],{encoding:'utf8'}).trim())==='llama-server';}catch{return false;}}
 function alive(id){try{process.kill(id,0);return true;}catch{return false;}}
 async function binary(dir){for(const item of await readdir(dir,{withFileTypes:true})){const full=path.join(dir,item.name);if(item.isFile()&&item.name==='llama-server')return full;if(item.isDirectory()){const found=await binary(full);if(found)return found;}}}
 const action=process.argv[2];
-if(action==='status'){const id=await pid();console.log(JSON.stringify({running:!!id&&alive(id),pid:id}));}
-else if(action==='stop'){const id=await pid();if(id&&alive(id)){process.kill(id,'SIGTERM');for(let n=0;n<100&&alive(id);n++)await new Promise(r=>setTimeout(r,100));if(alive(id))throw Error(`Server ${id} did not stop; inspect before restarting`);}await rm(pidFile,{force:true});console.log('Model stopped');}
+if(action==='status'){const id=await pid();console.log(JSON.stringify({running:isServer(id),pid:id}));}
+else if(action==='stop'){const id=await pid();if(id&&alive(id)&&!isServer(id))throw Error('PID file refers to another process; refusing to signal it');if(isServer(id)){process.kill(id,'SIGTERM');for(let n=0;n<100&&alive(id);n++)await new Promise(r=>setTimeout(r,100));if(alive(id))throw Error(`Server ${id} did not stop; inspect before restarting`);}await rm(pidFile,{force:true});console.log('Model stopped');}
 else if(action==='start'){
  let existing='';try{existing=execFileSync('pgrep',['-fl','llama-server'],{encoding:'utf8'}).trim();}catch(error){if(error.status!==1)throw error;}
  if(existing)throw Error(`Refusing to start: another llama-server is running:\n${existing}`);

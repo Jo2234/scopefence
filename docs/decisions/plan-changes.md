@@ -6,8 +6,12 @@ All requested pinned package versions installed. Chose concurrently 9.2.1 (lates
 
 ## 2026-10-16 — slot 1 — disable runtime CORS
 
-The b11687 help reports `--cors-origins` defaults to `*` and CORS credentials default to enabled. Its startup log confirmed this. Added `--cors-origins '' --no-cors-credentials` to satisfy §13's no-CORS requirement. These flags exist in the verified binary. Initial CPU G0 measurements used the original §11 flags; subsequent runs include these two additional flags.
+The b11687 help reports `--cors-origins` defaults to `*` and CORS credentials default to enabled. Its startup log confirmed this. Added `--cors-origins '' --no-cors-credentials` to prevent cross-origin access under §13. The runtime still emits an empty `Access-Control-Allow-Origin` header (confirmed with an Origin-bearing localhost health request); its CLI provides no header-removal flag. The application itself emits no CORS headers. These flags exist in the verified binary. Initial CPU G0 measurements used the original §11 flags; subsequent runs include these two additional flags.
 
 ## 2026-10-16 — slot 1 — fixture input binding
 
 The frozen ModelAdapter completion request carries only prompts, while fixture keys must hash the exact analysed brief and message (which cannot be reconstructed from trimmed clauses). Added `FixtureAdapter.setInput(brief, message)` for the orchestrator to bind those texts before completing. The shared ModelAdapter request/result contract remains unchanged. Fixture provenance and model id are exposed by the fixture instance for Analysis metadata.
+
+## 2026-10-16 — slot 1 — concurrently correction
+
+S0 selected concurrently 9.2.1 before checking the registry. `pnpm view concurrently@9 version --json` returned 9.2.5, so changed the exact pin to 9.2.5 on the integrator branch to meet §12.1's latest-9.x requirement. S0 main retains its original scaffold until the lead approves the next merge.
