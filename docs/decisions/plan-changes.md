@@ -15,3 +15,7 @@ The frozen ModelAdapter completion request carries only prompts, while fixture k
 ## 2026-10-16 — slot 1 — concurrently correction
 
 S0 selected concurrently 9.2.1 before checking the registry. `pnpm view concurrently@9 version --json` returned 9.2.5, so changed the exact pin to 9.2.5 on the integrator branch to meet §12.1's latest-9.x requirement. S0 main retains its original scaffold until the lead approves the next merge.
+
+## 2026-10-16 — slot 1 — process-name verification
+
+The first contingency restart was refused because `pgrep -fl llama-server` matched the parent shell's command text containing that phrase, although no model server was running. Keep the required pgrep check but confirm each candidate's executable basename with `ps -o comm=`. Also check again after hashing and refuse stop if a stale pid points to an unrelated executable. This fixes the false positive without weakening the single-server rule.
