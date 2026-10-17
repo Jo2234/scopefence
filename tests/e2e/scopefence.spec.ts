@@ -26,6 +26,7 @@ test('E1 recorded demo, deterministic pricing edits, approval, Markdown and HTML
   await shot(page, 'results-demo-1');
   await page.getByLabel('Row 1 hours', { exact: true }).fill('3');
   await expect(page.getByLabel('Row 1 hours', { exact: true })).toHaveValue('3');
+  await expect(page.getByTestId('row-I1').locator('.amount')).toContainText('SGD 240.00');
   await expect(page.getByTestId('order-total')).toHaveText('SGD 0.00');
   await page.getByRole('button', { name: 'Approve all remaining', exact: true }).click();
   // Hand calculation from demo-1's rate card and the recorded output:
@@ -167,4 +168,56 @@ test('only the rate card persists, and it can be forgotten', async ({ page }) =>
   expect(await page.evaluate(() => localStorage.getItem('scopefence.rate_card.v1'))).toBeNull();
   await page.reload();
   await expect(page.getByRole('textbox', { name: 'Hourly rate', exact: true })).toHaveValue('80.00');
+});
+
+for (const fault of [
+  { code: 'model_busy', status: 429, copy: 'Another analysis is still running. Wait for it to finish.' },
+  { code: 'model_timeout', status: 504, copy: 'The model took longer than 4 minutes. Try a shorter message or restart the model.' },
+  { code: 'model_output_invalid', status: 502, copy: 'Gemma did not return valid structured output after 3 attempts.' },
+  { code: 'fixture_missing', status: 404, copy: 'No recorded fixture matches these inputs. Load a synthetic demo or switch to live mode.' },
+]) {
+  test(`API fault ${fault.code} has actionable copy and preserves inputs`, async ({ page }) => {
+    // These are injected HTTP failures, not fabricated Gemma analyses.
+    await page.route('**/api/analyse', route => route.fulfill({ status: fault.status, contentType: 'application/json', body: JSON.stringify({ error: { code: fault.code, ...(fault.code === 'model_output_invalid' ? { attempts: 3, raw: 'synthetic invalid-output fault' } : {}) } }) }));
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Load synthetic demo', exact: true }).click();
+    const original = await page.getByRole('textbox', { name: 'Client message', exact: true }).inputValue();
+    await page.getByRole('button', { name: 'Analyse with local Gemma', exact: true }).click();
+    await expect(page.getByRole('alert')).toContainText(fault.copy);
+    await expect(page.getByRole('textbox', { name: 'Client message', exact: true })).toHaveValue(original);
+    await expect(page.getByRole('button', { name: 'Retry', exact: true })).toBeEnabled();
+    if (fault.code === 'model_output_invalid') {
+      await page.getByText('Show raw output', { exact: true }).click();
+      await expect(page.getByText('synthetic invalid-output fault', { exact: true })).toBeVisible();
+    }
+  });
+}
+
+test('rate validation uses the domain contract, and inputs-changed keeps the table', async ({ page }) => {
+  await demo(page);
+  await page.getByRole('textbox', { name: 'Hourly rate', exact: true }).fill('80.001');
+  await expect(page.getByText('Hourly rate must be a positive amount with at most 2 decimals.', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Analyse with local Gemma', exact: true })).toBeDisabled();
+  await expect(page.locator('.evidence-table tbody tr')).toHaveCount(4);
+  await expect(page.getByText('Inputs changed since this analysis. Re-analyse to update.', { exact: true })).toBeVisible();
+  await page.getByRole('textbox', { name: 'Hourly rate', exact: true }).fill('80');
+  await expect(page.getByRole('button', { name: 'Analyse with local Gemma', exact: true })).toBeEnabled();
+  const brief = page.getByRole('textbox', { name: 'Brief', exact: true });
+  await brief.fill((await brief.inputValue()) + '\nA new clause added after analysis.');
+  await expect(page.getByText('Inputs changed since this analysis. Re-analyse to update.', { exact: true })).toBeVisible();
+  await expect(page.locator('.evidence-table tbody tr')).toHaveCount(4);
+});
+
+test('workspace stacks below 900px and row evidence is keyboard accessible', async ({ page }) => {
+  await page.setViewportSize({ width: 800, height: 900 });
+  await demo(page);
+  const inputs = await page.getByRole('region', { name: '1 The agreed scope' }).boundingBox();
+  const results = await page.getByRole('group', { name: 'Analysis results', exact: true }).boundingBox();
+  expect(inputs).not.toBeNull(); expect(results).not.toBeNull();
+  expect(results!.y).toBeGreaterThan(inputs!.y + inputs!.height);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  const select = page.getByRole('button', { name: 'Select row 3 evidence', exact: true });
+  await select.focus(); await page.keyboard.press('Enter');
+  await expect(select).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.clauses mark')).toHaveText('Design one A2 menu board.');
 });

@@ -19,3 +19,7 @@ S0 selected concurrently 9.2.1 before checking the registry. `pnpm view concurre
 ## 2026-10-16 — slot 1 — process-name verification
 
 The first contingency restart was refused because `pgrep -fl llama-server` matched the parent shell's command text containing that phrase, although no model server was running. Keep the required pgrep check but confirm each candidate's executable basename with `ps -o comm=`. Also check again after hashing and refuse stop if a stale pid points to an unrelated executable. This fixes the false positive without weakening the single-server rule.
+
+## 2026-10-17 — slot 4 — E1 approval and total ordering
+
+Plan §10.4's E1 wording asks for the order total to reflect an hours edit before approval, while §5.4 explicitly excludes every proposed row from `priceOrder` totals. The UI and E1 preserve the approved-only invariant: editing a proposed row changes its domain-computed proposed amount, the approved total stays zero, and approving all rows enables the exact hand-calculated total. E1 then edits the approved row twice and asserts both updated totals before downloading Markdown. No pricing rule or recorded fixture is changed.
