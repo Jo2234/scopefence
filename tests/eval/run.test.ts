@@ -150,7 +150,7 @@ describe('evaluation CLI and offline runner orchestration',()=> {
 it('runs two dry-run cases through the real analyse and ScriptedAdapter without llama-server',async()=> {
   const bindings=await loadBindings();
   const {result}=await runEvaluation({model:'gemma-4-e2b',split:'dev',caseIds:cases.map(c=>c.id),dryRun:true,out:await temp()},{bindings,cases});
-  expect(result.cases.every(c=>c.error===null)).toBe(true);
+  expect(result.cases.map(c=>c.error)).toEqual([null,null]);
   expect(result.aggregate.label_accuracy_system).toEqual({numerator:2,denominator:2,value:1});
   expect(result.cases[0]!.analysis!.items[0]!.citation_status).toBe('verified');
   expect(result.cases[0]!.analysis!.items[0]!.included_basis).toBe('revision');
