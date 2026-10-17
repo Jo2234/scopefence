@@ -1,5 +1,5 @@
 import { applyEdit, EditError, priceOrder, type Analysis, type ItemEdit, type RateCard } from '../domain';
-import type { ApiError } from './api';
+import type { ApiError } from './client';
 
 export const RATE_CARD_KEY = 'scopefence.rate_card.v1';
 export type Phase = 'empty' | 'analysing' | 'reviewing' | 'order_ready' | 'error';

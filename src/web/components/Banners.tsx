@@ -1,5 +1,5 @@
 import type { Analysis } from '../../domain';
-import { errorCopy, type ApiError } from '../api';
+import { errorCopy, type ApiError } from '../client';
 
 export function ErrorBanner({ error, retry, disabled }: { error: ApiError; retry: () => void; disabled: boolean }) {
   return <div className="banner danger" role="alert"><p>{errorCopy[error.code]}</p>{error.details?.map((d, i) => <p key={i}>{d.path}: {d.message}</p>)}<button type="button" onClick={retry} disabled={disabled}>Retry</button>{error.raw !== undefined && <details><summary>Show raw output</summary><pre>{error.raw}</pre></details>}</div>;

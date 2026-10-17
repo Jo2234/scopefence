@@ -1,5 +1,5 @@
 import type { Analysis } from '../../domain';
-import type { Health } from '../api';
+import type { Health } from '../client';
 
 export function ModelChip({ health }: { health: Health | null }) {
   const status = health?.model.status;
@@ -10,6 +10,6 @@ export function StatusBar({ health, analysis }: { health: Health | null; analysi
   const fixture = health?.mode === 'fixture' || analysis?.mode === 'fixture';
   return <><header className="topbar"><div><a href="#main" className="wordmark">Scope<span>Fence</span></a><p>Is this request in the brief? Checked by Gemma, running on this computer.</p></div><ModelChip health={health} /></header>
     {fixture && <div className="fixture-banner" role="status"><strong>FIXTURE MODE: replaying recorded output, not a live model call.</strong>{analysis?.model.provenance && <span>{analysis.model.provenance}</span>}</div>}
-    {health && (!health.model.is_gemma || !health.model.registered) && <div className="identity-warning">{health.mode === 'fixture' ? 'Fixture health has no loaded model identity.' : 'Warning: the loaded model is not a registered Gemma model.'} {!health.model.is_gemma && 'Gemma identity is not verified.'} {!health.model.registered && ' Model is not registered.'}</div>}
+    {health?.mode === 'live' && (!health.model.is_gemma || !health.model.registered) && <div className="identity-warning">Warning: the loaded model is not a registered Gemma model. {!health.model.is_gemma && 'Gemma identity is not verified.'} {!health.model.registered && ' Model is not registered.'}</div>}
   </>;
 }

@@ -18,5 +18,9 @@ export default defineConfig({
       command: 'SCOPEFENCE_MODE=live SCOPEFENCE_PORT=5180 SCOPEFENCE_LLM_URL=http://127.0.0.1:9 pnpm start',
       url: 'http://127.0.0.1:5180/api/health', reuseExistingServer: false, timeout: 30000,
     },
+    {
+      command: 'pnpm exec vite --host 127.0.0.1 --port 5181 --strictPort',
+      url: 'http://127.0.0.1:5181/client.ts', reuseExistingServer: false, timeout: 30000,
+    },
   ],
 });

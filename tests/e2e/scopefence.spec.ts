@@ -222,3 +222,83 @@ test('workspace stacks below 900px and row evidence is keyboard accessible', asy
   await expect(select).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('.clauses mark')).toHaveText('Design one A2 menu board.');
 });
+
+test('re-analysis replaces the entire results set and keeps document ids unique', async ({ page }) => {
+  await demo(page);
+  await page.getByRole('button', { name: 'Approve all remaining', exact: true }).click();
+  await page.getByRole('button', { name: 'Load injection demo', exact: true }).click();
+  await page.getByRole('button', { name: 'Analyse with local Gemma', exact: true }).click();
+  await expect(page.getByTestId('injection-banner')).toBeVisible();
+  await expect(page.getByRole('table', { name: 'Client requests and verified brief evidence' })).toHaveCount(1);
+  await expect(page.getByRole('heading', { name: '2 Review the requests', exact: true })).toHaveCount(1);
+  await expect(page.locator('.evidence-table tbody tr')).toHaveCount(1);
+  const duplicates = await page.evaluate(() => {
+    const ids = Array.from(document.querySelectorAll('[id]'), node => node.id);
+    return ids.filter((id, index) => ids.indexOf(id) !== index);
+  });
+  expect(duplicates).toEqual([]);
+});
+
+test('1280px results and rate-card controls fit their panels and viewport', async ({ page }) => {
+  await demo(page);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= 1280)).toBe(true);
+  const approveButtons = page.getByRole('button', { name: /^Row \d+ Approve$/ });
+  await expect(approveButtons).toHaveCount(4);
+  for (const button of await approveButtons.all()) {
+    const box = await button.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.x).toBeGreaterThanOrEqual(0);
+    expect(box!.x + box!.width).toBeLessThanOrEqual(1280);
+    expect(await button.evaluate(node => node.scrollWidth <= node.clientWidth)).toBe(true);
+  }
+  const panel = await page.locator('.inputs').boundingBox();
+  for (const control of await page.locator('.rate-table input, .rate-table button').all()) {
+    const box = await control.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.x).toBeGreaterThanOrEqual(panel!.x);
+    expect(box!.x + box!.width).toBeLessThanOrEqual(panel!.x + panel!.width);
+  }
+  expect(await page.locator('.evidence-panel .scroll-table').evaluate(node => node.scrollWidth <= node.clientWidth)).toBe(true);
+});
+
+test('input and Markdown fields have associated labels and exact accessible names', async ({ page }) => {
+  await demo(page);
+  for (const [name, id] of [
+    ['Brief', 'brief'], ['Client message', 'message'], ['Hourly rate', 'rate-hourly-rate'],
+    ['Revision rounds included', 'rate-revision_rounds_included'], ['Revision rounds used', 'rate-revision_rounds_used'],
+    ['Freelancer name', 'rate-freelancer_name'], ['Client name', 'rate-client_name'], ['Project name', 'rate-project_name'],
+    ['Editable Markdown', 'markdown'],
+  ]) {
+    const field = page.getByRole('textbox', { name, exact: true });
+    await expect(field).toHaveCount(1);
+    await expect(field).toHaveAttribute('id', id!);
+    expect(await field.evaluate(node => Array.from((node as HTMLInputElement).labels ?? []).some(label => label.htmlFor === node.id))).toBe(true);
+  }
+});
+
+test('fixture identity noise is hidden while live identity warnings remain', async ({ page }) => {
+  await demo(page);
+  await expect(page.locator('.identity-warning')).toHaveCount(0);
+  await expect(page.locator('.fixture-banner')).toBeVisible();
+  await page.goto('http://127.0.0.1:5180');
+  await expect(page.locator('.identity-warning')).toContainText('not a registered Gemma model');
+});
+
+test('summary uses the singular question and plural questions', async ({ page }) => {
+  await demo(page);
+  await page.getByRole('button', { name: 'Approve all remaining', exact: true }).click();
+  await expect(page.locator('.order-summary')).toContainText('1 question');
+  await expect(page.locator('.order-summary')).not.toContainText('1 questions');
+  await page.getByLabel('Row 1 label', { exact: true }).selectOption('needs_clarification');
+  await expect(page.locator('.order-summary')).toContainText('2 questions');
+});
+
+test('Vite serves the client module without sending it to the API proxy', async ({ page, request }) => {
+  const module = await request.get('http://127.0.0.1:5181/client.ts');
+  expect(module.status()).toBe(200);
+  expect(module.headers()['content-type']).toContain('javascript');
+  expect(await module.text()).toContain('getHealth');
+  await page.goto('http://127.0.0.1:5181');
+  await expect(page.getByRole('heading', { name: 'Check the brief. Keep the scope clear.' })).toBeVisible();
+  await expect(page.getByRole('textbox', { name: 'Brief', exact: true })).toBeVisible();
+});

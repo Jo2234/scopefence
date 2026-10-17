@@ -2,7 +2,7 @@ import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { defaultRateCard, priceOrder, RateCardSchema, type RateCard } from '../domain';
 import demo from '../../fixtures/demo/demo-1.json';
 import injectionDemo from '../../fixtures/demo/demo-injection.json';
-import { analyse, AnalyseError, getHealth, type Health } from './api';
+import { analyse, AnalyseError, getHealth, type Health } from './client';
 import { initialState, inputKey, RATE_CARD_KEY, reducer } from './state';
 import { InputsPanel } from './components/InputsPanel';
 import { ModelChip, StatusBar } from './components/StatusBar';
@@ -73,16 +73,16 @@ export function App() {
     <main id="main">
       {healthUnreachable && <ErrorBanner error={{ code: 'model_unreachable' }} retry={retry} disabled={busy} />}
       {health?.model.status === 'loading' && <p className="banner neutral" role="status">Model is loading into memory…</p>}
-      <div className="workspace"><InputsPanel brief={state.brief} message={state.message} card={state.rate_card} formVersion={formVersion} busy={busy} valid={valid} limits={health?.limits ?? { brief_chars: 8000, message_chars: 4000 }} onText={(field, value) => dispatch({ type: 'text', field, value })} onRate={rate} onDemo={loadDemo} onAnalyse={() => void run()} onForget={forget} storageNotice={storageNotice} />
+      <div className={`workspace ${state.analysis ? 'has-results' : ''}`}><InputsPanel brief={state.brief} message={state.message} card={state.rate_card} formVersion={formVersion} busy={busy} valid={valid} limits={health?.limits ?? { brief_chars: 8000, message_chars: 4000 }} onText={(field, value) => dispatch({ type: 'text', field, value })} onRate={rate} onDemo={loadDemo} onAnalyse={() => void run()} onForget={forget} storageNotice={storageNotice} />
         <div className="results">
           {busy && <section className="panel loading-panel" aria-label="Analysing" role="status"><div className="spinner" aria-hidden="true" /><h2>Gemma is reading the message locally on this computer… <span>{elapsed} s</span></h2><p>Usually about a minute on this laptop.</p><ModelChip health={health} /><button type="button" onClick={cancel}>Cancel</button></section>}
           {state.error && <ErrorBanner error={state.error} retry={retry} disabled={!valid || busy} />}
           {!state.analysis && !busy && !state.error && <section className="panel empty-state"><span className="eyebrow">From request to reviewed change order</span><h1>Check the brief.<br />Keep the scope clear.</h1><p>Paste the agreed brief and the client's new message, or load the synthetic demo.</p><ol><li>Gemma maps requests to the brief.</li><li>You check the quoted evidence and prices.</li><li>Download the change order when every row is reviewed.</li></ol><p className="muted small-text">Your judgement stays at the centre. A verified quote confirms the words are in the brief; it does not confirm the model’s interpretation.</p></section>}
-          {state.analysis && order && <fieldset className="results-content" disabled={busy} aria-label="Analysis results"><Banners analysis={state.analysis} changed={changed} /><div className="analysis-meta"><span>{state.analysis.reference}</span><span>{state.analysis.model.id} · {state.analysis.mode === 'fixture' ? 'fixture replay' : 'analysis'} {(state.analysis.latency_ms / 1000).toFixed(1)} s · {state.analysis.attempts} {state.analysis.attempts === 1 ? 'attempt' : 'attempts'}</span></div>
+          {state.analysis && order && <fieldset key={state.analysis.id} className="results-content" disabled={busy} aria-label="Analysis results"><Banners analysis={state.analysis} changed={changed} /><div className="analysis-meta"><span>{state.analysis.reference}</span><span>{state.analysis.model.id} · {state.analysis.mode === 'fixture' ? 'fixture replay' : 'analysis'} {(state.analysis.latency_ms / 1000).toFixed(1)} s · {state.analysis.attempts} {state.analysis.attempts === 1 ? 'attempt' : 'attempts'}</span></div>
             <BriefViewer analysis={state.analysis} selected={state.analysis.items.find(i => i.id === state.selected) ?? null} />
-            <EvidenceTable key={state.analysis.id} items={state.analysis.items} card={state.rate_card} order={order} selected={state.selected} errors={state.edit_errors} notices={state.notices} onSelect={id => dispatch({ type: 'select', id })} onEdit={(id, edit) => dispatch({ type: 'edit', id, edit })} onApproveAll={() => dispatch({ type: 'approve_remaining' })} />
+            <EvidenceTable items={state.analysis.items} card={state.rate_card} order={order} selected={state.selected} errors={state.edit_errors} notices={state.notices} onSelect={id => dispatch({ type: 'select', id })} onEdit={(id, edit) => dispatch({ type: 'edit', id, edit })} onApproveAll={() => dispatch({ type: 'approve_remaining' })} />
             <details className="panel raw-output"><summary>Raw Gemma output</summary><pre>{state.analysis.raw_model_output}</pre></details>
-            <ChangeOrderPanel key={state.analysis.id} order={order} card={state.rate_card} analysis={state.analysis} extraBlock={extraBlock} />
+            <ChangeOrderPanel order={order} card={state.rate_card} analysis={state.analysis} extraBlock={extraBlock} />
           </fieldset>}
         </div>
       </div>
