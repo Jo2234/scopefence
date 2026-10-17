@@ -11,6 +11,9 @@ export interface ResultFile {file:string;result:RunResult}
 export interface EvalProtocol {
   frozen_prompt_version:string|null;
   frozen_source_run:string|null;
+  prompt_iterations_used?:number;
+  frozen_prompt_file_sha256?:string;
+  freeze_reason?:string;
   runs:{id:string;model_slug:string;split:'dev'|'test';prompt_version:string;result_file:string|null;role:'development'|'held_out'|'comparison_dev'}[];
   infrastructure_retries:{run:string;reason:string}[];
 }
@@ -70,6 +73,8 @@ export function caseDesignCaveats(cases:EvalCase[]):string[] {
 function protocolSection(files:ResultFile[],protocol:EvalProtocol):string[] {
   const lines=['## Frozen prompt and held-out headline','',
     `Frozen prompt: **${cell(protocol.frozen_prompt_version??'not frozen yet')}**. Selected development run: ${cell(protocol.frozen_source_run??'pending')}.`,
+    `Optional prompt iterations used: ${protocol.prompt_iterations_used??'not recorded'}/2. ${cell(protocol.freeze_reason??'')}`,
+    ...(protocol.frozen_prompt_file_sha256?[`Frozen prompt.ts SHA256: ${cell(protocol.frozen_prompt_file_sha256)}.`]:[]),
     'Selection rule: highest E2B dev system label accuracy; ties use lower median wall latency. At most two general prompt iterations follow D0. Test splits are run once per model after freezing; their numbers are the held-out headline.',
     '', '| Run | Role | Model | Split | Prompt | Result file |', '| --- | --- | --- | --- | --- | --- |'];
   for(const run of protocol.runs) {

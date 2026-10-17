@@ -69,3 +69,25 @@ explicit exclusion-list counts, message lengths (short means at most 100 words),
 and longer-message ids and word counts. These caveats describe the invented,
 build-team-labelled corpus even when a result file contains only one split.
 No server or live eval is needed for any of these checks.
+
+## Measured checkpoint (2026-10-17)
+
+`protocol.json` records the registered D0, the pre-test pv1 freeze, the single
+held-out run for each model, and the 1B dev comparison. D0 had no scored failures,
+so zero of the two optional prompt iterations were used. The prompt stayed pv1;
+existing pv1 demo fixtures were retained.
+
+`observations.md` is the hand-written post-run section appended by the generator.
+Regenerate and independently verify the measured report with:
+
+```sh
+pnpm eval:report
+pnpm exec tsx eval/audit-results.ts
+```
+
+The audit imports no metric implementation. It independently checks exact quote
+matching, counts, denominators, duplicate/spurious items, latency, split
+completeness, AnalysisSchema validity, registry identity, historical prompt-file
+hashes, and the held-out numbers printed in the report. Run results and raw model
+text are committed; local execution logs under `eval/work/` are not deliverables.
+Do not repeat either held-out split or change the frozen prompt for this checkpoint.
