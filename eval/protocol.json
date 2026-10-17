@@ -21,7 +21,7 @@
       "model_slug": "gemma-4-e2b",
       "split": "test",
       "prompt_version": "pv1",
-      "result_file": null
+      "result_file": "gemma-4-e2b-test-20261017T022844411Z.json"
     },
     {
       "id": "T-1B",
