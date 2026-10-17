@@ -10,3 +10,9 @@ Owned by the lead; workers record their deviations in `plan-changes.md`.
 - **Gold-label review** (slot 3 @ 836e59b): 16 cases reviewed. The labels are defensible under the §8.2 definitions. Change requested before the live run: remove the explicit "Out of scope" line from test-02 and test-05, because every brief having an exclusion list naming the extra item is unrealistically easy. The report must disclose that most briefs contain exclusion lists.
 - **Domain review** (slot 2 @ 5b43ecd): reconcile R2–R12 and pricing match the plan; 61 tests pass (re-run by the lead). One follow-up: re-including an excluded duplicate must clear `duplicate_of`, otherwise a false dedupe can never be priced.
 - **Merges approved:** `codex/slot2-domain@5b43ecd`, `codex/slot1-integrator@c0471ec` and `codex/slot3-eval@836e59b` into main, in that order (slot 1 performs them).
+
+## 2026-10-17 10:40 SGT: Resource policy and latency labelling
+- Machine snapshot during slot 3's live eval: `uptime` load averages **44.45 / 43.18 / 29.74** on 8 logical CPUs; swap 4.89 / 6.14 GB used. Load came from llama-server (~178% CPU) plus other sessions' Node/vitest jobs and the T3 app.
+- **Latency numbers from runs made under this load are not benchmarks.** `eval-report.md` must show the load next to every latency figure.
+- Label accuracy and citation metrics are unaffected by load (temperature 0, seed 42), so the frozen held-out accuracy runs stand.
+- **Planned:** one E2B test-split **timing rerun in a quiet window** (no other heavyweight jobs; load recorded per case by the runner). The report labels it "quiet-machine timing run". Its labels also serve as a determinism check against the frozen run; any differences are reported.
