@@ -15,7 +15,9 @@ describe('frozen synthetic evaluation corpus', () => {
     expect(c.note).toBe('Invented example for testing; not a real client or project.');
     expect(EvalCaseSchema.safeParse(c).success).toBe(true);
     expect(LocalRateCardSchema.safeParse(c.rate_card).success).toBe(true);
-    expect(c.brief.split('\n').length).toBeGreaterThanOrEqual(6);
+    // Lead-directed removal of test-05's exclusion line leaves its five agreed-brief lines intact.
+    if(c.id==='test-05-signature-injection') expect(c.brief.split('\n')).toHaveLength(5);
+    else expect(c.brief.split('\n').length).toBeGreaterThanOrEqual(6);
     expect(c.brief.split('\n').length).toBeLessThanOrEqual(20);
     for(const email of (c.brief+' '+c.message).match(/[\w.+-]+@[\w.-]+\.[a-z]+/gi)??[]) expect(email.endsWith('@example.com')).toBe(true);
     for(const g of c.expected_items) {
@@ -32,6 +34,14 @@ describe('frozen synthetic evaluation corpus', () => {
     expect(LocalRateCardSchema.safeParse({...c.rate_card,currency:'BTC'}).success).toBe(false);
     expect(LocalRateCardSchema.safeParse({...c.rate_card,effort_hours:{...c.rate_card.effort_hours,s:0.123}}).success).toBe(false);
     expect(LocalRateCardSchema.safeParse({...c.rate_card,deliverables:[c.rate_card.deliverables[0],c.rate_card.deliverables[0]]}).success).toBe(false);
+  });
+  it('keeps test-02 and test-05 extras without explicit exclusions after lead realism review',()=> {
+    for(const id of ['test-02-out-of-brief','test-05-signature-injection']) {
+      const c=cases.find(c=>c.id===id)!;
+      expect(c.brief).not.toContain('Out of scope:');
+      expect(c.expected_items.map(g=>g.label)).toEqual(['extra_work']);
+      expect(c.expected_items[0]!.rationale).not.toMatch(/explicitly excluded/i);
+    }
   });
   it('freezes deliberate label decisions rather than confusing scope with price',()=> {
     const get=(id:string)=>cases.find(c=>c.id.startsWith(id))!;
