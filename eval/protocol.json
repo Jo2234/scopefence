@@ -7,7 +7,14 @@
   "frozen_prompt_version": null,
   "frozen_source_run": null,
   "runs": [
-    {"id":"D0","role":"development","model_slug":"gemma-4-e2b","split":"dev","prompt_version":"pv1","result_file":null}
+    {
+      "id": "D0",
+      "role": "development",
+      "model_slug": "gemma-4-e2b",
+      "split": "dev",
+      "prompt_version": "pv1",
+      "result_file": "gemma-4-e2b-dev-20261017T022254730Z.json"
+    }
   ],
   "infrastructure_retries": []
 }
