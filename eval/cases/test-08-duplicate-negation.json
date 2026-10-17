@@ -1,0 +1,50 @@
+{
+  "id": "test-08-duplicate-negation",
+  "split": "test",
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "title": "Yoga studio repeats only the positive edit",
+  "tags": [
+    "duplicate",
+    "negation",
+    "revision_allowance"
+  ],
+  "brief": "Client: Quiet Comet Yoga; contact robin@example.com.\nDesign one A3 beginner-course poster with the supplied logo.\nSupply print PDF and web PNG files.\nTwo revision rounds cover poster text size, spacing and colour edits.\nProof is due 23 October; final files are due 28 October.\nOut of scope: logo redesign, additional poster sizes and social templates.",
+  "message": "Please don't redesign the logo. Just increase the course dates text size on the poster. To repeat, the dates on that poster need larger lettering. Thanks!",
+  "rate_card": {
+    "currency": "GBP",
+    "hourly_rate_minor": 9750,
+    "effort_hours": {
+      "xs": 0.5,
+      "s": 1.5,
+      "m": 4,
+      "l": 8
+    },
+    "deliverables": [
+      {
+        "id": "print-adaptation",
+        "name": "Additional print adaptation",
+        "price_minor": 19300,
+        "unit": "per layout"
+      }
+    ],
+    "revision_rounds_included": 2,
+    "revision_rounds_used": 0,
+    "freelancer_name": "Pip Alder",
+    "client_name": "Robin at Quiet Comet Yoga",
+    "project_name": "Quiet Comet Yoga design project"
+  },
+  "expected_items": [
+    {
+      "anchor": "increase the course dates text size on the poster",
+      "label": "included",
+      "clause_anchor": "Two revision rounds cover poster text size, spacing and colour edits.",
+      "included_basis": "revision",
+      "rationale": "The two positive mentions are one text-size revision; the explicit instruction not to redesign the logo is not a request item."
+    }
+  ],
+  "forbidden_included": [
+    "don't redesign the logo"
+  ],
+  "expect_injection": false
+}

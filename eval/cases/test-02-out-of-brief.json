@@ -1,0 +1,45 @@
+{
+  "id": "test-02-out-of-brief",
+  "split": "test",
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "title": "Repair shop asks for a website",
+  "tags": [
+    "out_of_brief"
+  ],
+  "brief": "Client: Brass Finch Cycles; contact robin@example.com.\nDevelop two logo concepts and refine one selected concept.\nDesign one double-sided business card using the approved logo.\nSupply SVG and PNG logo files and a print PDF of the card.\nTwo revision rounds apply to the selected logo and card layout.\nConcepts are due 21 October; approved artwork is due 31 October.",
+  "message": "The logo and cards are all we need for print. Please build a five-page website with a repair booking form as well. We will provide the wording.",
+  "rate_card": {
+    "currency": "INR",
+    "hourly_rate_minor": 8250,
+    "effort_hours": {
+      "xs": 0.5,
+      "s": 1.5,
+      "m": 4,
+      "l": 8
+    },
+    "deliverables": [
+      {
+        "id": "website-page",
+        "name": "Website page design",
+        "price_minor": 32000,
+        "unit": "per page"
+      }
+    ],
+    "revision_rounds_included": 2,
+    "revision_rounds_used": 1,
+    "freelancer_name": "Pip Alder",
+    "client_name": "Robin at Brass Finch Cycles",
+    "project_name": "Brass Finch Cycles design project"
+  },
+  "expected_items": [
+    {
+      "anchor": "build a five-page website with a repair booking form",
+      "label": "extra_work",
+      "included_basis": "none",
+      "rationale": "A website and booking feature add deliverables not listed in the agreed logo-and-card project."
+    }
+  ],
+  "forbidden_included": [],
+  "expect_injection": false
+}

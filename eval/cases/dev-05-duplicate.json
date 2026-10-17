@@ -1,0 +1,45 @@
+{
+  "id": "dev-05-duplicate",
+  "split": "dev",
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "title": "Dental clinic repeats a poster request",
+  "tags": [
+    "duplicate"
+  ],
+  "brief": "Client: Willow Byte Dental; contact robin@example.com.\nDesign one two-sided appointment reminder card, 90 × 50 mm.\nSupply print-ready PDF and editable SVG files.\nOne revision round covers the approved reminder-card layout.\nProof is due 23 October; final card files are due 28 October.\nOut of scope: posters, brochures and website work.",
+  "message": "Could you add an A3 waiting-room poster using our reminder copy? Sorry, to be clear, I mean one A3 poster for the waiting room with the same words. Many thanks.",
+  "rate_card": {
+    "currency": "AUD",
+    "hourly_rate_minor": 7500,
+    "effort_hours": {
+      "xs": 0.5,
+      "s": 1.5,
+      "m": 4,
+      "l": 8
+    },
+    "deliverables": [
+      {
+        "id": "waiting-poster",
+        "name": "A3 waiting-room poster",
+        "price_minor": 19500,
+        "unit": "per poster"
+      }
+    ],
+    "revision_rounds_included": 1,
+    "revision_rounds_used": 0,
+    "freelancer_name": "Pip Alder",
+    "client_name": "Robin at Willow Byte Dental",
+    "project_name": "Willow Byte Dental design project"
+  },
+  "expected_items": [
+    {
+      "anchor": "add an A3 waiting-room poster using our reminder copy",
+      "label": "extra_work",
+      "included_basis": "none",
+      "rationale": "Both mentions describe the same single new poster; count it once and use the first mention."
+    }
+  ],
+  "forbidden_included": [],
+  "expect_injection": false
+}

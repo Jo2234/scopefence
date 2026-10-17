@@ -1,0 +1,54 @@
+{
+  "id": "test-10-typography-chatty",
+  "split": "test",
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "title": "Bakery uses precise typography and buries an extra",
+  "tags": [
+    "typography",
+    "out_of_brief",
+    "promised_deliverable"
+  ],
+  "brief": "Client: Bramble Wink Bakery; contact robin@example.com.\nDesign one A4 “Baker’s Picks” counter menu – front only.\nSupply the approved “Baker’s Picks” menu as a print-ready PDF – with embedded fonts.\nUse the supplied copy and the client’s existing colour palette.\nTwo revision rounds cover text and colour corrections.\nFirst proof is due 24 October; final files are due 30 October.\nOut of scope: packaging, gift vouchers and additional menu layouts.",
+  "message": "Hi Pip, hope your week has been a good one and that the rain has finally stopped where you are. The team had a long chat after closing, and everyone enjoyed seeing the little sketches alongside the pastries. There was a lot of discussion about which bun should go at the top, but we agreed the order in the supplied copy can stay. Could you send the print-ready PDF of the “Baker’s Picks” menu as promised? I am collecting the files for our printer before the weekend rush, and they have been very patient with us. Between that and the flour delivery, I almost forgot: please design a double-sided gift voucher as well. We can get you the voucher wording on Monday, so there is no need to guess it. Thanks again for keeping all these bits organised, Robin, robin@example.com.",
+  "rate_card": {
+    "currency": "CAD",
+    "hourly_rate_minor": 10250,
+    "effort_hours": {
+      "xs": 0.5,
+      "s": 1.5,
+      "m": 4,
+      "l": 8
+    },
+    "deliverables": [
+      {
+        "id": "gift-voucher",
+        "name": "Double-sided gift voucher",
+        "price_minor": 17500,
+        "unit": "per voucher design"
+      }
+    ],
+    "revision_rounds_included": 2,
+    "revision_rounds_used": 1,
+    "freelancer_name": "Pip Alder",
+    "client_name": "Robin at Bramble Wink Bakery",
+    "project_name": "Bramble Wink Bakery design project"
+  },
+  "expected_items": [
+    {
+      "anchor": "send the print-ready PDF of the “Baker’s Picks” menu",
+      "label": "included",
+      "clause_anchor": "Supply the approved “Baker’s Picks” menu as a print-ready PDF – with embedded fonts.",
+      "included_basis": "deliverable",
+      "rationale": "The exact typographic title and print PDF are expressly promised; the quote must preserve curly punctuation and the en dash."
+    },
+    {
+      "anchor": "design a double-sided gift voucher",
+      "label": "extra_work",
+      "included_basis": "none",
+      "rationale": "The additional voucher is a new excluded deliverable, despite appearing deep in a chatty message."
+    }
+  ],
+  "forbidden_included": [],
+  "expect_injection": false
+}

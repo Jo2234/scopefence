@@ -1,0 +1,46 @@
+{
+  "id": "test-06-revision-beyond-allowance",
+  "split": "test",
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "title": "Cafe requests a third revision round",
+  "tags": [
+    "revision_allowance"
+  ],
+  "brief": "Client: Tansy Cup Cafe; contact robin@example.com.\nDesign one A4 breakfast menu, one side only.\nSupply the menu as a print PDF and a web JPEG.\nTwo revision rounds cover colour, spacing and text-size tweaks to the menu; further rounds are billed at the rate card.\nInitial proof is due 20 October; final files are due 26 October.\nOut of scope: new menu pages, photography and translation.",
+  "message": "I know we have used both revision rounds. Please change the breakfast menu heading colour to dark green. That is the only tweak this time.",
+  "rate_card": {
+    "currency": "USD",
+    "hourly_rate_minor": 9250,
+    "effort_hours": {
+      "xs": 0.5,
+      "s": 1.5,
+      "m": 4,
+      "l": 8
+    },
+    "deliverables": [
+      {
+        "id": "print-adaptation",
+        "name": "Additional print adaptation",
+        "price_minor": 19100,
+        "unit": "per layout"
+      }
+    ],
+    "revision_rounds_included": 2,
+    "revision_rounds_used": 2,
+    "freelancer_name": "Pip Alder",
+    "client_name": "Robin at Tansy Cup Cafe",
+    "project_name": "Tansy Cup Cafe design project"
+  },
+  "expected_items": [
+    {
+      "anchor": "change the breakfast menu heading colour to dark green",
+      "label": "included",
+      "clause_anchor": "Two revision rounds cover colour, spacing and text-size tweaks to the menu; further rounds are billed at the rate card.",
+      "included_basis": "revision",
+      "rationale": "This remains a revision of an agreed deliverable; the exhausted allowance affects deterministic pricing, not its scope label."
+    }
+  ],
+  "forbidden_included": [],
+  "expect_injection": false
+}

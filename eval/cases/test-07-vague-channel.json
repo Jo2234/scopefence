@@ -1,0 +1,45 @@
+{
+  "id": "test-07-vague-channel",
+  "split": "test",
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "title": "Florist asks vaguely about Instagram",
+  "tags": [
+    "ambiguity"
+  ],
+  "brief": "Client: Hearth Petal Flowers; contact robin@example.com.\nDesign one A6 thank-you card, front and back.\nSupply print PDF and editable SVG files.\nOne revision round covers copy, colour and spacing.\nFirst proof is due 22 October; final files are due 29 October.\nOut of scope: social campaigns, photography and new logo design.",
+  "message": "The thank-you card is coming along nicely. Could we have something for Instagram? We have not decided what we want to post yet.",
+  "rate_card": {
+    "currency": "EUR",
+    "hourly_rate_minor": 9500,
+    "effort_hours": {
+      "xs": 0.5,
+      "s": 1.5,
+      "m": 4,
+      "l": 8
+    },
+    "deliverables": [
+      {
+        "id": "print-adaptation",
+        "name": "Additional print adaptation",
+        "price_minor": 19200,
+        "unit": "per layout"
+      }
+    ],
+    "revision_rounds_included": 1,
+    "revision_rounds_used": 0,
+    "freelancer_name": "Pip Alder",
+    "client_name": "Robin at Hearth Petal Flowers",
+    "project_name": "Hearth Petal Flowers design project"
+  },
+  "expected_items": [
+    {
+      "anchor": "something for Instagram",
+      "label": "needs_clarification",
+      "included_basis": "none",
+      "rationale": "The channel alone does not define the asset type, quantity or scope, so clarify before treating it as a definite extra."
+    }
+  ],
+  "forbidden_included": [],
+  "expect_injection": false
+}

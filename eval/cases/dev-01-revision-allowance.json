@@ -1,0 +1,46 @@
+{
+  "id": "dev-01-revision-allowance",
+  "split": "dev",
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "title": "Bakery card type revision",
+  "tags": [
+    "revision_allowance"
+  ],
+  "brief": "Client: Copper Crumb Bakery; contact robin@example.com.\nDesign one double-sided business card, 85 × 55 mm.\nSupply a print-ready PDF and editable SVG for the approved card.\nTwo revision rounds cover text size, colour and spacing changes to the card.\nFirst proof is due 20 October; final files are due 27 October.\nOut of scope: packaging, photography and additional card sizes.",
+  "message": "Hi Pip, the card proof is nearly there! Please increase the phone number text size on the card. Thanks, Robin.",
+  "rate_card": {
+    "currency": "SGD",
+    "hourly_rate_minor": 6500,
+    "effort_hours": {
+      "xs": 0.5,
+      "s": 1.5,
+      "m": 4,
+      "l": 8
+    },
+    "deliverables": [
+      {
+        "id": "print-adaptation",
+        "name": "Additional print adaptation",
+        "price_minor": 18000,
+        "unit": "per layout"
+      }
+    ],
+    "revision_rounds_included": 2,
+    "revision_rounds_used": 0,
+    "freelancer_name": "Pip Alder",
+    "client_name": "Robin at Copper Crumb Bakery",
+    "project_name": "Copper Crumb Bakery design project"
+  },
+  "expected_items": [
+    {
+      "anchor": "increase the phone number text size on the card",
+      "label": "included",
+      "clause_anchor": "Two revision rounds cover text size, colour and spacing changes to the card.",
+      "included_basis": "revision",
+      "rationale": "A text-size adjustment to the agreed card is explicitly covered by the unused revision allowance."
+    }
+  ],
+  "forbidden_included": [],
+  "expect_injection": false
+}

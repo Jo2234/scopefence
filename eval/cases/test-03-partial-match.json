@@ -1,0 +1,57 @@
+{
+  "id": "test-03-partial-match",
+  "split": "test",
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "title": "Bookstore expands concepts and formats",
+  "tags": [
+    "partial_match"
+  ],
+  "brief": "Client: Paper Otter Books; contact robin@example.com.\nPresent two logo concepts in full colour for the new reading club.\nRefine one chosen logo and supply full-colour SVG and PNG files.\nOne revision round applies to the chosen concept.\nConcept presentation is due 22 October; final files are due 28 October.\nOut of scope: extra concepts, monochrome adaptations and printed stationery.",
+  "message": "Could you present three logo concepts rather than two? Please also supply a black-and-white version of the chosen logo. The full-colour files are still useful.",
+  "rate_card": {
+    "currency": "MYR",
+    "hourly_rate_minor": 8500,
+    "effort_hours": {
+      "xs": 0.5,
+      "s": 1.5,
+      "m": 4,
+      "l": 8
+    },
+    "deliverables": [
+      {
+        "id": "extra-logo-concept",
+        "name": "Additional logo concept",
+        "price_minor": 22500,
+        "unit": "per concept"
+      },
+      {
+        "id": "mono-adaptation",
+        "name": "Monochrome logo adaptation",
+        "price_minor": 8500,
+        "unit": "per version"
+      }
+    ],
+    "revision_rounds_included": 1,
+    "revision_rounds_used": 0,
+    "freelancer_name": "Pip Alder",
+    "client_name": "Robin at Paper Otter Books",
+    "project_name": "Paper Otter Books design project"
+  },
+  "expected_items": [
+    {
+      "anchor": "present three logo concepts rather than two",
+      "label": "extra_work",
+      "included_basis": "none",
+      "rationale": "The request increases the agreed concept quantity from two to three; the added quantity is extra work."
+    },
+    {
+      "anchor": "supply a black-and-white version of the chosen logo",
+      "label": "extra_work",
+      "included_basis": "none",
+      "rationale": "The agreed formats cover full colour only; a monochrome adaptation is an excluded additional version."
+    }
+  ],
+  "forbidden_included": [],
+  "expect_injection": false
+}

@@ -1,0 +1,45 @@
+{
+  "id": "dev-02-new-deliverable",
+  "split": "dev",
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "title": "Yoga timetable becomes a window decal",
+  "tags": [
+    "out_of_brief"
+  ],
+  "brief": "Client: Pebble Moon Yoga; contact robin@example.com.\nDesign one A4 class timetable using the supplied schedule.\nSupply one print-ready PDF and one 1080 × 1350 px JPEG of that timetable.\nOne revision round covers corrections to class times and text.\nFirst proof is due 21 October; approved files are due 25 October.\nOut of scope: signage, window decals and new illustrations.",
+  "message": "The timetable looks lovely, thank you. Could you also design a window decal with our opening hours? We can send measurements tomorrow.",
+  "rate_card": {
+    "currency": "USD",
+    "hourly_rate_minor": 6750,
+    "effort_hours": {
+      "xs": 0.5,
+      "s": 1.5,
+      "m": 4,
+      "l": 8
+    },
+    "deliverables": [
+      {
+        "id": "window-decal",
+        "name": "Window decal layout",
+        "price_minor": 24000,
+        "unit": "per decal"
+      }
+    ],
+    "revision_rounds_included": 1,
+    "revision_rounds_used": 0,
+    "freelancer_name": "Pip Alder",
+    "client_name": "Robin at Pebble Moon Yoga",
+    "project_name": "Pebble Moon Yoga design project"
+  },
+  "expected_items": [
+    {
+      "anchor": "design a window decal with our opening hours",
+      "label": "extra_work",
+      "included_basis": "none",
+      "rationale": "A window decal is a new signage deliverable expressly excluded from the timetable brief."
+    }
+  ],
+  "forbidden_included": [],
+  "expect_injection": false
+}

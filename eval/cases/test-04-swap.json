@@ -1,0 +1,46 @@
+{
+  "id": "test-04-swap",
+  "split": "test",
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "title": "Studio proposes swapping a poster for a flyer",
+  "tags": [
+    "ambiguity",
+    "swap"
+  ],
+  "brief": "Client: Velvet Acorn Ceramics; contact robin@example.com.\nDesign one A2 exhibition poster using the supplied title and images.\nSupply a print-ready PDF and a 1200 px web JPEG of the poster.\nTwo revision rounds cover changes within the poster layout.\nProof is due 25 October; final files are due 30 October.\nOut of scope: flyers, invitations and additional artwork sizes; substitutions require agreement.",
+  "message": "Plans have changed a little. Could we skip the poster, do a flyer instead? Happy to talk through the size and whether this changes the fee.",
+  "rate_card": {
+    "currency": "PHP",
+    "hourly_rate_minor": 8750,
+    "effort_hours": {
+      "xs": 0.5,
+      "s": 1.5,
+      "m": 4,
+      "l": 8
+    },
+    "deliverables": [
+      {
+        "id": "print-adaptation",
+        "name": "Additional print adaptation",
+        "price_minor": 18900,
+        "unit": "per layout"
+      }
+    ],
+    "revision_rounds_included": 2,
+    "revision_rounds_used": 1,
+    "freelancer_name": "Pip Alder",
+    "client_name": "Robin at Velvet Acorn Ceramics",
+    "project_name": "Velvet Acorn Ceramics design project"
+  },
+  "expected_items": [
+    {
+      "anchor": "skip the poster, do a flyer instead",
+      "label": "needs_clarification",
+      "included_basis": "none",
+      "rationale": "This is a proposed substitution rather than an unambiguous additive order; scope, size and fee need agreement."
+    }
+  ],
+  "forbidden_included": [],
+  "expect_injection": false
+}

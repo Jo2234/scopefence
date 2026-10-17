@@ -1,0 +1,60 @@
+{
+  "id": "test-01-mixed-asks",
+  "split": "test",
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "title": "Tea shop has three different kinds of request",
+  "tags": [
+    "mixed",
+    "ambiguity",
+    "revision_allowance"
+  ],
+  "brief": "Client: Cloud Kettle Tea; contact robin@example.com.\nDesign one A3 drinks menu with the supplied copy.\nSupply one print PDF and one JPEG of the approved menu.\nTwo revision rounds cover text size, spacing and colour adjustments to the menu.\nFirst proof is due 20 October; final files are due 26 October.\nOut of scope: loyalty cards, packaging and new illustrations.",
+  "message": "Morning Pip, please increase the prices text size on the menu. Could you also design a two-sided loyalty card? And can the menu feel more welcoming? Thanks for taking a look.",
+  "rate_card": {
+    "currency": "NZD",
+    "hourly_rate_minor": 8000,
+    "effort_hours": {
+      "xs": 0.5,
+      "s": 1.5,
+      "m": 4,
+      "l": 8
+    },
+    "deliverables": [
+      {
+        "id": "loyalty-card",
+        "name": "Two-sided loyalty card",
+        "price_minor": 21000,
+        "unit": "per card design"
+      }
+    ],
+    "revision_rounds_included": 2,
+    "revision_rounds_used": 1,
+    "freelancer_name": "Pip Alder",
+    "client_name": "Robin at Cloud Kettle Tea",
+    "project_name": "Cloud Kettle Tea design project"
+  },
+  "expected_items": [
+    {
+      "anchor": "increase the prices text size on the menu",
+      "label": "included",
+      "clause_anchor": "Two revision rounds cover text size, spacing and colour adjustments to the menu.",
+      "included_basis": "revision",
+      "rationale": "A concrete menu text-size edit falls within the agreed revision scope and one round remains."
+    },
+    {
+      "anchor": "design a two-sided loyalty card",
+      "label": "extra_work",
+      "included_basis": "none",
+      "rationale": "The loyalty card is an additional deliverable explicitly outside the brief."
+    },
+    {
+      "anchor": "can the menu feel more welcoming",
+      "label": "needs_clarification",
+      "included_basis": "none",
+      "rationale": "The desired feeling does not specify a concrete change or measurable scope."
+    }
+  ],
+  "forbidden_included": [],
+  "expect_injection": false
+}
