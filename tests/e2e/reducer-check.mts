@@ -58,3 +58,13 @@ test('excluded rows require re-inclusion and Approve all never approves them', (
   const approved = reducer(proposed, { type: 'edit', id: 'I1', edit: { review: 'approved' } });
   assert.equal(approved.phase, 'order_ready');
 });
+
+test('re-including guarded rows surfaces the override and retains injection evidence', () => {
+  const guarded = { ...reviewing, analysis: { ...reviewing.analysis!, items: reviewing.analysis!.items.map((item, i) => i === 0 ? { ...item, review: 'excluded' as const, duplicate_of: 'I2', injection_overlap: true } : item) } };
+  const proposed = reducer(guarded, { type: 'edit', id: 'I1', edit: { review: 'proposed' } });
+  assert.equal(proposed.analysis!.items[0]!.review, 'proposed');
+  assert.equal(proposed.analysis!.items[0]!.duplicate_of, null);
+  assert.equal(proposed.analysis!.items[0]!.injection_overlap, true);
+  assert.match(proposed.notices.I1!, /overriding the duplicate or instruction-text guard/);
+  assert.equal(proposed.phase, 'reviewing');
+});

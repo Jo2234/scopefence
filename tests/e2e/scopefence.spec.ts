@@ -26,19 +26,19 @@ test('E1 recorded demo, deterministic pricing edits, approval, Markdown and HTML
   await shot(page, 'results-demo-1');
   await page.getByLabel('Row 1 hours', { exact: true }).fill('3');
   await expect(page.getByLabel('Row 1 hours', { exact: true })).toHaveValue('3');
-  await expect(page.getByTestId('row-I1').locator('.amount')).toContainText('SGD 240.00');
-  await expect(page.getByTestId('order-total')).toHaveText('SGD 0.00');
+  await expect(page.getByTestId('row-I1').locator('.amount')).toContainText('SGD\u00a0240.00');
+  await expect(page.getByTestId('order-total')).toHaveText('SGD\u00a00.00');
   await page.getByRole('button', { name: 'Approve all remaining', exact: true }).click();
   // Hand calculation from demo-1's rate card and the recorded output:
   // tagline: edited 3 h × SGD 80; social kit: 1 × SGD 350;
   // menu board: effort s = 1.5 h × SGD 80. Clarification costs nothing.
   const expectedMinor = 3 * 8000 + 35000 + 1.5 * 8000;
   expect(expectedMinor).toBe(71000);
-  const expectedTotal = 'SGD 710.00';
+  const expectedTotal = 'SGD\u00a0710.00';
   await expect(page.getByTestId('order-total')).toHaveText(expectedTotal);
   // Falsify a UI that displays a static total after subsequent edits.
   await page.getByLabel('Row 1 hours', { exact: true }).fill('2');
-  await expect(page.getByTestId('order-total')).toHaveText('SGD 630.00');
+  await expect(page.getByTestId('order-total')).toHaveText('SGD\u00a0630.00');
   await page.getByLabel('Row 1 hours', { exact: true }).fill('3');
   await expect(page.getByTestId('order-total')).toHaveText(expectedTotal);
   await page.getByRole('heading', { name: '3 Change order' }).scrollIntoViewIfNeeded();
@@ -61,11 +61,11 @@ test('E1 recorded demo, deterministic pricing edits, approval, Markdown and HTML
   const htmlFile = await htmlDownload;
   expect(htmlFile.suggestedFilename()).toMatch(/^change-order-SF-[a-f0-9]{8}\.html$/);
   const html = await readFile((await htmlFile.path())!, 'utf8');
-  expect(html).toContain('SGD 790.00');
+  expect(html).toContain('SGD\u00a0790.00');
   expect(html).not.toContain('A personal note for the fictional client.');
   expect(html).not.toMatch(/<script\b/i);
   await regenerate.click();
-  await expect(md).toHaveValue(/SGD 790\.00/);
+  await expect(md).toHaveValue(/SGD\u00a0790\.00/);
   await expect(md).not.toHaveValue(/A personal note/);
 });
 
@@ -133,7 +133,7 @@ test('empty, delayed real fixture request and Cancel restore the previous review
   await shot(page, 'empty');
   await demo(page);
   await page.getByRole('button', { name: 'Approve all remaining', exact: true }).click();
-  await expect(page.getByTestId('order-total')).toHaveText('SGD 510.00');
+  await expect(page.getByTestId('order-total')).toHaveText('SGD\u00a0510.00');
   let release!: () => void;
   const held = new Promise<void>(resolve => { release = resolve; });
   await page.route('**/api/analyse', async route => {
@@ -151,7 +151,7 @@ test('empty, delayed real fixture request and Cancel restore the previous review
   await page.getByRole('button', { name: 'Cancel', exact: true }).click();
   release();
   await expect(page.getByRole('status', { name: 'Analysing' })).toHaveCount(0);
-  await expect(page.getByTestId('order-total')).toHaveText('SGD 510.00');
+  await expect(page.getByTestId('order-total')).toHaveText('SGD\u00a0510.00');
   await expect(page.getByRole('button', { name: 'Download .md', exact: true })).toBeEnabled();
   await expect(page.getByRole('button', { name: 'Row 1 Approve', exact: true })).toHaveAttribute('aria-pressed', 'true');
 });

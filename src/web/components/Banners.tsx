@@ -15,6 +15,6 @@ export function Banners({ analysis, changed }: { analysis: Analysis; changed: bo
     {failures > 0 && <p className="banner warning">{failures} quoted {failures === 1 ? 'clause was' : 'clauses were'} not found in your brief. Check the evidence before approving.</p>}
     {duplicates > 0 && <p className="banner neutral">{duplicates} duplicate {duplicates === 1 ? 'row' : 'rows'} excluded from pricing.</p>}
     {analysis.items.length === 0 && <p className="banner warning">Gemma found no change requests in this message. Read it yourself before replying.</p>}
-    {analysis.warnings.filter(w => !['no_items_found', 'duplicate', 'citation_not_found', 'truncated_input', 'injection_suspected', 'instruction_like_text'].includes(w.code)).map((w, i) => <p key={i} className="banner neutral">{w.message}</p>)}
+    {analysis.warnings.filter(w => !['no_items_found', 'duplicate', 'citation_not_found', 'injection_suspected', 'instruction_like_text'].includes(w.code) && !(w.code === 'truncated_input' && (w.message.startsWith('The brief was truncated:') || w.message.startsWith('The message was truncated:')))).map((w, i) => <p key={i} className="banner neutral">{w.message}</p>)}
   </div>;
 }
