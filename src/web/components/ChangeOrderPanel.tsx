@@ -17,6 +17,7 @@ export function ChangeOrderPanel({ order, card, analysis, extraBlock }: { order:
   const [source, setSource] = useState(generated);
   const dirty = markdown !== source;
   const stale = source !== generated;
+  const currentMarkdown = !dirty && stale ? generated : markdown;
   useEffect(() => { if (!dirty && stale) { setMarkdown(generated); setSource(generated); } }, [dirty, stale, generated]);
   const [printError, setPrintError] = useState('');
   const printWindow = useRef<Window | null>(null);
@@ -35,9 +36,9 @@ export function ChangeOrderPanel({ order, card, analysis, extraBlock }: { order:
     <label className="preview-label" htmlFor="html-preview">HTML preview</label><iframe id="html-preview" title="Change order HTML preview" sandbox="" srcDoc={html} />
     <div className="section-heading"><label htmlFor="markdown">Editable Markdown</label>{dirty && <span className="muted small-text">Your text edits are kept</span>}</div>
     {dirty && stale && <button type="button" className="regenerate" onClick={() => { setMarkdown(generated); setSource(generated); }}>Regenerate from table (overwrites your text edits)</button>}
-    <textarea id="markdown" className="markdown" value={!dirty && stale ? generated : markdown} rows={12} spellCheck={false} onChange={e => setMarkdown(e.target.value)} />
+    <textarea id="markdown" className="markdown" value={currentMarkdown} rows={12} spellCheck={false} onChange={e => setMarkdown(e.target.value)} />
     {reason && <p id="export-reason" className="banner warning" role="status">{reason}</p>}
-    <div className="button-row export-buttons"><button type="button" className="primary" disabled={disabled} aria-describedby={reason ? 'export-reason' : undefined} onClick={() => download(markdown, 'text/markdown;charset=utf-8', `change-order-${analysis.reference}.md`)}>Download .md</button><button type="button" disabled={disabled} aria-describedby={reason ? 'export-reason' : undefined} onClick={() => download(html, 'text/html;charset=utf-8', `change-order-${analysis.reference}.html`)}>Download .html</button><button type="button" disabled={disabled} aria-describedby={reason ? 'export-reason' : undefined} onClick={print}>Print</button></div>
+    <div className="button-row export-buttons"><button type="button" className="primary" disabled={disabled} aria-describedby={reason ? 'export-reason' : undefined} onClick={() => download(currentMarkdown, 'text/markdown;charset=utf-8', `change-order-${analysis.reference}.md`)}>Download .md</button><button type="button" disabled={disabled} aria-describedby={reason ? 'export-reason' : undefined} onClick={() => download(html, 'text/html;charset=utf-8', `change-order-${analysis.reference}.html`)}>Download .html</button><button type="button" disabled={disabled} aria-describedby={reason ? 'export-reason' : undefined} onClick={print}>Print</button></div>
     <p className="muted small-text">HTML is generated from the table. Markdown downloads contain your text edits.</p><p className="small-text">Nothing is sent. Download it and send it yourself.</p>{printError && <p role="alert" className="field-error">{printError}</p>}
   </section>;
 }

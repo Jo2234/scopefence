@@ -22,6 +22,7 @@ test('E1 recorded demo, deterministic pricing edits, approval, Markdown and HTML
   // The recorded E2B output has four requests, including its own interpretation
   // of the tagline as extra work. Keep that honest; never improve the fixture.
   await expect(rows).toHaveCount(4);
+  await page.evaluate(() => window.scrollTo(0, 0));
   await shot(page, 'results-demo-1');
   await page.getByLabel('Row 1 hours', { exact: true }).fill('3');
   await expect(page.getByLabel('Row 1 hours', { exact: true })).toHaveValue('3');
@@ -73,6 +74,7 @@ test('E2 injection demo is amber and has no Included label', async ({ page }) =>
   await expect(page.getByTestId('injection-banner')).toHaveCSS('background-color', 'rgb(255, 248, 232)');
   await expect(page.locator('tbody tr[data-label="included"]')).toHaveCount(0);
   await expect(page.locator('.message-copy .injection-mark')).not.toHaveCount(0);
+  await page.evaluate(() => window.scrollTo(0, 0));
   await shot(page, 'injection-demo');
 });
 
@@ -86,6 +88,7 @@ test('E3 live server with closed model port shows startup command and keeps inpu
   await expect(page.getByRole('alert')).toContainText('pnpm model:start');
   await expect(page.getByRole('textbox', { name: 'Brief', exact: true })).toHaveValue(original);
   await expect(page.getByText('FIXTURE MODE:', { exact: false })).toHaveCount(0);
+  await page.evaluate(() => window.scrollTo(0, 0));
   await shot(page, 'model-unreachable');
 });
 
@@ -139,14 +142,14 @@ test('empty, delayed real fixture request and Cancel restore the previous review
     await route.continue().catch(() => {});
   });
   await page.getByRole('button', { name: 'Analyse with local Gemma', exact: true }).click();
-  await expect(page.getByRole('region', { name: 'Analysing' })).toBeVisible();
+  await expect(page.getByRole('status', { name: 'Analysing' })).toBeVisible();
   await expect(page.getByText('Usually about a minute on this laptop.', { exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: /Gemma is reading.*1 s/ })).toBeVisible();
   await page.evaluate(() => window.scrollTo(0, 0));
   await shot(page, 'loading');
   await page.getByRole('button', { name: 'Cancel', exact: true }).click();
   release();
-  await expect(page.getByRole('region', { name: 'Analysing' })).toHaveCount(0);
+  await expect(page.getByRole('status', { name: 'Analysing' })).toHaveCount(0);
   await expect(page.getByTestId('order-total')).toHaveText('SGD 510.00');
   await expect(page.getByRole('button', { name: 'Download .md', exact: true })).toBeEnabled();
   await expect(page.getByRole('button', { name: 'Row 1 Approve', exact: true })).toHaveAttribute('aria-pressed', 'true');
