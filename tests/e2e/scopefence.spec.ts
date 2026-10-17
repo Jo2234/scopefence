@@ -130,6 +130,7 @@ test('empty, delayed real fixture request and Cancel restore the previous review
   await page.goto('/');
   await expect(page.getByText("Paste the agreed brief and the client's new message, or load the synthetic demo.", { exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Analyse with local Gemma', exact: true })).toBeDisabled();
+  await expect(page.getByText('FIXTURE MODE: replaying recorded output, not a live model call.', { exact: true })).toBeVisible();
   await shot(page, 'empty');
   await demo(page);
   await page.getByRole('button', { name: 'Approve all remaining', exact: true }).click();
