@@ -105,7 +105,7 @@ pnpm eval:report
 | `gemma-3-1b` | `gemma-3-1b-it-Q4_K_M.gguf` (806,058,240 bytes) | Comparison; no automatic fallback | [Gemma Terms of Use](https://ai.google.dev/gemma/terms) |
 | `gemma-3-4b` | `gemma-3-4b-it-Q4_K_M.gguf` (2,489,757,856 bytes) | Optional comparison; not downloaded by default | [Gemma Terms of Use](https://ai.google.dev/gemma/terms) |
 
-The [G0 report](docs/g0-report.md) records the exact flags, verified hashes, structured-output checks and every timing. On the tested shared 8 GB Intel machine, the three original E2B demo runs took 74.250 / 65.722 / 58.916 seconds (median 65.722 s). The faster 1B warm runs omitted a request. The lead kept E2B with prompt `pv1`; no G0 prompt experiment was adopted. These synthetic probes are not an accuracy benchmark.
+The [G0 report](docs/g0-report.md) records the exact flags, verified hashes, structured-output checks and every timing. On the tested shared 8 GB Intel machine, the three original E2B demo runs took 74.250 / 65.722 / 58.916 seconds (median 65.722 s). The faster 1B warm runs omitted a request. The lead kept E2B with prompt `pv1`; no G0 prompt experiment was adopted. These synthetic probes are not an accuracy benchmark. The later S2a full-pipeline smoke took 104.590 s wall under active system swapping; both that result and the 157.191 s demo fixture recording are reported in the same document.
 
 ## Privacy and safeguards
 
