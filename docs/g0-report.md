@@ -99,3 +99,42 @@ The separate **pnpm smoke:live** call used the actual LlamaServerAdapter against
 ## Decision
 
 Keep **-ngl 0**: the single -ngl 99 trial took 109,716 ms versus the 74,250 ms cold CPU baseline, and the x64 archive contains CPU/BLAS backends but no Metal backend. This is one comparison under changing shared-machine load, not a general GPU benchmark. Production prompt remains pv1. All contingency runs are shown above; no latency experiment was adopted into the production prompt. Further decisions about model choice and prompt quality require the lead's dev-split evaluation. The final model server was stopped with pnpm model:stop, model:status reports running=false, and pgrep -fl llama-server has no match. Runtime and both verified models remain in the shared cache.
+
+## 2026-10-17 S2a integration follow-up
+
+The pending domain integration described in the original G0 snapshot above is now complete. The product remains **Gemma 4 E2B + pv1 + CPU (`-ngl 0`)**, as recorded in the lead decision log. No prompt tuning or model substitution was done for this follow-up.
+
+`analyse()` now uses `truncateInputs`, the domain `segmentBrief`, `detectInjection`, the request-specific `makeModelOutputSchema(clauseIds, deliverableIds)`, the constrained completion/repair loop, and `reconcile`. The reference hashes the original brief/message/rate card; latency covers the attempts; timings and raw text come from the last attempt. Fixture lookup hashes the analysed texts. All TODOs were activated with their original assertions retained. The temporary G0 validator helper now delegates to the domain schema.
+
+### New live evidence (same shared machine)
+
+The E2B server became ready in **14,566 ms**. The following calls were serial, with the unchanged flags and prompt. This run showed active swapping and slower generation than the original G0 samples; no timeout or latency measurement was relaxed.
+
+| Command / input | Analysis latency ms | Outer wall ms | Attempts | Reconciled labels |
+|---|---:|---:|---:|---|
+| `pnpm fixtures:record` / demo-1 | 157191 | not separately captured | 1 | extra_work, extra_work, extra_work, needs_clarification |
+| `pnpm fixtures:record` / demo-injection | 25497 | not separately captured | 1 | extra_work |
+| `pnpm smoke:live` / demo-1, full pipeline | 104564 | 104590 | 1 | extra_work, extra_work, extra_work, needs_clarification |
+
+The smoke result passes the domain `AnalysisSchema`. Its file is `gemma-4-E2B-it-Q4_0.gguf`, model id `gemma-4-e2b-it-q4_0`, prompt version pv1, reference `SF-cdb1aa05`. Last-attempt timings: 81 processed prompt tokens, 601 predicted tokens, prompt_ms 2940.303, predicted_ms 101548.615. All four rows remain `proposed`; none is auto-approved. The semantic mistakes noted in the original report remain: the tagline revision and premium-menu ambiguity are labelled extra work, and the repeated social-kit wording is a separate clarification row. Structured-output success does not establish correct classification.
+
+Both saved fixtures contain the exact latest E2B raw text and truthful provenance:
+
+- `fixtures/model-outputs/e71d125b1dc3f1cf.json`: recorded 2026-10-17T02:13:06.310Z, demo-1.
+- `fixtures/model-outputs/4fbf0acaf3933e0c.json`: recorded 2026-10-17T02:13:31.821Z, demo-injection.
+
+Fixture replay through `/api/analyse` confirms injection.suspected=true and zero included rows for the injection demo. An additional scripted server test supplies a model output that obeys the hostile text and verifies deterministic demotion plus exclusion of the instruction-overlapping row.
+
+Live source evidence remains in `$SCOPEFENCE_CACHE_DIR/logs/s2a-live-20261017.log`, `s2a-smoke-20261017.json`, and the runtime log `llama-server-2026-10-17T02-10-13.126Z.log`. The server was stopped by `pnpm model:stop` after the smoke call. No browser or live eval case was run here.
+
+### Integration and validation
+
+The approved main merges were performed in order:
+
+1. `merge: slot2 domain` → `17cfb76889fb8cef9b0bf370641c11585d596975`; frozen install, typecheck and 61 tests passed.
+2. `merge: slot1 model/server` → `725e68f03d6976d4d1681445901d6231fa4cb0ea`; frozen install, typecheck and 81 tests passed, with the then-existing 9 TODOs.
+3. `merge: slot3 eval` → `66938330094654e7f4e7e749c1a85bd41f74efe2`; typecheck passed, but the first test run had one failure in the real-analyse dry-run case because the orchestrator was still the explicit stub. Main merges were paused while that owned module was completed. The unchanged eval test subsequently passed.
+
+Final S2a branch checks: **`pnpm typecheck` passed; `pnpm test` 156 passed, 0 TODO, 0 skipped; `pnpm build` passed; `git diff --check` passed**. Tests include reference hashing, original-brief citation checking beyond truncation, request-specific enums and repair, last-attempt timings, refusal handling, fixture key binding, 429 concurrency, timeout/cancellation, actual TCP client disconnect propagation and mutex release, configured fixture directories, and port validation. A newly added test initially miscounted a trailing newline by one character; its literal expectation was corrected to the string's 29 dropped characters and end offset 8029. No acceptance test was removed, skipped or weakened.
+
+The README documents `SCOPEFENCE_FIXTURE_DIR` and `SCOPEFENCE_PORT`, actual run/check commands, privacy boundaries, and the model licences. `THIRD_PARTY_NOTICES.md` and the generated `docs/licenses.json` now cover direct and transitive dependencies. The final S2a main merge SHA is reported in the worker handoff.

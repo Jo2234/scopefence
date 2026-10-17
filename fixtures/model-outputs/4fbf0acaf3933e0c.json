@@ -1,0 +1,8 @@
+{
+  "key": "4fbf0acaf3933e0c",
+  "provenance": "recorded: gemma-4-e2b-it-q4_0, llama.cpp b11687, prompt pv1, 2026-10-17T02:13:31.821Z",
+  "model_id": "gemma-4-e2b",
+  "prompt_version": "pv1",
+  "raw_text": "{\n  \"items\": [\n    {\n      \"message_quote\": \"Please add a social media kit for Instagram with five templates.\",\n      \"request\": \"Add a social media kit for Instagram with five templates.\",\n      \"clause_id\": \"none\",\n      \"brief_quote\": \"\",\n      \"label\": \"extra_work\",\n      \"included_basis\": \"none\",\n      \"reason\": \"The brief does not explicitly mention a social media kit.\",\n      \"question\": \"Is this a request for an additional deliverable beyond the agreed scope?\",\n      \"deliverable_id\": \"social-kit\",\n      \"effort\": \"s\"\n    }\n  ]\n}",
+  "synthetic_input": true
+}

@@ -1,0 +1,1655 @@
+{
+  "MIT": [
+    {
+      "name": "@babel/code-frame",
+      "versions": [
+        "7.29.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+code-frame@7.29.7/node_modules/@babel/code-frame"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-code-frame",
+      "description": "Generate errors that contain a code frame that point to source locations."
+    },
+    {
+      "name": "@babel/compat-data",
+      "versions": [
+        "7.29.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+compat-data@7.29.7/node_modules/@babel/compat-data"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://github.com/babel/babel#readme",
+      "description": "The compat-data to determine required Babel plugins"
+    },
+    {
+      "name": "@babel/core",
+      "versions": [
+        "7.29.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+core@7.29.7_supports-color@8.1.1/node_modules/@babel/core"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-core",
+      "description": "Babel compiler core."
+    },
+    {
+      "name": "@babel/generator",
+      "versions": [
+        "7.29.8"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+generator@7.29.8/node_modules/@babel/generator"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-generator",
+      "description": "Turns an AST into code."
+    },
+    {
+      "name": "@babel/helper-compilation-targets",
+      "versions": [
+        "7.29.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+helper-compilation-targets@7.29.7/node_modules/@babel/helper-compilation-targets"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://github.com/babel/babel#readme",
+      "description": "Helper functions on Babel compilation targets"
+    },
+    {
+      "name": "@babel/helper-globals",
+      "versions": [
+        "7.29.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+helper-globals@7.29.7/node_modules/@babel/helper-globals"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://github.com/babel/babel#readme",
+      "description": "A collection of JavaScript globals for Babel internal usage"
+    },
+    {
+      "name": "@babel/helper-module-imports",
+      "versions": [
+        "7.29.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+helper-module-imports@7.29.7_supports-color@8.1.1/node_modules/@babel/helper-module-imports"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-module-imports",
+      "description": "Babel helper functions for inserting module loads"
+    },
+    {
+      "name": "@babel/helper-module-transforms",
+      "versions": [
+        "7.29.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+helper-module-transforms@7.29.7_@babel+core@7.29.7_supports-color@8.1.1__supports-color@8.1.1/node_modules/@babel/helper-module-transforms"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-module-transforms",
+      "description": "Babel helper functions for implementing ES6 module transformations"
+    },
+    {
+      "name": "@babel/helper-plugin-utils",
+      "versions": [
+        "7.29.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+helper-plugin-utils@7.29.7/node_modules/@babel/helper-plugin-utils"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-plugin-utils",
+      "description": "General utilities for plugins to use"
+    },
+    {
+      "name": "@babel/helper-string-parser",
+      "versions": [
+        "7.29.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+helper-string-parser@7.29.7/node_modules/@babel/helper-string-parser"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-string-parser",
+      "description": "A utility package to parse strings"
+    },
+    {
+      "name": "@babel/helper-validator-identifier",
+      "versions": [
+        "7.29.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+helper-validator-identifier@7.29.7/node_modules/@babel/helper-validator-identifier"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://github.com/babel/babel#readme",
+      "description": "Validate identifier/keywords name"
+    },
+    {
+      "name": "@babel/helper-validator-option",
+      "versions": [
+        "7.29.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+helper-validator-option@7.29.7/node_modules/@babel/helper-validator-option"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://github.com/babel/babel#readme",
+      "description": "Validate plugin/preset options"
+    },
+    {
+      "name": "@babel/helpers",
+      "versions": [
+        "7.29.10"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+helpers@7.29.10/node_modules/@babel/helpers"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-helpers",
+      "description": "Collection of helper functions used by Babel transforms."
+    },
+    {
+      "name": "@babel/parser",
+      "versions": [
+        "7.29.9"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+parser@7.29.9/node_modules/@babel/parser"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-parser",
+      "description": "A JavaScript parser"
+    },
+    {
+      "name": "@babel/plugin-transform-react-jsx-self",
+      "versions": [
+        "7.29.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+plugin-transform-react-jsx-self@7.29.7_@babel+core@7.29.7_supports-color@8.1.1_/node_modules/@babel/plugin-transform-react-jsx-self"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-transform-react-jsx-self",
+      "description": "Add a __self prop to all JSX Elements"
+    },
+    {
+      "name": "@babel/plugin-transform-react-jsx-source",
+      "versions": [
+        "7.29.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+plugin-transform-react-jsx-source@7.29.7_@babel+core@7.29.7_supports-color@8.1.1_/node_modules/@babel/plugin-transform-react-jsx-source"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-transform-react-jsx-source",
+      "description": "Add a __source prop to all JSX Elements"
+    },
+    {
+      "name": "@babel/template",
+      "versions": [
+        "7.29.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+template@7.29.7/node_modules/@babel/template"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-template",
+      "description": "Generate an AST from a string template."
+    },
+    {
+      "name": "@babel/traverse",
+      "versions": [
+        "7.29.10"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+traverse@7.29.10_supports-color@8.1.1/node_modules/@babel/traverse"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-traverse",
+      "description": "The Babel Traverse module maintains the overall tree state, and is responsible for replacing, removing, and adding nodes"
+    },
+    {
+      "name": "@babel/types",
+      "versions": [
+        "7.29.8"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@babel+types@7.29.8/node_modules/@babel/types"
+      ],
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-types",
+      "description": "Babel Types is a Lodash-esque utility library for AST nodes"
+    },
+    {
+      "name": "@esbuild/darwin-x64",
+      "versions": [
+        "0.28.2"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@esbuild+darwin-x64@0.28.2/node_modules/@esbuild/darwin-x64"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/evanw/esbuild#readme",
+      "description": "The macOS 64-bit binary for esbuild, a JavaScript bundler."
+    },
+    {
+      "name": "@hono/node-server",
+      "versions": [
+        "1.19.17"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@hono+node-server@1.19.17_hono@4.13.13/node_modules/@hono/node-server"
+      ],
+      "license": "MIT",
+      "author": "Yusuke Wada",
+      "homepage": "https://github.com/honojs/node-server",
+      "description": "Node.js Adapter for Hono"
+    },
+    {
+      "name": "@jridgewell/gen-mapping",
+      "versions": [
+        "0.3.13"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping"
+      ],
+      "license": "MIT",
+      "author": "Justin Ridgewell",
+      "homepage": "https://github.com/jridgewell/sourcemaps/tree/main/packages/gen-mapping",
+      "description": "Generate source maps"
+    },
+    {
+      "name": "@jridgewell/remapping",
+      "versions": [
+        "2.3.5"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@jridgewell+remapping@2.3.5/node_modules/@jridgewell/remapping"
+      ],
+      "license": "MIT",
+      "author": "Justin Ridgewell",
+      "homepage": "https://github.com/jridgewell/sourcemaps/tree/main/packages/remapping",
+      "description": "Remap sequential sourcemaps through transformations to point at the original source code"
+    },
+    {
+      "name": "@jridgewell/resolve-uri",
+      "versions": [
+        "3.1.2"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@jridgewell+resolve-uri@3.1.2/node_modules/@jridgewell/resolve-uri"
+      ],
+      "license": "MIT",
+      "author": "Justin Ridgewell",
+      "homepage": "https://github.com/jridgewell/resolve-uri#readme",
+      "description": "Resolve a URI relative to an optional base URI"
+    },
+    {
+      "name": "@jridgewell/sourcemap-codec",
+      "versions": [
+        "1.6.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@jridgewell+sourcemap-codec@1.6.0/node_modules/@jridgewell/sourcemap-codec"
+      ],
+      "license": "MIT",
+      "author": "Justin Ridgewell",
+      "homepage": "https://github.com/jridgewell/sourcemaps/tree/main/packages/sourcemap-codec",
+      "description": "Encode/decode sourcemap mappings"
+    },
+    {
+      "name": "@jridgewell/trace-mapping",
+      "versions": [
+        "0.3.31"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping"
+      ],
+      "license": "MIT",
+      "author": "Justin Ridgewell",
+      "homepage": "https://github.com/jridgewell/sourcemaps/tree/main/packages/trace-mapping",
+      "description": "Trace the original position through a source map"
+    },
+    {
+      "name": "@rolldown/pluginutils",
+      "versions": [
+        "1.0.0-rc.3"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@rolldown+pluginutils@1.0.0-rc.3/node_modules/@rolldown/pluginutils"
+      ],
+      "license": "MIT",
+      "homepage": "https://rolldown.rs/"
+    },
+    {
+      "name": "@rollup/rollup-darwin-x64",
+      "versions": [
+        "4.64.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@rollup+rollup-darwin-x64@4.64.7/node_modules/@rollup/rollup-darwin-x64"
+      ],
+      "license": "MIT",
+      "author": "Lukas Taegert-Atkinson",
+      "homepage": "https://rollupjs.org/",
+      "description": "Native bindings for Rollup"
+    },
+    {
+      "name": "@standard-schema/spec",
+      "versions": [
+        "1.1.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@standard-schema+spec@1.1.0/node_modules/@standard-schema/spec"
+      ],
+      "license": "MIT",
+      "author": "Colin McDonnell",
+      "homepage": "https://standardschema.dev",
+      "description": "A family of specs for interoperable TypeScript"
+    },
+    {
+      "name": "@types/babel__core",
+      "versions": [
+        "7.20.5"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@types+babel__core@7.20.5/node_modules/@types/babel__core"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/babel__core",
+      "description": "TypeScript definitions for @babel/core"
+    },
+    {
+      "name": "@types/babel__generator",
+      "versions": [
+        "7.27.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@types+babel__generator@7.27.0/node_modules/@types/babel__generator"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/babel__generator",
+      "description": "TypeScript definitions for @babel/generator"
+    },
+    {
+      "name": "@types/babel__template",
+      "versions": [
+        "7.4.4"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@types+babel__template@7.4.4/node_modules/@types/babel__template"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/babel__template",
+      "description": "TypeScript definitions for @babel/template"
+    },
+    {
+      "name": "@types/babel__traverse",
+      "versions": [
+        "7.28.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@types+babel__traverse@7.28.0/node_modules/@types/babel__traverse"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/babel__traverse",
+      "description": "TypeScript definitions for @babel/traverse"
+    },
+    {
+      "name": "@types/chai",
+      "versions": [
+        "5.2.3"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@types+chai@5.2.3/node_modules/@types/chai"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/chai",
+      "description": "TypeScript definitions for chai"
+    },
+    {
+      "name": "@types/deep-eql",
+      "versions": [
+        "4.0.2"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@types+deep-eql@4.0.2/node_modules/@types/deep-eql"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/deep-eql",
+      "description": "TypeScript definitions for deep-eql"
+    },
+    {
+      "name": "@types/estree",
+      "versions": [
+        "1.0.9"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@types+estree@1.0.9/node_modules/@types/estree"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/estree",
+      "description": "TypeScript definitions for estree"
+    },
+    {
+      "name": "@types/node",
+      "versions": [
+        "24.19.2"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@types+node@24.19.2/node_modules/@types/node"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node",
+      "description": "TypeScript definitions for node"
+    },
+    {
+      "name": "@types/react",
+      "versions": [
+        "19.3.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@types+react@19.3.0/node_modules/@types/react"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react",
+      "description": "TypeScript definitions for react"
+    },
+    {
+      "name": "@types/react-dom",
+      "versions": [
+        "19.3.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@types+react-dom@19.3.0_@types+react@19.3.0/node_modules/@types/react-dom"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-dom",
+      "description": "TypeScript definitions for react-dom"
+    },
+    {
+      "name": "@vitejs/plugin-react",
+      "versions": [
+        "5.2.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@vitejs+plugin-react@5.2.0_supports-color@8.1.1_vite@7.3.7_@types+node@24.19.2_tsx@4.23.15_/node_modules/@vitejs/plugin-react"
+      ],
+      "license": "MIT",
+      "author": "Evan You",
+      "homepage": "https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#readme",
+      "description": "The default Vite plugin for React projects"
+    },
+    {
+      "name": "@vitest/expect",
+      "versions": [
+        "4.1.12"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@vitest+expect@4.1.12/node_modules/@vitest/expect"
+      ],
+      "license": "MIT",
+      "homepage": "https://vitest.dev/api/expect",
+      "description": "Jest's expect matchers as a Chai plugin"
+    },
+    {
+      "name": "@vitest/mocker",
+      "versions": [
+        "4.1.12"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@vitest+mocker@4.1.12_vite@7.3.7_@types+node@24.19.2_tsx@4.23.15_/node_modules/@vitest/mocker"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/vitest-dev/vitest/tree/main/packages/mocker",
+      "description": "Vitest module mocker implementation"
+    },
+    {
+      "name": "@vitest/pretty-format",
+      "versions": [
+        "4.1.12"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@vitest+pretty-format@4.1.12/node_modules/@vitest/pretty-format"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/vitest-dev/vitest/tree/main/packages/pretty-format",
+      "description": "Fork of pretty-format with support for ESM"
+    },
+    {
+      "name": "@vitest/runner",
+      "versions": [
+        "4.1.12"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@vitest+runner@4.1.12/node_modules/@vitest/runner"
+      ],
+      "license": "MIT",
+      "homepage": "https://vitest.dev/api/advanced/runner",
+      "description": "Vitest test runner"
+    },
+    {
+      "name": "@vitest/snapshot",
+      "versions": [
+        "4.1.12"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@vitest+snapshot@4.1.12/node_modules/@vitest/snapshot"
+      ],
+      "license": "MIT",
+      "homepage": "https://vitest.dev/guide/snapshot",
+      "description": "Vitest snapshot manager"
+    },
+    {
+      "name": "@vitest/spy",
+      "versions": [
+        "4.1.12"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@vitest+spy@4.1.12/node_modules/@vitest/spy"
+      ],
+      "license": "MIT",
+      "homepage": "https://vitest.dev/api/mock",
+      "description": "Lightweight Jest compatible spy implementation"
+    },
+    {
+      "name": "@vitest/utils",
+      "versions": [
+        "4.1.12"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@vitest+utils@4.1.12/node_modules/@vitest/utils"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/vitest-dev/vitest/tree/main/packages/utils",
+      "description": "Shared Vitest utility functions"
+    },
+    {
+      "name": "ansi-regex",
+      "versions": [
+        "5.0.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/ansi-regex@5.0.1/node_modules/ansi-regex"
+      ],
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/chalk/ansi-regex#readme",
+      "description": "Regular expression for matching ANSI escape codes"
+    },
+    {
+      "name": "ansi-styles",
+      "versions": [
+        "4.3.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/ansi-styles@4.3.0/node_modules/ansi-styles"
+      ],
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/chalk/ansi-styles#readme",
+      "description": "ANSI escape codes for styling strings in the terminal"
+    },
+    {
+      "name": "assertion-error",
+      "versions": [
+        "2.0.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/assertion-error@2.0.1/node_modules/assertion-error"
+      ],
+      "license": "MIT",
+      "author": "Jake Luer",
+      "homepage": "https://github.com/chaijs/assertion-error#readme",
+      "description": "Error constructor for test and validation frameworks that implements standardized AssertionError specification."
+    },
+    {
+      "name": "browserslist",
+      "versions": [
+        "4.29.3"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/browserslist@4.29.3/node_modules/browserslist"
+      ],
+      "license": "MIT",
+      "author": "Andrey Sitnik",
+      "homepage": "https://github.com/browserslist/browserslist#readme",
+      "description": "Share target browsers between different front-end tools, like Autoprefixer, Stylelint and babel-env-preset"
+    },
+    {
+      "name": "chai",
+      "versions": [
+        "6.3.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/chai@6.3.0/node_modules/chai"
+      ],
+      "license": "MIT",
+      "author": "Jake Luer",
+      "homepage": "http://chaijs.com",
+      "description": "BDD/TDD assertion library for node.js and the browser. Test framework agnostic."
+    },
+    {
+      "name": "chalk",
+      "versions": [
+        "4.1.2"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/chalk@4.1.2/node_modules/chalk"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/chalk/chalk#readme",
+      "description": "Terminal string styling done right"
+    },
+    {
+      "name": "color-convert",
+      "versions": [
+        "2.0.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/color-convert@2.0.1/node_modules/color-convert"
+      ],
+      "license": "MIT",
+      "author": "Heather Arthur",
+      "homepage": "https://github.com/Qix-/color-convert#readme",
+      "description": "Plain color conversion functions"
+    },
+    {
+      "name": "color-name",
+      "versions": [
+        "1.1.4"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/color-name@1.1.4/node_modules/color-name"
+      ],
+      "license": "MIT",
+      "author": "DY",
+      "homepage": "https://github.com/colorjs/color-name",
+      "description": "A list of color names and its values"
+    },
+    {
+      "name": "concurrently",
+      "versions": [
+        "9.2.5"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/concurrently@9.2.5/node_modules/concurrently"
+      ],
+      "license": "MIT",
+      "author": "Kimmo Brunfeldt",
+      "homepage": "https://github.com/open-cli-tools/concurrently#readme",
+      "description": "Run commands concurrently"
+    },
+    {
+      "name": "convert-source-map",
+      "versions": [
+        "2.0.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/convert-source-map@2.0.0/node_modules/convert-source-map"
+      ],
+      "license": "MIT",
+      "author": "Thorsten Lorenz",
+      "homepage": "https://github.com/thlorenz/convert-source-map",
+      "description": "Converts a source-map from/to  different formats and allows adding/changing properties."
+    },
+    {
+      "name": "csstype",
+      "versions": [
+        "3.2.3"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/csstype@3.2.3/node_modules/csstype"
+      ],
+      "license": "MIT",
+      "author": "Fredrik Nicol",
+      "homepage": "https://github.com/frenic/csstype#readme",
+      "description": "Strict TypeScript and Flow types for style based on MDN data"
+    },
+    {
+      "name": "debug",
+      "versions": [
+        "4.4.3"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/debug@4.4.3_supports-color@8.1.1/node_modules/debug"
+      ],
+      "license": "MIT",
+      "author": "Josh Junon",
+      "homepage": "https://github.com/debug-js/debug#readme",
+      "description": "Lightweight debugging utility for Node.js and the browser"
+    },
+    {
+      "name": "emoji-regex",
+      "versions": [
+        "8.0.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/emoji-regex@8.0.0/node_modules/emoji-regex"
+      ],
+      "license": "MIT",
+      "author": "Mathias Bynens",
+      "homepage": "https://mths.be/emoji-regex",
+      "description": "A regular expression to match all Emoji-only symbols as per the Unicode Standard."
+    },
+    {
+      "name": "es-module-lexer",
+      "versions": [
+        "2.3.2"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/es-module-lexer@2.3.2/node_modules/es-module-lexer"
+      ],
+      "license": "MIT",
+      "author": "Guy Bedford",
+      "homepage": "https://github.com/guybedford/es-module-lexer#readme",
+      "description": "Lexes ES modules returning their import/export metadata"
+    },
+    {
+      "name": "esbuild",
+      "versions": [
+        "0.28.2"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/esbuild@0.28.2/node_modules/esbuild"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/evanw/esbuild#readme",
+      "description": "An extremely fast JavaScript and CSS bundler and minifier."
+    },
+    {
+      "name": "escalade",
+      "versions": [
+        "3.2.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/escalade@3.2.0/node_modules/escalade"
+      ],
+      "license": "MIT",
+      "author": "Luke Edwards",
+      "homepage": "https://github.com/lukeed/escalade#readme",
+      "description": "A tiny (183B to 210B) and fast utility to ascend parent directories"
+    },
+    {
+      "name": "estree-walker",
+      "versions": [
+        "3.0.3"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/estree-walker@3.0.3/node_modules/estree-walker"
+      ],
+      "license": "MIT",
+      "author": "Rich Harris",
+      "homepage": "https://github.com/Rich-Harris/estree-walker#readme",
+      "description": "Traverse an ESTree-compliant AST"
+    },
+    {
+      "name": "fast-check",
+      "versions": [
+        "4.10.2"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/fast-check@4.10.2/node_modules/fast-check"
+      ],
+      "license": "MIT",
+      "author": "Nicolas DUBIEN",
+      "homepage": "https://fast-check.dev/",
+      "description": "Property based testing framework for JavaScript (like QuickCheck)"
+    },
+    {
+      "name": "fdir",
+      "versions": [
+        "6.5.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/fdir@6.5.0_picomatch@4.0.7/node_modules/fdir"
+      ],
+      "license": "MIT",
+      "author": "thecodrr",
+      "homepage": "https://github.com/thecodrr/fdir#readme",
+      "description": "The fastest directory crawler & globbing alternative to glob, fast-glob, & tiny-glob. Crawls 1m files in < 1s"
+    },
+    {
+      "name": "fsevents",
+      "versions": [
+        "2.3.3"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/fsevents@2.3.3/node_modules/fsevents"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/fsevents/fsevents",
+      "description": "Native Access to MacOS FSEvents"
+    },
+    {
+      "name": "gensync",
+      "versions": [
+        "1.0.0-beta.2"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync"
+      ],
+      "license": "MIT",
+      "author": "Logan Smyth",
+      "homepage": "https://github.com/loganfsmyth/gensync",
+      "description": "Allows users to use generators in order to write common functions that can be both sync or async."
+    },
+    {
+      "name": "has-flag",
+      "versions": [
+        "4.0.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/has-flag@4.0.0/node_modules/has-flag"
+      ],
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/has-flag#readme",
+      "description": "Check if argv has a specific flag"
+    },
+    {
+      "name": "hono",
+      "versions": [
+        "4.13.13"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/hono@4.13.13/node_modules/hono"
+      ],
+      "license": "MIT",
+      "author": "Yusuke Wada",
+      "homepage": "https://hono.dev",
+      "description": "Web framework built on Web Standards"
+    },
+    {
+      "name": "is-fullwidth-code-point",
+      "versions": [
+        "3.0.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/is-fullwidth-code-point@3.0.0/node_modules/is-fullwidth-code-point"
+      ],
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/is-fullwidth-code-point#readme",
+      "description": "Check if the character represented by a given Unicode code point is fullwidth"
+    },
+    {
+      "name": "js-tokens",
+      "versions": [
+        "4.0.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/js-tokens@4.0.0/node_modules/js-tokens"
+      ],
+      "license": "MIT",
+      "author": "Simon Lydell",
+      "homepage": "https://github.com/lydell/js-tokens#readme",
+      "description": "A regex that tokenizes JavaScript."
+    },
+    {
+      "name": "jsesc",
+      "versions": [
+        "3.1.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/jsesc@3.1.0/node_modules/jsesc"
+      ],
+      "license": "MIT",
+      "author": "Mathias Bynens",
+      "homepage": "https://mths.be/jsesc",
+      "description": "Given some data, jsesc returns the shortest possible stringified & ASCII-safe representation of that data."
+    },
+    {
+      "name": "json5",
+      "versions": [
+        "2.2.3"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/json5@2.2.3/node_modules/json5"
+      ],
+      "license": "MIT",
+      "author": "Aseem Kishore",
+      "homepage": "http://json5.org/",
+      "description": "JSON for Humans"
+    },
+    {
+      "name": "magic-string",
+      "versions": [
+        "0.30.21"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/magic-string@0.30.21/node_modules/magic-string"
+      ],
+      "license": "MIT",
+      "author": "Rich Harris",
+      "homepage": "https://github.com/Rich-Harris/magic-string#readme",
+      "description": "Modify strings, generate sourcemaps"
+    },
+    {
+      "name": "ms",
+      "versions": [
+        "2.1.3"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/ms@2.1.3/node_modules/ms"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/vercel/ms#readme",
+      "description": "Tiny millisecond conversion utility"
+    },
+    {
+      "name": "nanoid",
+      "versions": [
+        "3.3.20"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/nanoid@3.3.20/node_modules/nanoid"
+      ],
+      "license": "MIT",
+      "author": "Andrey Sitnik",
+      "homepage": "https://github.com/ai/nanoid#readme",
+      "description": "A tiny (116 bytes), secure URL-friendly unique string ID generator"
+    },
+    {
+      "name": "node-releases",
+      "versions": [
+        "2.0.59"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/node-releases@2.0.59/node_modules/node-releases"
+      ],
+      "license": "MIT",
+      "author": "Sergey Rubanov",
+      "homepage": "https://github.com/chicoxyzzy/node-releases#readme",
+      "description": "Node.js releases data"
+    },
+    {
+      "name": "obug",
+      "versions": [
+        "2.2.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/obug@2.2.1/node_modules/obug"
+      ],
+      "license": "MIT",
+      "author": "Kevin Deng",
+      "homepage": "https://github.com/sxzz/obug#readme",
+      "description": "A lightweight JavaScript debugging utility, forked from debug, featuring TypeScript and ESM support."
+    },
+    {
+      "name": "pathe",
+      "versions": [
+        "2.0.3"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/pathe@2.0.3/node_modules/pathe"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/unjs/pathe#readme",
+      "description": "Universal filesystem path utils"
+    },
+    {
+      "name": "picomatch",
+      "versions": [
+        "4.0.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/picomatch@4.0.7/node_modules/picomatch"
+      ],
+      "license": "MIT",
+      "author": "Jon Schlinkert",
+      "homepage": "https://github.com/micromatch/picomatch",
+      "description": "Blazing fast and accurate glob matcher written in JavaScript, with no dependencies and full support for standard and extended Bash glob features, including braces, extglobs, POSIX brackets, and regular expressions."
+    },
+    {
+      "name": "postcss",
+      "versions": [
+        "8.5.30"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/postcss@8.5.30/node_modules/postcss"
+      ],
+      "license": "MIT",
+      "author": "Andrey Sitnik",
+      "homepage": "https://postcss.org/",
+      "description": "Tool for transforming styles with JS plugins"
+    },
+    {
+      "name": "pure-rand",
+      "versions": [
+        "8.4.2"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/pure-rand@8.4.2/node_modules/pure-rand"
+      ],
+      "license": "MIT",
+      "author": "Nicolas DUBIEN",
+      "homepage": "https://github.com/dubzzz/pure-rand#readme",
+      "description": " Pure random number generator written in TypeScript"
+    },
+    {
+      "name": "react",
+      "versions": [
+        "19.3.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/react@19.3.1/node_modules/react"
+      ],
+      "license": "MIT",
+      "homepage": "https://react.dev/",
+      "description": "React is a JavaScript library for building user interfaces."
+    },
+    {
+      "name": "react-dom",
+      "versions": [
+        "19.3.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/react-dom@19.3.1_react@19.3.1/node_modules/react-dom"
+      ],
+      "license": "MIT",
+      "homepage": "https://react.dev/",
+      "description": "React package for working with the DOM."
+    },
+    {
+      "name": "react-refresh",
+      "versions": [
+        "0.18.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/react-refresh@0.18.0/node_modules/react-refresh"
+      ],
+      "license": "MIT",
+      "homepage": "https://react.dev/",
+      "description": "React is a JavaScript library for building user interfaces."
+    },
+    {
+      "name": "require-directory",
+      "versions": [
+        "2.1.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/require-directory@2.1.1/node_modules/require-directory"
+      ],
+      "license": "MIT",
+      "author": "Troy Goode",
+      "homepage": "https://github.com/troygoode/node-require-directory/",
+      "description": "Recursively iterates over specified directory, require()'ing each file, and returning a nested hash structure containing those modules."
+    },
+    {
+      "name": "rollup",
+      "versions": [
+        "4.64.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/rollup@4.64.7/node_modules/rollup"
+      ],
+      "license": "MIT",
+      "author": "Rich Harris",
+      "homepage": "https://rollupjs.org/",
+      "description": "Next-generation ES module bundler"
+    },
+    {
+      "name": "scheduler",
+      "versions": [
+        "0.28.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/scheduler@0.28.0/node_modules/scheduler"
+      ],
+      "license": "MIT",
+      "homepage": "https://react.dev/",
+      "description": "Cooperative scheduler for the browser environment."
+    },
+    {
+      "name": "shell-quote",
+      "versions": [
+        "1.12.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/shell-quote@1.12.0/node_modules/shell-quote"
+      ],
+      "license": "MIT",
+      "author": "James Halliday",
+      "homepage": "https://github.com/ljharb/shell-quote",
+      "description": "quote and parse shell commands"
+    },
+    {
+      "name": "stackback",
+      "versions": [
+        "0.0.2"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/stackback@0.0.2/node_modules/stackback"
+      ],
+      "license": "MIT",
+      "author": "Roman Shtylman",
+      "homepage": "https://github.com/shtylman/node-stackback#readme",
+      "description": "return list of CallSite objects from a captured stacktrace"
+    },
+    {
+      "name": "std-env",
+      "versions": [
+        "4.3.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/std-env@4.3.0/node_modules/std-env"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/unjs/std-env#readme",
+      "description": "Runtime agnostic JS utils"
+    },
+    {
+      "name": "string-width",
+      "versions": [
+        "4.2.3"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/string-width@4.2.3/node_modules/string-width"
+      ],
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/string-width#readme",
+      "description": "Get the visual width of a string - the number of columns required to display it"
+    },
+    {
+      "name": "strip-ansi",
+      "versions": [
+        "6.0.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/strip-ansi@6.0.1/node_modules/strip-ansi"
+      ],
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/chalk/strip-ansi#readme",
+      "description": "Strip ANSI escape codes from a string"
+    },
+    {
+      "name": "supports-color",
+      "versions": [
+        "7.2.0",
+        "8.1.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/supports-color@7.2.0/node_modules/supports-color",
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/supports-color@8.1.1/node_modules/supports-color"
+      ],
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/chalk/supports-color#readme",
+      "description": "Detect whether a terminal supports color"
+    },
+    {
+      "name": "tinybench",
+      "versions": [
+        "2.9.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/tinybench@2.9.0/node_modules/tinybench"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/tinylibs/tinybench#readme"
+    },
+    {
+      "name": "tinyexec",
+      "versions": [
+        "1.3.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/tinyexec@1.3.1/node_modules/tinyexec"
+      ],
+      "license": "MIT",
+      "author": "James Garbutt",
+      "homepage": "https://github.com/tinylibs/tinyexec#readme",
+      "description": "A minimal library for executing processes in Node"
+    },
+    {
+      "name": "tinyglobby",
+      "versions": [
+        "0.2.17"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/tinyglobby@0.2.17/node_modules/tinyglobby"
+      ],
+      "license": "MIT",
+      "author": "Superchupu",
+      "homepage": "https://superchupu.dev/tinyglobby",
+      "description": "A fast and minimal alternative to globby and fast-glob"
+    },
+    {
+      "name": "tinyrainbow",
+      "versions": [
+        "3.2.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/tinyrainbow@3.2.0/node_modules/tinyrainbow"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/tinylibs/tinyrainbow#readme",
+      "description": "A small library to print colourful messages."
+    },
+    {
+      "name": "tree-kill",
+      "versions": [
+        "1.2.2"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/tree-kill@1.2.2/node_modules/tree-kill"
+      ],
+      "license": "MIT",
+      "author": "Peteris Krumins",
+      "homepage": "https://github.com/pkrumins/node-tree-kill",
+      "description": "kill trees of processes"
+    },
+    {
+      "name": "tsx",
+      "versions": [
+        "4.23.15"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/tsx@4.23.15/node_modules/tsx"
+      ],
+      "license": "MIT",
+      "author": "Hiroki Osame",
+      "homepage": "https://tsx.hirok.io",
+      "description": "TypeScript Execute (tsx): Node.js enhanced with esbuild to run TypeScript & ESM files"
+    },
+    {
+      "name": "undici-types",
+      "versions": [
+        "7.24.6"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/undici-types@7.24.6/node_modules/undici-types"
+      ],
+      "license": "MIT",
+      "homepage": "https://undici.nodejs.org",
+      "description": "A stand-alone types package for Undici"
+    },
+    {
+      "name": "update-browserslist-db",
+      "versions": [
+        "1.3.4"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/update-browserslist-db@1.3.4_browserslist@4.29.3/node_modules/update-browserslist-db"
+      ],
+      "license": "MIT",
+      "author": "Andrey Sitnik",
+      "homepage": "https://github.com/browserslist/update-db#readme",
+      "description": "CLI tool to update caniuse-lite to refresh target browsers from Browserslist config"
+    },
+    {
+      "name": "vite",
+      "versions": [
+        "7.3.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/vite@7.3.7_@types+node@24.19.2_tsx@4.23.15/node_modules/vite"
+      ],
+      "license": "MIT",
+      "author": "Evan You",
+      "homepage": "https://vite.dev",
+      "description": "Native-ESM powered web dev build tool"
+    },
+    {
+      "name": "vitest",
+      "versions": [
+        "4.1.12"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/vitest@4.1.12_@types+node@24.19.2_vite@7.3.7_@types+node@24.19.2_tsx@4.23.15_/node_modules/vitest"
+      ],
+      "license": "MIT",
+      "author": "Anthony Fu",
+      "homepage": "https://vitest.dev",
+      "description": "Next generation testing framework powered by Vite"
+    },
+    {
+      "name": "why-is-node-running",
+      "versions": [
+        "2.3.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/why-is-node-running@2.3.0/node_modules/why-is-node-running"
+      ],
+      "license": "MIT",
+      "author": "Mathias Buus",
+      "homepage": "https://github.com/mafintosh/why-is-node-running",
+      "description": "Node is running but you don't know why? why-is-node-running is here to help you."
+    },
+    {
+      "name": "wrap-ansi",
+      "versions": [
+        "7.0.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/wrap-ansi@7.0.0/node_modules/wrap-ansi"
+      ],
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/chalk/wrap-ansi#readme",
+      "description": "Wordwrap a string with ANSI escape codes"
+    },
+    {
+      "name": "yargs",
+      "versions": [
+        "17.7.2"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/yargs@17.7.2/node_modules/yargs"
+      ],
+      "license": "MIT",
+      "homepage": "https://yargs.js.org/",
+      "description": "yargs the modern, pirate-themed, successor to optimist."
+    },
+    {
+      "name": "zod",
+      "versions": [
+        "4.6.7"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/zod@4.6.7/node_modules/zod"
+      ],
+      "license": "MIT",
+      "author": "Colin McDonnell",
+      "homepage": "https://zod.dev",
+      "description": "TypeScript-first schema declaration and validation library with static type inference"
+    }
+  ],
+  "Apache-2.0": [
+    {
+      "name": "@playwright/test",
+      "versions": [
+        "1.64.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/@playwright+test@1.64.1/node_modules/@playwright/test"
+      ],
+      "license": "Apache-2.0",
+      "author": "Microsoft Corporation",
+      "homepage": "https://playwright.dev",
+      "description": "A high-level API to automate web browsers"
+    },
+    {
+      "name": "baseline-browser-mapping",
+      "versions": [
+        "2.11.28"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/baseline-browser-mapping@2.11.28/node_modules/baseline-browser-mapping"
+      ],
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/web-platform-dx/baseline-browser-mapping#readme",
+      "description": "A library for obtaining browser versions with their maximum supported Baseline feature set and Widely Available status."
+    },
+    {
+      "name": "expect-type",
+      "versions": [
+        "1.4.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/expect-type@1.4.0/node_modules/expect-type"
+      ],
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/mmkal/expect-type#readme"
+    },
+    {
+      "name": "playwright",
+      "versions": [
+        "1.64.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/playwright@1.64.1/node_modules/playwright"
+      ],
+      "license": "Apache-2.0",
+      "author": "Microsoft Corporation",
+      "homepage": "https://playwright.dev",
+      "description": "A high-level API to automate web browsers"
+    },
+    {
+      "name": "playwright-core",
+      "versions": [
+        "1.64.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/playwright-core@1.64.1/node_modules/playwright-core"
+      ],
+      "license": "Apache-2.0",
+      "author": "Microsoft Corporation",
+      "homepage": "https://playwright.dev",
+      "description": "A high-level API to automate web browsers"
+    },
+    {
+      "name": "rxjs",
+      "versions": [
+        "7.8.2"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/rxjs@7.8.2/node_modules/rxjs"
+      ],
+      "license": "Apache-2.0",
+      "author": "Ben Lesh",
+      "homepage": "https://rxjs.dev",
+      "description": "Reactive Extensions for modern JavaScript"
+    },
+    {
+      "name": "typescript",
+      "versions": [
+        "6.0.3"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript"
+      ],
+      "license": "Apache-2.0",
+      "author": "Microsoft Corp.",
+      "homepage": "https://www.typescriptlang.org/",
+      "description": "TypeScript is a language for application scale JavaScript development"
+    }
+  ],
+  "CC-BY-4.0": [
+    {
+      "name": "caniuse-lite",
+      "versions": [
+        "1.0.30001816"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/caniuse-lite@1.0.30001816/node_modules/caniuse-lite"
+      ],
+      "license": "CC-BY-4.0",
+      "author": "Ben Briggs",
+      "homepage": "https://github.com/browserslist/caniuse-lite#readme",
+      "description": "A smaller version of caniuse-db, with only the essentials!"
+    }
+  ],
+  "ISC": [
+    {
+      "name": "cliui",
+      "versions": [
+        "8.0.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/cliui@8.0.1/node_modules/cliui"
+      ],
+      "license": "ISC",
+      "author": "Ben Coe",
+      "homepage": "https://github.com/yargs/cliui#readme",
+      "description": "easily create complex multi-column command-line-interfaces"
+    },
+    {
+      "name": "electron-to-chromium",
+      "versions": [
+        "1.5.456"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/electron-to-chromium@1.5.456/node_modules/electron-to-chromium"
+      ],
+      "license": "ISC",
+      "author": "Kilian Valkhof",
+      "homepage": "https://github.com/Kilian/electron-to-chromium#readme",
+      "description": "Provides a list of electron-to-chromium version mappings"
+    },
+    {
+      "name": "get-caller-file",
+      "versions": [
+        "2.0.5"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/get-caller-file@2.0.5/node_modules/get-caller-file"
+      ],
+      "license": "ISC",
+      "author": "Stefan Penner",
+      "homepage": "https://github.com/stefanpenner/get-caller-file#readme",
+      "description": ""
+    },
+    {
+      "name": "lru-cache",
+      "versions": [
+        "5.1.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/lru-cache@5.1.1/node_modules/lru-cache"
+      ],
+      "license": "ISC",
+      "author": "Isaac Z. Schlueter",
+      "homepage": "https://github.com/isaacs/node-lru-cache#readme",
+      "description": "A cache object that deletes the least-recently-used items."
+    },
+    {
+      "name": "picocolors",
+      "versions": [
+        "1.1.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/picocolors@1.1.1/node_modules/picocolors"
+      ],
+      "license": "ISC",
+      "author": "Alexey Raspopov",
+      "homepage": "https://github.com/alexeyraspopov/picocolors#readme",
+      "description": "The tiniest and the fastest library for terminal output formatting with ANSI colors"
+    },
+    {
+      "name": "semver",
+      "versions": [
+        "6.3.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/semver@6.3.1/node_modules/semver"
+      ],
+      "license": "ISC",
+      "author": "GitHub Inc.",
+      "homepage": "https://github.com/npm/node-semver#readme",
+      "description": "The semantic version parser used by npm."
+    },
+    {
+      "name": "siginfo",
+      "versions": [
+        "2.0.0"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/siginfo@2.0.0/node_modules/siginfo"
+      ],
+      "license": "ISC",
+      "author": "Emil Bay",
+      "homepage": "https://github.com/emilbayes/siginfo#readme",
+      "description": "Utility module to print pretty messages on SIGINFO/SIGUSR1"
+    },
+    {
+      "name": "y18n",
+      "versions": [
+        "5.0.8"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/y18n@5.0.8/node_modules/y18n"
+      ],
+      "license": "ISC",
+      "author": "Ben Coe",
+      "homepage": "https://github.com/yargs/y18n",
+      "description": "the bare-bones internationalization library used by yargs"
+    },
+    {
+      "name": "yallist",
+      "versions": [
+        "3.1.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/yallist@3.1.1/node_modules/yallist"
+      ],
+      "license": "ISC",
+      "author": "Isaac Z. Schlueter",
+      "homepage": "https://github.com/isaacs/yallist#readme",
+      "description": "Yet Another Linked List"
+    },
+    {
+      "name": "yargs-parser",
+      "versions": [
+        "21.1.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/yargs-parser@21.1.1/node_modules/yargs-parser"
+      ],
+      "license": "ISC",
+      "author": "Ben Coe",
+      "homepage": "https://github.com/yargs/yargs-parser#readme",
+      "description": "the mighty option parser used by yargs"
+    }
+  ],
+  "BSD-3-Clause": [
+    {
+      "name": "source-map-js",
+      "versions": [
+        "1.2.2"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/source-map-js@1.2.2/node_modules/source-map-js"
+      ],
+      "license": "BSD-3-Clause",
+      "author": "Valentin 7rulnik Semirulnik",
+      "homepage": "https://github.com/7rulnik/source-map-js",
+      "description": "Generates and consumes source maps"
+    }
+  ],
+  "0BSD": [
+    {
+      "name": "tslib",
+      "versions": [
+        "2.8.1"
+      ],
+      "paths": [
+        "/Users/johanvaz/Documents/Codex/2026-10-04/i-w/outputs/t3code-data/scratch/hackathon-workflow-20261016/projects/dev-wt/slot1/node_modules/.pnpm/tslib@2.8.1/node_modules/tslib"
+      ],
+      "license": "0BSD",
+      "author": "Microsoft Corp.",
+      "homepage": "https://www.typescriptlang.org/",
+      "description": "Runtime library for TypeScript helper functions"
+    }
+  ]
+}
