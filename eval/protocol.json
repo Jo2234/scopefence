@@ -37,7 +37,7 @@
       "model_slug": "gemma-3-1b",
       "split": "dev",
       "prompt_version": "pv1",
-      "result_file": null
+      "result_file": "gemma-3-1b-dev-20261017T024344937Z.json"
     }
   ],
   "infrastructure_retries": [],
