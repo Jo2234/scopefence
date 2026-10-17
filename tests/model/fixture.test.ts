@@ -1,0 +1,7 @@
+import {mkdtemp,writeFile,rm} from 'node:fs/promises';
+import os from 'node:os';import path from 'node:path';
+import {it,expect} from 'vitest';
+import {FixtureAdapter,fixtureKey} from '../../src/model/fixture.js';
+const request={system:'',user:'',json_schema:{},max_tokens:1100,temperature:0,seed:42};
+it('replays exact keyed raw text and provenance, then refuses a different input',async()=>{const directory=await mkdtemp(path.join(os.tmpdir(),'scopefence-fixture-'));try{const key=fixtureKey('brief','message');await writeFile(path.join(directory,`${key}.json`),JSON.stringify({key,provenance:'hand-written test fixture',model_id:'gemma-test',prompt_version:'pv1',raw_text:'{"items":[]}',synthetic_input:true}));const adapter=new FixtureAdapter(directory);adapter.setInput('brief','message');expect((await adapter.complete(request)).text).toBe('{"items":[]}');expect(adapter.provenance).toBe('hand-written test fixture');adapter.setInput('brief','message ');await expect(adapter.complete(request)).rejects.toMatchObject({code:'fixture_missing'});expect(adapter.provenance).toBeUndefined();}finally{await rm(directory,{recursive:true,force:true});}});
+it('does not run fixture replay after caller cancellation',async()=>{const adapter=new FixtureAdapter();const controller=new AbortController();controller.abort();await expect(adapter.complete({...request,signal:controller.signal})).rejects.toMatchObject({code:'cancelled'});});
