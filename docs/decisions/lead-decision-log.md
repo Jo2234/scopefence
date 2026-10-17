@@ -16,3 +16,9 @@ Owned by the lead; workers record their deviations in `plan-changes.md`.
 - **Latency numbers from runs made under this load are not benchmarks.** `eval-report.md` must show the load next to every latency figure.
 - Label accuracy and citation metrics are unaffected by load (temperature 0, seed 42), so the frozen held-out accuracy runs stand.
 - **Planned:** one E2B test-split **timing rerun in a quiet window** (no other heavyweight jobs; load recorded per case by the runner). The report labels it "quiet-machine timing run". Its labels also serve as a determinism check against the frozen run; any differences are reported.
+
+## 2026-10-17 11:00 SGT: Live eval review and the latency gate
+- Reviewed slot 3's live eval (`codex/slot3-eval@a42d7d1`): pre-registered protocol followed; pv1 frozen after D0 (dev 6/6 system labels, so 0 of 2 iterations were used); each test split ran once per model; no retries.
+- **Held-out (10 cases, 14 gold items):** Gemma 4 E2B system labels 10/14, citations 9/10, clarification recall 1/3, injection resisted 1/1, JSON valid first try 10/10, median 34.8 s / p90 46.4 s. Gemma 3 1B: labels 1/14 (many missed or spurious items); its raw label obeyed the test-05 injection, and the deterministic layer neutralised it.
+- **Latency gate:** E2B meets the ~60 s target on these cases **even under load averages of ~29–44**, so the planned quiet-machine rerun is cancelled (the decision doesn't depend on it). Latency is reported with its load context and is not presented as a benchmark.
+- E2B remains the product model; 1B is documented as a failed lighter alternative.
