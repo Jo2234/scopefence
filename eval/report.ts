@@ -2,6 +2,8 @@ import { readdir, readFile, mkdir, writeFile, rename } from 'node:fs/promises';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { aggregateMetrics } from './metrics.js';
+import { loadCases } from './cases.js';
+import type { EvalCase } from './types.js';
 import type { Rate, AggregateMetrics } from './metrics.js';
 import type { RunResult } from './run.js';
 const repoRoot=fileURLToPath(new URL('../',import.meta.url));
@@ -44,14 +46,29 @@ function metricRows(a:AggregateMetrics):[string,string][] {
     ['Timing samples',`${a.timing_samples}/${a.cases} cases`],['Predicted tokens/second',a.predicted_tokens_per_second===null?'n/a':a.predicted_tokens_per_second.toFixed(1)],
   ];
 }
+/** Use the full frozen corpus, even when results contain only one split. */
+export function caseDesignCaveats(cases:EvalCase[]):string[] {
+  if(!cases.length) throw new Error('Case design caveats require the case files');
+  const explicitExclusions=cases.filter(c=>/^\s*Out of scope:/im.test(c.brief)).length;
+  const wordLimit=100;
+  const messages=cases.map(c=>({id:c.id,words:c.message.trim().split(/\s+/u).filter(Boolean).length}));
+  const longer=messages.filter(m=>m.words>wordLimit);
+  return [
+    '## Case design caveats', '',
+    '- All cases are invented by the build team.',
+    `- ${explicitExclusions}/${cases.length} briefs contain an explicit out-of-scope list; realistic briefs often do not.`,
+    `- ${messages.length-longer.length}/${cases.length} messages are short (${wordLimit} words or fewer).${longer.length?' Longer messages: '+longer.map(m=>cell(m.id)+' ('+m.words+' words)').join(', ')+'.':' No messages exceed that threshold.'}`,
+    '- The gold labels were written by the same team that built the tool; this is not an independent evaluation.', '',
+  ];
+}
 /** Repeated runs and prompt versions stay separate; no silently pooled tuning runs. */
-export function renderReport(files:ResultFile[]):string {
+export function renderReport(files:ResultFile[],cases:EvalCase[]):string {
   if(!files.length) throw new Error('No live evaluation results exist. No numbered report was generated.');
   const count=new Set(files.flatMap(f=>f.result.cases.map(c=>c.id))).size;
   const lines=['# ScopeFence evaluation','',`All cases are invented. Results are from ${count} cases and are not a benchmark.`,
-    '', 'Every input is synthetic. Gold labels were written by an implementer and require lead review before live runs. Scores describe these cases only. Repeated runs and prompt versions are reported separately.',
+    '', 'Every input is synthetic. Gold labels were written by the build team and reviewed by the project lead. Scores describe these cases only. Repeated runs and prompt versions are reported separately.',
     '', 'Ratios use their full denominators; missed items and failed cases are wrong gold items. Citation exactness uses non-empty raw brief quotes. A zero denominator is n/a. “JSON valid by final attempt” includes first-attempt successes. Latency is measured wall time including failures; p90 uses nearest rank. Tokens/second uses predicted tokens divided by reported generation time, excluding cases without timings.',
-    '', '## Run metadata',''];
+    '', ...caseDesignCaveats(cases), '## Run metadata',''];
   for(const {file,result:r} of files) {
     const m=r.metadata;
     lines.push(`### ${cell(file)}`,'',
@@ -96,8 +113,8 @@ export function renderReport(files:ResultFile[]):string {
   return lines.join('\n')+'\n';
 }
 export async function generateReport(directory=join(repoRoot,'eval/results'),output=join(repoRoot,'docs/eval-report.md')) {
-  const files=await readResults(directory);
-  const markdown=renderReport(files);
+  const [files,cases]=await Promise.all([readResults(directory),loadCases()]);
+  const markdown=renderReport(files,cases);
   await mkdir(dirname(output),{recursive:true});
   const temp=output+`.${process.pid}.tmp`;
   await writeFile(temp,markdown,'utf8');await rename(temp,output);

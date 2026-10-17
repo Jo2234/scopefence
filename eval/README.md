@@ -55,14 +55,17 @@ Generation tokens/second uses reported prediction time, not wall time. Repeated
 runs and prompt versions stay separate in the report. Unknown runtime build or
 server flags are stored as `null`; the pinned expected build is a separate field.
 
-## Integration status of the offline checkpoint
+## Domain and offline integration checks
 
-The scaffold main did not yet export `src/domain/index.ts`, `analyse.ts`,
-`llama-server.ts`, `scripted.ts`, or `prompt.ts`. `types.ts` therefore holds the
-structural §4 contracts and `cases.ts` has a temporary local §4.2 rate-card
-validator. The tests automatically use `RateCardSchema` and the real two-case
-ScriptedAdapter pipeline when those exports land; until then exactly those two
-checks remain TODO. Other runner tests use explicit dependency stubs and assert
-serial execution, guards, saved metadata and continuation after a case error.
-They do not claim product integration. No server was started and no live eval
-was run for this checkpoint.
+Case validation imports the product RateCardSchema directly. Metrics, runner and
+test helpers import the product Analysis and AnalysisItem types; there are no
+local domain fallbacks. The two-case analyse + ScriptedAdapter test always runs,
+so a missing or incomplete orchestrator is a failing integration check.
+Other runner tests use explicit dependency stubs to assert serial execution,
+guards, saved metadata and continuation after a case error.
+
+The report loads the full case corpus to derive its Case design caveats section:
+explicit exclusion-list counts, message lengths (short means at most 100 words),
+and longer-message ids and word counts. These caveats describe the invented,
+build-team-labelled corpus even when a result file contains only one split.
+No server or live eval is needed for any of these checks.

@@ -3,12 +3,13 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { it, expect, afterEach } from 'vitest';
-import { formatRate, renderReport, readResults, generateReport } from '../../eval/report.js';
+import { caseDesignCaveats, formatRate, renderReport, readResults, generateReport } from '../../eval/report.js';
 import { loadCases } from '../../eval/cases.js';
 import { measureCase, aggregateMetrics, rate } from '../../eval/metrics.js';
 import { analysis, item } from './helpers.js';
 import type { RunResult } from '../../eval/run.js';
-const [c]=await loadCases();
+const cases=await loadCases();
+const [c]=cases;
 const folders:string[]=[];
 async function temp() {const p=await mkdtemp(join(tmpdir(),'scopefence-report-'));folders.push(p);return p;}
 afterEach(async()=>{await Promise.all(folders.splice(0).map(p=>rm(p,{recursive:true,force:true})));});
@@ -26,7 +27,7 @@ function fixture():RunResult {
 it('prints every percentage with a denominator, undefined rates as n/a and second values to one decimal',()=> {
   expect(formatRate(rate(14,19))).toBe('14/19 (73.7%)');
   expect(formatRate(rate(0,0))).toBe('0/0 (n/a)');
-  const report=renderReport([{file:'test-only.json',result:fixture()}]);
+  const report=renderReport([{file:'test-only.json',result:fixture()}],cases);
   expect(report).toContain('All cases are invented. Results are from 1 cases and are not a benchmark.');
   expect(report).toContain('| System label accuracy | 0/1 (0.0%) |');
   expect(report).toContain('| Raw model label accuracy | 1/1 (100.0%) |');
@@ -45,7 +46,7 @@ it('keeps repeated prompt versions in separate columns and never averages dev wi
   const first=fixture(),second=structuredClone(first);
   second.metadata.prompt_version='test-version-2';
   second.cases[0]!.split='test';second.cases[0]!.id='test-only';
-  const r=renderReport([{file:'first.json',result:first},{file:'second.json',result:second},{file:'third.json',result:first}]);
+  const r=renderReport([{file:'first.json',result:first},{file:'second.json',result:second},{file:'third.json',result:first}],cases);
   expect(r).toContain('### gemma-4-e2b / dev');
   expect(r).toContain('### gemma-4-e2b / test');
   expect(r).toContain('| Metric | first.json (test-version) | third.json (test-version) |');
@@ -80,4 +81,21 @@ it('generates a report from saved result JSON and retains failed-case denominato
   expect(report).toContain('| Raw model label accuracy | 1/2 (50.0%) |');
   expect(report).toContain('model_output_invalid');
   expect(report).toContain('| Wall latency median | 2.1 s |');
+});
+it('computes full-corpus caveat counts independently of the evaluated split',()=> {
+  const report=renderReport([{file:'test-only.json',result:fixture()}],cases);
+  expect(report).toContain('## Case design caveats');
+  expect(report).toContain('All cases are invented by the build team.');
+  expect(report).toContain('14/16 briefs contain an explicit out-of-scope list; realistic briefs often do not.');
+  expect(report).toContain('15/16 messages are short (100 words or fewer).');
+  expect(report).toContain('Longer messages: test-10-typography-chatty (');
+  expect(report).toContain('The gold labels were written by the same team that built the tool');
+  const changed=structuredClone(cases);
+  changed[0]!.brief=changed[0]!.brief.split('\n').filter(line=>!line.startsWith('Out of scope:')).join('\n');
+  changed[0]!.message=Array(101).fill('word').join(' ');
+  const recalculated=caseDesignCaveats(changed).join('\n');
+  expect(recalculated).toContain('13/16 briefs contain an explicit out-of-scope list');
+  expect(recalculated).toContain('14/16 messages are short');
+  expect(recalculated).toContain('dev-01-revision-allowance (101 words)');
+  expect(()=>caseDesignCaveats([])).toThrow('require the case files');
 });

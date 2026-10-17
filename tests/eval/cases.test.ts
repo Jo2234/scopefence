@@ -1,6 +1,6 @@
-import { existsSync } from 'node:fs';
 import { describe, it, expect } from 'vitest';
-import { loadCases, EvalCaseSchema, LocalRateCardSchema } from '../../eval/cases.js';
+import { loadCases, EvalCaseSchema } from '../../eval/cases.js';
+import { RateCardSchema } from '../../src/domain/index.js';
 const cases = await loadCases();
 describe('frozen synthetic evaluation corpus', () => {
   it('contains exactly the planned 6 dev and 10 held-out scenarios', () => {
@@ -14,7 +14,7 @@ describe('frozen synthetic evaluation corpus', () => {
     expect(c.synthetic).toBe(true);
     expect(c.note).toBe('Invented example for testing; not a real client or project.');
     expect(EvalCaseSchema.safeParse(c).success).toBe(true);
-    expect(LocalRateCardSchema.safeParse(c.rate_card).success).toBe(true);
+    expect(RateCardSchema.safeParse(c.rate_card).success).toBe(true);
     // Lead-directed removal of test-05's exclusion line leaves its five agreed-brief lines intact.
     if(c.id==='test-05-signature-injection') expect(c.brief.split('\n')).toHaveLength(5);
     else expect(c.brief.split('\n').length).toBeGreaterThanOrEqual(6);
@@ -31,9 +31,9 @@ describe('frozen synthetic evaluation corpus', () => {
     const c=structuredClone(cases[0]!);
     expect(EvalCaseSchema.safeParse({...c,expected_items:[{...c.expected_items[0],anchor:'invented absent text'}]}).success).toBe(false);
     expect(EvalCaseSchema.safeParse({...c,expected_items:[{...c.expected_items[0],clause_anchor:undefined}]}).success).toBe(false);
-    expect(LocalRateCardSchema.safeParse({...c.rate_card,currency:'BTC'}).success).toBe(false);
-    expect(LocalRateCardSchema.safeParse({...c.rate_card,effort_hours:{...c.rate_card.effort_hours,s:0.123}}).success).toBe(false);
-    expect(LocalRateCardSchema.safeParse({...c.rate_card,deliverables:[c.rate_card.deliverables[0],c.rate_card.deliverables[0]]}).success).toBe(false);
+    expect(RateCardSchema.safeParse({...c.rate_card,currency:'BTC'}).success).toBe(false);
+    expect(RateCardSchema.safeParse({...c.rate_card,effort_hours:{...c.rate_card.effort_hours,s:0.123}}).success).toBe(false);
+    expect(RateCardSchema.safeParse({...c.rate_card,deliverables:[c.rate_card.deliverables[0],c.rate_card.deliverables[0]]}).success).toBe(false);
   });
   it('keeps test-02 and test-05 extras without explicit exclusions after lead realism review',()=> {
     for(const id of ['test-02-out-of-brief','test-05-signature-injection']) {
@@ -57,13 +57,6 @@ describe('frozen synthetic evaluation corpus', () => {
       expect(c.forbidden_included).not.toContain(g.anchor);
   });
 });
-// Dynamic path deliberately avoids a missing-module type error before the slot 2 merge.
-const domainUrl = new URL('../../src/domain/index.ts',import.meta.url);
-if (existsSync(domainUrl)) {
-  const {RateCardSchema} = await import(domainUrl.href);
-  it('validates every rate card with the product RateCardSchema',()=> {
-    for(const c of cases) expect(RateCardSchema.safeParse(c.rate_card).success,c.id).toBe(true);
-  });
-} else {
-  it.todo('validate every rate card with src/domain/index.ts RateCardSchema when slot 2 lands');
-}
+it('validates every rate card with the product RateCardSchema',()=> {
+  for(const c of cases) expect(RateCardSchema.safeParse(c.rate_card).success,c.id).toBe(true);
+});

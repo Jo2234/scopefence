@@ -10,7 +10,9 @@ import { getModel } from '../src/model/models.js';
 import { loadCases } from './cases.js';
 import { measureCase, aggregateMetrics } from './metrics.js';
 import type { AggregateMetrics, CaseMetrics } from './metrics.js';
-import type { Analysis, CaseError, EvalCase, RateCard } from './types.js';
+import type { Analysis, RateCard } from '../src/domain/index.js';
+import type { ModelAdapter } from '../src/model/adapter.js';
+import type { CaseError, EvalCase } from './types.js';
 
 const execFileAsync=promisify(execFile);
 const repoRoot=fileURLToPath(new URL('../',import.meta.url));
@@ -38,18 +40,14 @@ export function parseArgs(args:string[]):Options {
   if(!model||!split) throw new EvalSetupError('Usage: pnpm eval -- --model <slug> --split dev|test|all [--case <id>] [--out eval/results] [--dry-run]');
   return {model,split,caseIds,out,dryRun};
 }
-export interface Adapter {
-  readonly mode:'live'|'fixture';
-  health():Promise<{status:'ready'|'unreachable'|'loading';model_file:string|null}>;
-  complete(request:{system:string;user:string;json_schema:object;max_tokens:number;temperature:number;seed:number;signal?:AbortSignal}):Promise<{text:string;latency_ms:number;timings:Analysis['timings'];model_file:string|null}>;
-}
+export type Adapter = ModelAdapter;
 export interface Bindings {
   analyse(input:{brief:string;message:string;rate_card:RateCard},adapter:Adapter,opts?:{signal?:AbortSignal;max_attempts?:number}):Promise<{ok:true;analysis:Analysis}|{ok:false;error:CaseError}>;
   LlamaServerAdapter:new(url:string)=>Adapter;
   ScriptedAdapter:new(queue:string[])=>Adapter;
   PROMPT_VERSION:string;
 }
-/** Lazy imports let integrity/metrics/report run before slot 1's orchestrator lands. */
+/** Load the model pipeline only when running cases; integrity/metrics/report stay independent. */
 export async function loadBindings():Promise<Bindings> {
   try {
     const [a,l,s,p]=await Promise.all(['analyse.ts','llama-server.ts','scripted.ts','prompt.ts'].map(f=>import(new URL('../src/model/'+f,import.meta.url).href)));

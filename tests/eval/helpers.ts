@@ -1,4 +1,5 @@
-import type {Analysis,AnalysisItem,EvalCase} from '../../eval/types.js';
+import type {Analysis,AnalysisItem} from '../../src/domain/index.js';
+import type {EvalCase} from '../../eval/types.js';
 export function item(c:EvalCase,anchor:string,overrides:Partial<AnalysisItem>={}):AnalysisItem {
   const start=c.message.indexOf(anchor);
   return {id:'I1',request:anchor,message_quote:anchor,message_span:start<0?null:{start,end:start+anchor.length},

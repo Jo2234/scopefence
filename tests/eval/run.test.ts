@@ -1,4 +1,3 @@
-import { existsSync } from 'node:fs';
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -12,8 +11,7 @@ const cases=(await loadCases()).slice(0,2);
 const folders:string[]=[];
 async function temp() {const p=await mkdtemp(join(tmpdir(),'scopefence-eval-'));folders.push(p);return p;}
 afterEach(async()=>{await Promise.all(folders.splice(0).map(p=>rm(p,{recursive:true,force:true})));vi.restoreAllMocks();});
-/** Runner dependency harness only. The real analyse + ScriptedAdapter test below
- * stays TODO until slot 1 lands; this does not claim reconciliation integration. */
+/** Runner dependency harness only; the test below also exercises the actual pipeline. */
 function harness():Bindings {
   class Queue implements Adapter {
     readonly mode='fixture' as const;
@@ -149,15 +147,12 @@ describe('evaluation CLI and offline runner orchestration',()=> {
     expect(log).toHaveBeenCalledWith('Unknown model slug: not-registered');
   });
 });
-const modules=['analyse.ts','llama-server.ts','scripted.ts','prompt.ts'];
-if(modules.every(f=>existsSync(new URL('../../src/model/'+f,import.meta.url)))&&existsSync(new URL('../../src/domain/index.ts',import.meta.url))) {
-  it('runs two dry-run cases through the real analyse and ScriptedAdapter without llama-server',async()=> {
-    const bindings=await loadBindings();
-    const {result}=await runEvaluation({model:'gemma-4-e2b',split:'dev',caseIds:cases.map(c=>c.id),dryRun:true,out:await temp()},{bindings,cases});
-    expect(result.cases.every(c=>c.error===null)).toBe(true);
-    expect(result.aggregate.label_accuracy_system).toEqual({numerator:2,denominator:2,value:1});
-    expect(result.cases[0]!.analysis!.items[0]!.citation_status).toBe('verified');
-    expect(result.cases[0]!.analysis!.items[0]!.included_basis).toBe('revision');
-    expect(result.cases[1]!.analysis!.items[0]!.label).toBe('extra_work');
-  });
-} else it.todo('run two dry-run cases through the real analyse + ScriptedAdapter after slot 1 and slot 2 modules land');
+it('runs two dry-run cases through the real analyse and ScriptedAdapter without llama-server',async()=> {
+  const bindings=await loadBindings();
+  const {result}=await runEvaluation({model:'gemma-4-e2b',split:'dev',caseIds:cases.map(c=>c.id),dryRun:true,out:await temp()},{bindings,cases});
+  expect(result.cases.every(c=>c.error===null)).toBe(true);
+  expect(result.aggregate.label_accuracy_system).toEqual({numerator:2,denominator:2,value:1});
+  expect(result.cases[0]!.analysis!.items[0]!.citation_status).toBe('verified');
+  expect(result.cases[0]!.analysis!.items[0]!.included_basis).toBe('revision');
+  expect(result.cases[1]!.analysis!.items[0]!.label).toBe('extra_work');
+});
