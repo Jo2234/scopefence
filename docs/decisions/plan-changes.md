@@ -27,3 +27,7 @@ Plan §10.4's E1 wording asks for the order total to reflect an hours edit befor
 ## 2026-10-17 — slot 4 — supported Vitest resource flags
 
 The lead-requested `pnpm exec vitest run --pool=forks --poolOptions.forks.maxForks=2` exits before running tests because pinned Vitest 4.1.12 rejects `--poolOptions`. Its local CLI help exposes `--maxWorkers` and `--no-file-parallelism`. Ran `pnpm exec vitest run --pool=forks --maxWorkers=2 --no-file-parallelism` instead: 23 files and 158 tests passed. This preserves the resource-policy cap without changing tests or dependencies.
+
+## 2026-10-17 — slot 4 — development client module name
+
+Following the lead's browser review, renamed the browser-only `src/web/api.ts` module to `src/web/client.ts` and updated its imports. The frozen Vite proxy prefix `/api` also matched the module request `/api.ts`, sending it to Hono and leaving the development page blank. `pnpm dev` now serves `/client.ts` with HTTP 200 and JavaScript content; the transformed App imports `/client.ts`. The API contract is unchanged. Recommended that slot 1 additionally narrow its proxy matcher to `^/api/` as defense against future filename collisions; slot 4 did not edit `vite.config.ts`.
