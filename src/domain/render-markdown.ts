@@ -1,7 +1,7 @@
 import type { OrderMeta, PricedOrder } from './schemas';
 import { formatHours, formatMoney } from './money';
 function text(value: string): string {
-  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/([\\`*_{}\[\]()#!|])/g, '\\$1').replace(/[\r\n]+/g, ' ');
+  return value.replace(/([\\`*_{}\[\]()#!|<>])/g, '\\$1').replace(/[\r\n]+/g, ' ');
 }
 export function renderMarkdown(order: PricedOrder, meta: OrderMeta): string {
   const money = (minor: number) => text(formatMoney(minor, order.currency));
@@ -26,9 +26,10 @@ export function renderMarkdown(order: PricedOrder, meta: OrderMeta): string {
     if (covered.revision_round !== null) lines.push(`  Revision round ${covered.revision_round} of ${order.revision.included}.`);
     lines.push('');
   }
+  if (lines.at(-1) !== '') lines.push('');
   lines.push('## Questions before we proceed', '');
   if (!order.questions.length) lines.push('None.');
   for (const q of order.questions) lines.push(`- ${text(q.question)} (Message: “${text(q.message_quote)}”)`);
-  lines.push('', '## Revision rounds', '', `${order.revision.used_before} of ${order.revision.included} used before this message; this message uses ${order.revision.used_by_this_message} round; ${order.revision.remaining_after} remaining.`, order.revision.beyond_allowance ? 'Revisions in this message exceed the included allowance and are charged above.' : 'Revisions in this message are within the included allowance.', '', 'Draft prepared with ScopeFence. Please review before sending. This is not legal advice.', '');
+  lines.push('', '## Revision rounds', '', `${order.revision.used_before} of ${order.revision.included} used before this message; this message uses ${order.revision.used_by_this_message === 0 ? 'no revision round' : '1 revision round'}; ${order.revision.remaining_after} remaining.`, order.revision.beyond_allowance ? 'Revisions in this message exceed the included allowance and are charged above.' : 'Revisions in this message are within the included allowance.', '', 'Draft prepared with ScopeFence. Please review before sending. This is not legal advice.', '');
   return lines.join('\n');
 }
