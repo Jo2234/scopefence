@@ -15,8 +15,15 @@ export function applyEdit(item: AnalysisItem, edit: ItemEdit, rate_card: RateCar
     if (!Number.isInteger(edit.quantity) || edit.quantity < 1 || edit.quantity > 999) throw new EditError('quantity_invalid');
     next.pricing.quantity = edit.quantity;
   } else if ('review' in edit) {
+    // The UI must re-propose excluded rows before approving them; direct approval is invalid.
     if (item.review === 'excluded' && edit.review === 'approved') throw new EditError('invalid_input');
     next.review = edit.review;
+    if (edit.review === 'proposed' && next.duplicate_of !== null) {
+      // Re-proposing explicitly overrides a false dedupe so pricing can include the row.
+      next.duplicate_of = null;
+      next.reason_codes = next.reason_codes.filter(code => code !== 'duplicate');
+    }
+    // Keep injection_overlap and its annotations for display during manual review.
   } else if ('question' in edit) next.question = edit.question;
   else if ('request' in edit) next.request = edit.request;
   else {
