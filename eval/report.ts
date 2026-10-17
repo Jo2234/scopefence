@@ -8,6 +8,12 @@ import type { Rate, AggregateMetrics } from './metrics.js';
 import type { RunResult } from './run.js';
 const repoRoot=fileURLToPath(new URL('../',import.meta.url));
 export interface ResultFile {file:string;result:RunResult}
+export interface EvalProtocol {
+  frozen_prompt_version:string|null;
+  frozen_source_run:string|null;
+  runs:{id:string;model_slug:string;split:'dev'|'test';prompt_version:string;result_file:string|null;role:'development'|'held_out'|'comparison_dev'}[];
+  infrastructure_retries:{run:string;reason:string}[];
+}
 export function formatRate(r:Rate):string {
   return r.denominator===0?`${r.numerator}/0 (n/a)`:`${r.numerator}/${r.denominator} (${(r.numerator/r.denominator*100).toFixed(1)}%)`;
 }
@@ -61,14 +67,38 @@ export function caseDesignCaveats(cases:EvalCase[]):string[] {
     '- The gold labels were written by the same team that built the tool; this is not an independent evaluation.', '',
   ];
 }
+function protocolSection(files:ResultFile[],protocol:EvalProtocol):string[] {
+  const lines=['## Frozen prompt and held-out headline','',
+    `Frozen prompt: **${cell(protocol.frozen_prompt_version??'not frozen yet')}**. Selected development run: ${cell(protocol.frozen_source_run??'pending')}.`,
+    'Selection rule: highest E2B dev system label accuracy; ties use lower median wall latency. At most two general prompt iterations follow D0. Test splits are run once per model after freezing; their numbers are the held-out headline.',
+    '', '| Run | Role | Model | Split | Prompt | Result file |', '| --- | --- | --- | --- | --- | --- |'];
+  for(const run of protocol.runs) {
+    const found=files.find(f=>f.file===run.result_file);
+    if(found && (found.result.metadata.prompt_version!==run.prompt_version || found.result.metadata.model_slug!==run.model_slug || found.result.metadata.split!==run.split))
+      throw new Error(`Protocol/result identity mismatch for ${run.id}`);
+    lines.push(`| ${cell(run.id)} | ${cell(run.role)} | ${cell(run.model_slug)} | ${run.split} | ${cell(run.prompt_version)} | ${cell(run.result_file??'pending')} |`);
+  }
+  lines.push('', '| Held-out model | System labels | Raw model labels | Exact citations | Clarification recall | Injection resisted | JSON valid first try | Median latency | p90 latency |', '| --- | --- | --- | --- | --- | --- | --- | --- | --- |');
+  for(const run of protocol.runs.filter(r=>r.role==='held_out' && r.result_file)) {
+    if(run.prompt_version!==protocol.frozen_prompt_version) throw new Error(`Held-out run ${run.id} does not use frozen prompt`);
+    const result=files.find(f=>f.file===run.result_file)?.result;
+    if(!result) continue;
+    const a=aggregateMetrics(result.cases.map(c=>c.metrics));
+    lines.push(`| ${cell(run.model_slug)} | ${formatRate(a.label_accuracy_system)} | ${formatRate(a.label_accuracy_model)} | ${formatRate(a.citation_exactness)} | ${formatRate(a.clarification_recall)} | ${formatRate(a.injection_resisted)} | ${formatRate(a.json_valid_first_attempt)} | ${seconds(a.latency_ms.median)} (${a.latency_ms.samples}/${a.cases} cases) | ${seconds(a.latency_ms.p90)} (${a.latency_ms.samples}/${a.cases} cases) |`);
+  }
+  lines.push('', protocol.infrastructure_retries.length
+    ? 'Infrastructure retries: '+protocol.infrastructure_retries.map(r=>`${cell(r.run)}: ${cell(r.reason)}`).join('; ')+'.'
+    : 'Infrastructure retries: none.', '');
+  return lines;
+}
 /** Repeated runs and prompt versions stay separate; no silently pooled tuning runs. */
-export function renderReport(files:ResultFile[],cases:EvalCase[]):string {
+export function renderReport(files:ResultFile[],cases:EvalCase[],protocol?:EvalProtocol):string {
   if(!files.length) throw new Error('No live evaluation results exist. No numbered report was generated.');
   const count=new Set(files.flatMap(f=>f.result.cases.map(c=>c.id))).size;
   const lines=['# ScopeFence evaluation','',`All cases are invented. Results are from ${count} cases and are not a benchmark.`,
     '', 'Every input is synthetic. Gold labels were written by the build team and reviewed by the project lead. Scores describe these cases only. Repeated runs and prompt versions are reported separately.',
     '', 'Ratios use their full denominators; missed items and failed cases are wrong gold items. Citation exactness uses non-empty raw brief quotes. A zero denominator is n/a. “JSON valid by final attempt” includes first-attempt successes. Latency is measured wall time including failures; p90 uses nearest rank. Tokens/second uses predicted tokens divided by reported generation time, excluding cases without timings.',
-    '', ...caseDesignCaveats(cases), '## Run metadata',''];
+    '', ...caseDesignCaveats(cases), ...(protocol?protocolSection(files,protocol):[]), '## Run metadata',''];
   for(const {file,result:r} of files) {
     const m=r.metadata;
     lines.push(`### ${cell(file)}`,'',
@@ -76,7 +106,7 @@ export function renderReport(files:ResultFile[],cases:EvalCase[]):string {
       `- Git: ${cell(m.git_sha)}; gold case commit: ${cell(m.cases_git_sha)}; prompt: ${cell(m.prompt_version)}.`,
       `- Model: ${cell(m.model_slug)}; file: ${cell(m.model_file)}; registry SHA256: ${cell(m.model_sha256)}; streamed SHA256: ${cell(m.verified_sha256)}.`,
       `- llama.cpp build reported by server: ${cell(m.llama_cpp_build)}; expected pinned build: ${cell(m.expected_llama_cpp_build)}.`,
-      `- Server flags: ${m.server_flags?cell(m.server_flags.join(' ')):'not recorded'}.`,
+      `- Server flags (exact argv): ${m.server_flags?cell(JSON.stringify(m.server_flags)):'not recorded'}.`,
       `- CPU: ${cell(m.cpu_brand)}; RAM: ${m.ram_bytes} bytes; OS: ${cell(m.os)}; Node: ${cell(m.node_version)}.`,
       `- UTC start: ${cell(m.start_utc)}; end: ${cell(m.end_utc)}; other heavy processes: ${m.other_heavy_processes===null?'not known':cell(m.other_heavy_processes)}.`,
       `- Provenance: ${cell(m.provenance)}.`, '');
@@ -114,7 +144,15 @@ export function renderReport(files:ResultFile[],cases:EvalCase[]):string {
 }
 export async function generateReport(directory=join(repoRoot,'eval/results'),output=join(repoRoot,'docs/eval-report.md')) {
   const [files,cases]=await Promise.all([readResults(directory),loadCases()]);
-  const markdown=renderReport(files,cases);
+  const isRepositoryResults=resolve(directory)===resolve(repoRoot,'eval/results');
+  let protocol:EvalProtocol|undefined,observations='';
+  if(isRepositoryResults) {
+    try {protocol=JSON.parse(await readFile(join(repoRoot,'eval/protocol.json'),'utf8'));}
+    catch(error) {if((error as NodeJS.ErrnoException).code!=='ENOENT') throw error;}
+    try {observations=await readFile(join(repoRoot,'eval/observations.md'),'utf8');}
+    catch(error) {if((error as NodeJS.ErrnoException).code!=='ENOENT') throw error;}
+  }
+  const markdown=renderReport(files,cases,protocol)+(observations?'\n'+observations.trim()+'\n':'');
   await mkdir(dirname(output),{recursive:true});
   const temp=output+`.${process.pid}.tmp`;
   await writeFile(temp,markdown,'utf8');await rename(temp,output);

@@ -99,3 +99,16 @@ it('computes full-corpus caveat counts independently of the evaluated split',()=
   expect(recalculated).toContain('dev-01-revision-allowance (101 words)');
   expect(()=>caseDesignCaveats([])).toThrow('require the case files');
 });
+it('marks the frozen version and held-out headline without pooling development results',()=> {
+  const r=fixture();r.metadata.split='test';r.cases[0]!.split='test';
+  const protocol={frozen_prompt_version:'test-version',frozen_source_run:'D0',infrastructure_retries:[],runs:[
+    {id:'T-E2B',role:'held_out' as const,model_slug:'gemma-4-e2b',split:'test' as const,prompt_version:'test-version',result_file:'held-out.json'},
+  ]};
+  const report=renderReport([{file:'held-out.json',result:r}],cases,protocol);
+  expect(report).toContain('Frozen prompt: **test-version**');
+  expect(report).toContain('their numbers are the held-out headline');
+  expect(report).toContain('| gemma-4-e2b | 0/1 (0.0%) | 1/1 (100.0%) |');
+  expect(report).toContain('1.2 s (1/1 cases)');
+  expect(report).toContain('Infrastructure retries: none.');
+  expect(()=>renderReport([{file:'held-out.json',result:r}],cases,{...protocol,frozen_prompt_version:'another-version'})).toThrow('does not use frozen prompt');
+});

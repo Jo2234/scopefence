@@ -1,0 +1,13 @@
+{
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "protocol": "Lead-authorized preregistered eval follow-up 2; dev only tuning, then once-per-model held-out tests.",
+  "max_prompt_iterations_after_pv1": 2,
+  "selection_rule": "Best E2B dev label_accuracy_system; ties use lower median wall latency.",
+  "frozen_prompt_version": null,
+  "frozen_source_run": null,
+  "runs": [
+    {"id":"D0","role":"development","model_slug":"gemma-4-e2b","split":"dev","prompt_version":"pv1","result_file":null}
+  ],
+  "infrastructure_retries": []
+}

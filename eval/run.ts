@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { createReadStream } from 'node:fs';
-import { mkdir, writeFile, link, unlink } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, link, unlink } from 'node:fs/promises';
 import { basename, isAbsolute, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { cpus, totalmem, platform, release, arch } from 'node:os';
@@ -93,6 +93,27 @@ async function serverFlags():Promise<string[]|null> {
     return marker>=0?command.slice(marker+'llama-server'.length).trim().split(/\s+/):null;
   } catch {return null;}
 }
+/** Match the launch receipt to its live executable before using exact argv or version. */
+async function runtimeMetadata(cache:string|undefined):Promise<{flags:string[]|null;build:string|null}> {
+  const fallback={flags:await serverFlags(),build:null};
+  if(!cache) return fallback;
+  let receipt:{pid:number;binary:string;flags:string[]};
+  try {receipt=JSON.parse(await readFile(join(cache,'run/server.json'),'utf8'));}
+  catch {return fallback;}
+  try {
+    const executable=(await execFileAsync('ps',['-p',String(receipt.pid),'-o','comm='])).stdout.trim();
+    if(resolve(executable)!==resolve(receipt.binary)||basename(executable)!=='llama-server') return fallback;
+    if(!Array.isArray(receipt.flags)||!receipt.flags.every(f=>typeof f==='string')) return fallback;
+    const runtime=getModel('runtime')!;
+    const archive=join(cache,'runtime','llama-b11687',runtime.file);
+    if(await streamSha256(archive)!==runtime.sha256) throw new EvalSetupError('Runtime archive hash mismatch; cannot record a trusted build');
+    const version=await execFileAsync(receipt.binary,['--version'],{timeout:10000});
+    return {flags:receipt.flags,build:[version.stdout.trim(),version.stderr.trim()].filter(Boolean).join('\n')};
+  } catch(error) {
+    if(error instanceof EvalSetupError) throw error;
+    throw new EvalSetupError(`Cannot record the running llama.cpp version: ${error instanceof Error?error.message:String(error)}`);
+  }
+}
 /** Explicitly gold-derived canned output; exercises wiring only, never model quality. */
 export function cannedOutput(c:EvalCase):string {
   const clauses=c.brief.split('\n').filter(line=>line.trim()).map(line=>line.trim());
@@ -124,6 +145,7 @@ export interface RunDependencies {
   bindings?:Bindings;cases?:EvalCase[];
   // Test-only dependency injection for identity guards, never a CLI bypass.
   fetcher?:typeof fetch;hashFile?:typeof streamSha256;cacheDir?:string;
+  onCaseComplete?:(result:CaseResult)=>void;
 }
 export async function runEvaluation(options:Options,deps:RunDependencies={}):Promise<{path:string;result:RunResult}> {
   const entry=getModel(options.model);
@@ -140,7 +162,7 @@ export async function runEvaluation(options:Options,deps:RunDependencies={}):Pro
     identity=await verifyModelIdentity(entry,cache,deps.fetcher,deps.hashFile);
   }
   const bindings=deps.bindings??await loadBindings();
-  const [git_sha,cases_git_sha,flags]=await Promise.all([gitOutput(['rev-parse','HEAD']),gitOutput(['log','-1','--format=%H','--','eval/cases']),options.dryRun?Promise.resolve(null):serverFlags()]);
+  const [git_sha,cases_git_sha,runtime]=await Promise.all([gitOutput(['rev-parse','HEAD']),gitOutput(['log','-1','--format=%H','--','eval/cases']),options.dryRun?Promise.resolve({flags:null,build:null}):runtimeMetadata(deps.cacheDir??process.env.SCOPEFENCE_CACHE_DIR)]);
   if(!git_sha||!cases_git_sha) throw new EvalSetupError('Evaluation requires committed cases and a git HEAD so labels can be traced');
   const live=options.dryRun?null:new bindings.LlamaServerAdapter(LLM_URL);
   const results:CaseResult[]=[];
@@ -164,6 +186,7 @@ export async function runEvaluation(options:Options,deps:RunDependencies={}):Pro
     const metrics=measureCase(c,analysis,{latency_ms:wall_ms,attempts:error?.attempts,error:error?`${error.code}: ${error.message}`:undefined});
     results.push({id:c.id,split:c.split,title:c.title,tags:c.tags,expected_items:c.expected_items,forbidden_included:c.forbidden_included,expect_injection:c.expect_injection,
       analysis,error,raw_model_output:analysis?.raw_model_output??error?.raw??null,wall_ms,metrics});
+    deps.onCaseComplete?.(results[results.length-1]!);
   }
   const by_split:RunResult['by_split']={};
   for(const split of ['dev','test'] as const) {
@@ -173,8 +196,8 @@ export async function runEvaluation(options:Options,deps:RunDependencies={}):Pro
   const build=identity?.props.build_info??identity?.props.build;
   const result:RunResult={schema_version:1,synthetic:true,note:'Invented example for testing; not a real client or project.',dry_run:options.dryRun??false,
     metadata:{git_sha,cases_git_sha,prompt_version:bindings.PROMPT_VERSION,model_slug:entry.slug,model_file:entry.file,model_sha256:entry.sha256,
-      verified_sha256:identity?.verified_sha256??null,llama_cpp_build:typeof build==='string'?build:build?JSON.stringify(build):null,
-      expected_llama_cpp_build:'llama.cpp b11687',server_flags:flags,cpu_brand:cpus()[0]?.model??'unknown',ram_bytes:totalmem(),os:`${platform()} ${release()} ${arch()}`,node_version:process.version,
+      verified_sha256:identity?.verified_sha256??null,llama_cpp_build:typeof build==='string'?build:build?JSON.stringify(build):runtime.build,
+      expected_llama_cpp_build:'llama.cpp b11687',server_flags:runtime.flags,cpu_brand:cpus()[0]?.model??'unknown',ram_bytes:totalmem(),os:`${platform()} ${release()} ${arch()}`,node_version:process.version,
       start_utc:start,end_utc:new Date().toISOString(),other_heavy_processes:null,split:options.split,case_ids:results.map(c=>c.id),
       provenance:options.dryRun?'hand-written test fixture; offline plumbing check only':'live llama-server; model hash checked once before serial cases'},
     cases:results,aggregate:aggregateMetrics(results.map(c=>c.metrics)),by_split};
@@ -191,7 +214,7 @@ export async function runEvaluation(options:Options,deps:RunDependencies={}):Pro
 }
 export async function main(args=process.argv.slice(2)):Promise<number> {
   try {
-    const {path,result}=await runEvaluation(parseArgs(args));
+    const {path,result}=await runEvaluation(parseArgs(args),{onCaseComplete:c=>console.log(`${c.id}: ${c.wall_ms} ms; ${c.error?'error '+c.error.code:'system labels '+c.metrics.label_accuracy_system.numerator+'/'+c.metrics.label_accuracy_system.denominator}; attempts ${c.metrics.attempts??'unknown'}`)});
     console.log(`${result.dry_run?'DRY RUN (hand-written fixtures)':'LIVE'}: ${result.cases.length} cases; ${result.cases.filter(c=>c.error).length} errors. Saved ${path}`);
     return 0;
   } catch(error) {
