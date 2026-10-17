@@ -3,7 +3,7 @@ import { createReadStream } from 'node:fs';
 import { mkdir, readFile, writeFile, link, unlink } from 'node:fs/promises';
 import { basename, isAbsolute, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { cpus, totalmem, platform, release, arch } from 'node:os';
+import { cpus, totalmem, platform, release, arch, loadavg } from 'node:os';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { getModel } from '../src/model/models.js';
@@ -126,10 +126,26 @@ export function cannedOutput(c:EvalCase):string {
       deliverable_id:g.label==='extra_work'?(fixed?.id??'custom'):'none',effort:g.label==='extra_work'||g.included_basis==='revision'?'s':'none'};
   })});
 }
+/** Native os.loadavg order: 1, 5 and 15 minutes. Keep full precision in JSON. */
+export type LoadAverage = [one_minute:number,five_minutes:number,fifteen_minutes:number];
+export interface CaseMachineLoad {before:LoadAverage;after:LoadAverage}
+export interface RunMachineLoad {
+  periods_minutes:[1,5,15];sample_count:number;min:LoadAverage;median:LoadAverage;max:LoadAverage;
+}
+function summarizeMachineLoad(samples:LoadAverage[]):RunMachineLoad {
+  const columns=[0,1,2].map(i=>samples.map(s=>s[i]!).sort((a,b)=>a-b));
+  const n=samples.length;
+  return {periods_minutes:[1,5,15],sample_count:n,
+    min:columns.map(c=>c[0]!) as LoadAverage,
+    median:columns.map(c=>n%2?c[Math.floor(n/2)]!:(c[n/2-1]!+c[n/2]!)/2) as LoadAverage,
+    max:columns.map(c=>c[n-1]!) as LoadAverage};
+}
 export interface CaseResult {
   id:string;split:'dev'|'test';title:string;tags:string[];
   expected_items:EvalCase['expected_items'];forbidden_included:string[];expect_injection:boolean;
   analysis:Analysis|null;error:CaseError|null;raw_model_output:string|null;wall_ms:number;metrics:CaseMetrics;
+  // Absent in historical result files; every new run records both samples.
+  machine_load?:CaseMachineLoad;
 }
 export interface RunResult {
   schema_version:1;synthetic:true;note:string;dry_run:boolean;
@@ -140,12 +156,14 @@ export interface RunResult {
     other_heavy_processes:string|null;split:Options['split'];case_ids:string[];provenance:string;
   };
   cases:CaseResult[];aggregate:AggregateMetrics;by_split:Partial<Record<'dev'|'test',AggregateMetrics>>;
+  machine_load?:RunMachineLoad;
 }
 export interface RunDependencies {
   bindings?:Bindings;cases?:EvalCase[];
   // Test-only dependency injection for identity guards, never a CLI bypass.
   fetcher?:typeof fetch;hashFile?:typeof streamSha256;cacheDir?:string;
   onCaseComplete?:(result:CaseResult)=>void;
+  readLoadAverage?:()=>LoadAverage;
 }
 export async function runEvaluation(options:Options,deps:RunDependencies={}):Promise<{path:string;result:RunResult}> {
   const entry=getModel(options.model);
@@ -166,7 +184,10 @@ export async function runEvaluation(options:Options,deps:RunDependencies={}):Pro
   if(!git_sha||!cases_git_sha) throw new EvalSetupError('Evaluation requires committed cases and a git HEAD so labels can be traced');
   const live=options.dryRun?null:new bindings.LlamaServerAdapter(LLM_URL);
   const results:CaseResult[]=[];
+  const readLoadAverage=deps.readLoadAverage??(()=>loadavg() as LoadAverage);
+  const loadSamples:LoadAverage[]=[];
   for(const c of selected) {
+    const loadBefore=[...readLoadAverage()] as LoadAverage;
     const before=performance.now();
     let analysis:Analysis|null=null,error:CaseError|null=null;
     try {
@@ -177,6 +198,8 @@ export async function runEvaluation(options:Options,deps:RunDependencies={}):Pro
       error={code:'internal',message:e instanceof Error?e.message:String(e)};
     }
     const wall_ms=Math.max(0,Math.round(performance.now()-before));
+    const loadAfter=[...readLoadAverage()] as LoadAverage;
+    loadSamples.push(loadBefore,loadAfter);
     if(analysis && !options.dryRun && (!analysis.model.file||basename(analysis.model.file)!==entry.file))
       throw new EvalSetupError(`Model identity changed during ${c.id}: expected ${entry.file}, got ${analysis.model.file}. Run aborted; no results saved.`);
     if(analysis && options.dryRun) {
@@ -185,7 +208,7 @@ export async function runEvaluation(options:Options,deps:RunDependencies={}):Pro
     }
     const metrics=measureCase(c,analysis,{latency_ms:wall_ms,attempts:error?.attempts,error:error?`${error.code}: ${error.message}`:undefined});
     results.push({id:c.id,split:c.split,title:c.title,tags:c.tags,expected_items:c.expected_items,forbidden_included:c.forbidden_included,expect_injection:c.expect_injection,
-      analysis,error,raw_model_output:analysis?.raw_model_output??error?.raw??null,wall_ms,metrics});
+      analysis,error,raw_model_output:analysis?.raw_model_output??error?.raw??null,wall_ms,metrics,machine_load:{before:loadBefore,after:loadAfter}});
     deps.onCaseComplete?.(results[results.length-1]!);
   }
   const by_split:RunResult['by_split']={};
@@ -200,7 +223,7 @@ export async function runEvaluation(options:Options,deps:RunDependencies={}):Pro
       expected_llama_cpp_build:'llama.cpp b11687',server_flags:runtime.flags,cpu_brand:cpus()[0]?.model??'unknown',ram_bytes:totalmem(),os:`${platform()} ${release()} ${arch()}`,node_version:process.version,
       start_utc:start,end_utc:new Date().toISOString(),other_heavy_processes:null,split:options.split,case_ids:results.map(c=>c.id),
       provenance:options.dryRun?'hand-written test fixture; offline plumbing check only':'live llama-server; model hash checked once before serial cases'},
-    cases:results,aggregate:aggregateMetrics(results.map(c=>c.metrics)),by_split};
+    cases:results,aggregate:aggregateMetrics(results.map(c=>c.metrics)),by_split,machine_load:summarizeMachineLoad(loadSamples)};
   const utc=start.replaceAll(/[-:.]/g,'');
   // Dry runs never enter the live result set read by eval:report.
   const directory=resolve(options.out??join(repoRoot,'eval/results'),options.dryRun?'dry-run':'.');

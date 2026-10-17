@@ -5,7 +5,8 @@ import { aggregateMetrics } from './metrics.js';
 import { loadCases } from './cases.js';
 import type { EvalCase } from './types.js';
 import type { Rate, AggregateMetrics } from './metrics.js';
-import type { RunResult } from './run.js';
+import type { CaseResult, LoadAverage, RunResult } from './run.js';
+import historicalLoad from './machine-load-context.json' with {type:'json'};
 const repoRoot=fileURLToPath(new URL('../',import.meta.url));
 export interface ResultFile {file:string;result:RunResult}
 export interface EvalProtocol {
@@ -22,6 +23,32 @@ export function formatRate(r:Rate):string {
 }
 const cell=(value:unknown)=>String(value??'not recorded').replaceAll('|','\\|').replaceAll(/\r?\n/g,' ').replaceAll('<','&lt;').replaceAll('>','&gt;');
 const seconds=(ms:number|null)=>ms===null?'n/a':`${(ms/1000).toFixed(1)} s`;
+const loadValues=(values:LoadAverage)=>'['+values.map(v=>v.toFixed(2)).join('/')+']';
+function historicalLoadContext(file:string):string {
+  if(!historicalLoad.result_files.includes(file)) return 'load not recorded per case; no machine-load context supplied';
+  const oneMinute=historicalLoad.lead_uptime_snapshots.map(s=>s.loadavg[0]!);
+  return `load not recorded per case; shared machine, lead uptime snapshots 1-min load ${Math.min(...oneMinute).toFixed(1)}–${Math.max(...oneMinute).toFixed(1)} during the eval window; swap ~${historicalLoad.swap_gb.used_approx}/${historicalLoad.swap_gb.total_approx} GB`;
+}
+export function runLoadContext(result:RunResult,file:string):string {
+  const m=result.machine_load;
+  return m?`loadavg 1/5/15 min, ${m.sample_count} boundary samples: min ${loadValues(m.min)}, median ${loadValues(m.median)}, max ${loadValues(m.max)}`:historicalLoadContext(file);
+}
+function caseLoadContext(result:CaseResult,file:string):string {
+  const m=result.machine_load;
+  return m?`loadavg 1/5/15 min: before ${loadValues(m.before)}, after ${loadValues(m.after)}`:historicalLoadContext(file);
+}
+function machineLoadSection(files:ResultFile[]):string[] {
+  const lines=['## Machine-load context','',
+    'Timings on a shared, busy machine are not benchmarks; on an idle machine they are expected to differ.',
+    'New runner output records os.loadavg() before and after each case. Run-level min/median/max use all boundary samples independently for the 1/5/15-minute load averages; these are samples, not continuous monitoring.', ''];
+  if(files.some(f=>historicalLoad.result_files.includes(f.file))) {
+    lines.push('The four original runs have no per-case load measurements. The following uptime snapshots were supplied afterward by the lead; they describe the shared eval window and must not be assigned to individual cases.',
+      '', '| Lead snapshot (SGT) | 1-min load | 5-min load | 15-min load |', '| --- | --- | --- | --- |');
+    for(const snapshot of historicalLoad.lead_uptime_snapshots) lines.push(`| ${snapshot.time_sgt} | ${snapshot.loadavg.map(v=>v.toFixed(2)).join(' | ')} |`);
+    lines.push('', `Lead-reported swap: ~${historicalLoad.swap_gb.used_approx}/${historicalLoad.swap_gb.total_approx} GB.`, historicalLoad.lead_decision, '');
+  }
+  return lines;
+}
 export async function readResults(directory=join(repoRoot,'eval/results')):Promise<ResultFile[]> {
   let files:string[];
   try {files=(await readdir(directory)).filter(f=>f.endsWith('.json')).sort();}
@@ -42,7 +69,7 @@ export async function readResults(directory=join(repoRoot,'eval/results')):Promi
   }
   return results;
 }
-function metricRows(a:AggregateMetrics):[string,string][] {
+function metricRows(a:AggregateMetrics,loadContext:string):[string,string][] {
   return [
     ['Cases',String(a.cases)],['System label accuracy',formatRate(a.label_accuracy_system)],['Raw model label accuracy',formatRate(a.label_accuracy_model)],
     ['Citation exactness',formatRate(a.citation_exactness)],['Included clause correct',formatRate(a.included_clause_correct)],['Clarification recall',formatRate(a.clarification_recall)],
@@ -50,7 +77,7 @@ function metricRows(a:AggregateMetrics):[string,string][] {
     ['Spurious items',String(a.spurious_items)],['Duplicate leak (gold items)',String(a.duplicate_leak)],
     ['JSON valid first attempt',formatRate(a.json_valid_first_attempt)],['JSON valid by final attempt',formatRate(a.json_valid_after_repair)],
     ['Attempts histogram',Object.entries(a.attempts_histogram).map(([attempt,n])=>`${attempt==='unknown'?'attempts unknown':attempt+' attempt(s)'}: ${n}/${a.cases} cases`).join('; ')],
-    ['Wall latency median',seconds(a.latency_ms.median)],['Wall latency p90 (nearest rank)',seconds(a.latency_ms.p90)],['Wall latency max',seconds(a.latency_ms.max)],
+    ['Wall latency median',`${seconds(a.latency_ms.median)}; ${loadContext}`],['Wall latency p90 (nearest rank)',`${seconds(a.latency_ms.p90)}; ${loadContext}`],['Wall latency max',`${seconds(a.latency_ms.max)}; ${loadContext}`],
     ['Latency samples',`${a.latency_ms.samples}/${a.cases} cases`],['Prompt tokens',String(a.prompt_tokens)],['Predicted tokens',String(a.predicted_tokens)],
     ['Timing samples',`${a.timing_samples}/${a.cases} cases`],['Predicted tokens/second',a.predicted_tokens_per_second===null?'n/a':a.predicted_tokens_per_second.toFixed(1)],
   ];
@@ -89,7 +116,8 @@ function protocolSection(files:ResultFile[],protocol:EvalProtocol):string[] {
     const result=files.find(f=>f.file===run.result_file)?.result;
     if(!result) continue;
     const a=aggregateMetrics(result.cases.map(c=>c.metrics));
-    lines.push(`| ${cell(run.model_slug)} | ${formatRate(a.label_accuracy_system)} | ${formatRate(a.label_accuracy_model)} | ${formatRate(a.citation_exactness)} | ${formatRate(a.clarification_recall)} | ${formatRate(a.injection_resisted)} | ${formatRate(a.json_valid_first_attempt)} | ${seconds(a.latency_ms.median)} (${a.latency_ms.samples}/${a.cases} cases) | ${seconds(a.latency_ms.p90)} (${a.latency_ms.samples}/${a.cases} cases) |`);
+    const loadContext=cell(runLoadContext(result,run.result_file!));
+    lines.push(`| ${cell(run.model_slug)} | ${formatRate(a.label_accuracy_system)} | ${formatRate(a.label_accuracy_model)} | ${formatRate(a.citation_exactness)} | ${formatRate(a.clarification_recall)} | ${formatRate(a.injection_resisted)} | ${formatRate(a.json_valid_first_attempt)} | ${seconds(a.latency_ms.median)} (${a.latency_ms.samples}/${a.cases} cases); ${loadContext} | ${seconds(a.latency_ms.p90)} (${a.latency_ms.samples}/${a.cases} cases); ${loadContext} |`);
   }
   lines.push('', protocol.infrastructure_retries.length
     ? 'Infrastructure retries: '+protocol.infrastructure_retries.map(r=>`${cell(r.run)}: ${cell(r.reason)}`).join('; ')+'.'
@@ -103,7 +131,7 @@ export function renderReport(files:ResultFile[],cases:EvalCase[],protocol?:EvalP
   const lines=['# ScopeFence evaluation','',`All cases are invented. Results are from ${count} cases and are not a benchmark.`,
     '', 'Every input is synthetic. Gold labels were written by the build team and reviewed by the project lead. Scores describe these cases only. Repeated runs and prompt versions are reported separately.',
     '', 'Ratios use their full denominators; missed items and failed cases are wrong gold items. Citation exactness uses non-empty raw brief quotes. A zero denominator is n/a. “JSON valid by final attempt” includes first-attempt successes. Latency is measured wall time including failures; p90 uses nearest rank. Tokens/second uses predicted tokens divided by reported generation time, excluding cases without timings.',
-    '', ...caseDesignCaveats(cases), ...(protocol?protocolSection(files,protocol):[]), '## Run metadata',''];
+    '', ...caseDesignCaveats(cases), ...machineLoadSection(files), ...(protocol?protocolSection(files,protocol):[]), '## Run metadata',''];
   for(const {file,result:r} of files) {
     const m=r.metadata;
     lines.push(`### ${cell(file)}`,'',
@@ -114,6 +142,7 @@ export function renderReport(files:ResultFile[],cases:EvalCase[],protocol?:EvalP
       `- Server flags (exact argv): ${m.server_flags?cell(JSON.stringify(m.server_flags)):'not recorded'}.`,
       `- CPU: ${cell(m.cpu_brand)}; RAM: ${m.ram_bytes} bytes; OS: ${cell(m.os)}; Node: ${cell(m.node_version)}.`,
       `- UTC start: ${cell(m.start_utc)}; end: ${cell(m.end_utc)}; other heavy processes: ${m.other_heavy_processes===null?'not known':cell(m.other_heavy_processes)}.`,
+      `- Machine-load context: ${cell(runLoadContext(r,file))}.`,
       `- Provenance: ${cell(m.provenance)}.`, '');
   }
   const groups=new Map<string,{file:string;result:RunResult;cases:RunResult['cases']}[]>();
@@ -126,10 +155,10 @@ export function renderReport(files:ResultFile[],cases:EvalCase[],protocol?:EvalP
   for(const [key,group] of groups) {
     lines.push(`### ${cell(key)}`,'',`| Metric | ${group.map(g=>cell(`${g.file} (${g.result.metadata.prompt_version})`)).join(' | ')} |`,
       `| --- | ${group.map(()=> '---').join(' | ')} |`);
-    const rows=group.map(g=>metricRows(aggregateMetrics(g.cases.map(c=>c.metrics))));
+    const rows=group.map(g=>metricRows(aggregateMetrics(g.cases.map(c=>c.metrics)),runLoadContext(g.result,g.file)));
     for(let i=0;i<rows[0]!.length;i++) lines.push(`| ${rows[0]![i]![0]} | ${rows.map(r=>cell(r[i]![1])).join(' | ')} |`);
     lines.push('', 'Per-case results:', '', '| Run | Case | System labels | Raw labels | Citations | Injection resisted | Wall time | Attempts | Error |', '| --- | --- | --- | --- | --- | --- | --- | --- | --- |');
-    for(const g of group) for(const c of g.cases) lines.push(`| ${cell(g.file)} | ${cell(c.id)} | ${formatRate(c.metrics.label_accuracy_system)} | ${formatRate(c.metrics.label_accuracy_model)} | ${formatRate(c.metrics.citation_exactness)} | ${formatRate(c.metrics.injection_resisted)} | ${seconds(c.wall_ms)} | ${c.metrics.attempts??'unknown'} | ${cell(c.error?.code??'none')} |`);
+    for(const g of group) for(const c of g.cases) lines.push(`| ${cell(g.file)} | ${cell(c.id)} | ${formatRate(c.metrics.label_accuracy_system)} | ${formatRate(c.metrics.label_accuracy_model)} | ${formatRate(c.metrics.citation_exactness)} | ${formatRate(c.metrics.injection_resisted)} | ${seconds(c.wall_ms)}; ${cell(caseLoadContext(c,g.file))} | ${c.metrics.attempts??'unknown'} | ${cell(c.error?.code??'none')} |`);
     lines.push('');
   }
   lines.push('## Failures','');

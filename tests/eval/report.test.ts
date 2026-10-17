@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { it, expect, afterEach } from 'vitest';
-import { caseDesignCaveats, formatRate, renderReport, readResults, generateReport } from '../../eval/report.js';
+import { runLoadContext, caseDesignCaveats, formatRate, renderReport, readResults, generateReport } from '../../eval/report.js';
 import { loadCases } from '../../eval/cases.js';
 import { measureCase, aggregateMetrics, rate } from '../../eval/metrics.js';
 import { analysis, item } from './helpers.js';
@@ -31,9 +31,9 @@ it('prints every percentage with a denominator, undefined rates as n/a and secon
   expect(report).toContain('All cases are invented. Results are from 1 cases and are not a benchmark.');
   expect(report).toContain('| System label accuracy | 0/1 (0.0%) |');
   expect(report).toContain('| Raw model label accuracy | 1/1 (100.0%) |');
-  expect(report).toContain('| Wall latency median | 1.2 s |');
-  expect(report).toContain('| Wall latency p90 (nearest rank) | 1.2 s |');
-  expect(report).toContain('| Wall latency max | 1.2 s |');
+  expect(report).toContain('| Wall latency median | 1.2 s; load not recorded per case; no machine-load context supplied |');
+  expect(report).toContain('| Wall latency p90 (nearest rank) | 1.2 s; load not recorded per case; no machine-load context supplied |');
+  expect(report).toContain('| Wall latency max | 1.2 s; load not recorded per case; no machine-load context supplied |');
   expect(report).toContain('invented \\| clause');
   expect(report).toContain('## Failures');
   expect(report).toContain('extra_work');
@@ -80,7 +80,7 @@ it('generates a report from saved result JSON and retains failed-case denominato
   expect(report).toContain('| System label accuracy | 0/2 (0.0%) |');
   expect(report).toContain('| Raw model label accuracy | 1/2 (50.0%) |');
   expect(report).toContain('model_output_invalid');
-  expect(report).toContain('| Wall latency median | 2.1 s |');
+  expect(report).toContain('| Wall latency median | 2.1 s; load not recorded per case; no machine-load context supplied |');
 });
 it('computes full-corpus caveat counts independently of the evaluated split',()=> {
   const report=renderReport([{file:'test-only.json',result:fixture()}],cases);
@@ -111,4 +111,33 @@ it('marks the frozen version and held-out headline without pooling development r
   expect(report).toContain('1.2 s (1/1 cases)');
   expect(report).toContain('Infrastructure retries: none.');
   expect(()=>renderReport([{file:'held-out.json',result:r}],cases,{...protocol,frozen_prompt_version:'another-version'})).toThrow('does not use frozen prompt');
+});
+it('annotates every historical latency with lead snapshots without inventing case-level load',()=> {
+  const file='gemma-4-e2b-test-20261017T022844411Z.json',r=fixture();
+  r.metadata.split='test';r.cases[0]!.split='test';
+  const protocol={frozen_prompt_version:'test-version',frozen_source_run:'D0',infrastructure_retries:[],runs:[
+    {id:'T-E2B',role:'held_out' as const,model_slug:'gemma-4-e2b',split:'test' as const,prompt_version:'test-version',result_file:file},
+  ]};
+  const context='load not recorded per case; shared machine, lead uptime snapshots 1-min load 34.8–44.5 during the eval window; swap ~4.9/6.1 GB';
+  const report=renderReport([{file,result:r}],cases,protocol);
+  expect(runLoadContext(r,file)).toBe(context);
+  expect(report).toContain('Timings on a shared, busy machine are not benchmarks; on an idle machine they are expected to differ.');
+  expect(report).toContain('| 2026-10-17 10:25 SGT | 44.45 | 43.18 | 29.74 |');
+  expect(report).toContain('| 2026-10-17 10:46 SGT | 36.64 | 35.44 | 28.96 |');
+  expect(report).toContain('| 2026-10-17 10:55 SGT | 34.75 | 28.79 | 29.19 |');
+  const lines=report.split('\n').filter(line=>/\d+\.\d s\b/.test(line));
+  expect(lines).toHaveLength(5); // One headline row, three summary rows, one case row.
+  for(const line of lines) expect(line).toContain(context);
+  expect(lines.find(line=>line.startsWith('| gemma-4-e2b |'))!.split(context)).toHaveLength(3);
+  expect(runLoadContext(r,'unrelated.json')).not.toContain('34.8–44.5');
+  expect(JSON.stringify(r)).not.toContain('machine_load');
+});
+it('shows actual recorded case loads and run summaries for future files',()=> {
+  const r=fixture();
+  r.machine_load={periods_minutes:[1,5,15],sample_count:2,min:[2,3,4],median:[3,4,5],max:[4,5,6]};
+  r.cases[0]!.machine_load={before:[2,3,4],after:[4,5,6]};
+  const report=renderReport([{file:'future.json',result:r}],cases);
+  expect(report).toContain('1.2 s; loadavg 1/5/15 min, 2 boundary samples: min [2.00/3.00/4.00], median [3.00/4.00/5.00], max [4.00/5.00/6.00]');
+  expect(report).toContain('1.2 s; loadavg 1/5/15 min: before [2.00/3.00/4.00], after [4.00/5.00/6.00]');
+  expect(report).not.toContain('34.8–44.5');
 });

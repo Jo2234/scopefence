@@ -91,3 +91,27 @@ completeness, AnalysisSchema validity, registry identity, historical prompt-file
 hashes, and the held-out numbers printed in the report. Run results and raw model
 text are committed; local execution logs under `eval/work/` are not deliverables.
 Do not repeat either held-out split or change the frozen prompt for this checkpoint.
+
+## Machine-load context amendment (no new model runs)
+
+Future result JSONs include `cases[].machine_load.before` and `.after`, each an
+`os.loadavg()` tuple in 1/5/15-minute order. Top-level `machine_load` records
+`periods_minutes: [1,5,15]`, `sample_count`, and per-dimension `min`, `median`,
+`max` across every before/after boundary sample, including failed cases. Full
+numeric precision is retained in JSON. These additive fields are absent in the
+four original files; no historical result was edited or given invented samples.
+
+`machine-load-context.json` stores the lead's separately supplied uptime
+snapshots, approximate swap usage and no-rerun decision. The report places that
+historical context next to every original latency figure, including case rows.
+Future reports use the runner's actual boundary samples and run summaries.
+Snapshots do not establish individual case loads or an idle-machine latency.
+
+Follow `control/RESOURCE-POLICY.md` and bound verification workers:
+
+```sh
+pnpm typecheck
+pnpm exec vitest run --pool=forks --maxWorkers=2
+pnpm eval:report
+pnpm exec tsx eval/audit-results.ts
+```
