@@ -1,10 +1,25 @@
 import {readFile} from 'node:fs/promises';
+import {isDeepStrictEqual} from 'node:util';
+import {AnalysisSchema, RateCardSchema, segmentBrief} from '../src/domain/index.js';
+import {analyse} from '../src/model/analyse.js';
 import {LlamaServerAdapter} from '../src/model/llama-server.js';
-import {SYSTEM_PROMPT,buildUserPrompt} from '../src/model/prompt.js';
-import {buildOutputSchema,buildModelOutputValidator} from '../src/model/output-schema.js';
-const demo=JSON.parse(await readFile(new URL('../fixtures/demo/demo-1.json',import.meta.url),'utf8'));
-// G0-only line splitter. Replace with segmentBrief after domain stage A lands.
-const clauses:string[]=demo.brief.split('\n');const segmented=clauses.filter(s=>s.trim()).map((s,i)=>({id:`C${i+1}`,text:s.trim()}));
-const adapter=new LlamaServerAdapter();const started=performance.now();const result=await adapter.complete({system:SYSTEM_PROMPT,user:buildUserPrompt(segmented,demo.message,demo.rate_card),json_schema:buildOutputSchema(segmented,demo.rate_card),max_tokens:1100,temperature:0,seed:42});
-const valid=buildModelOutputValidator(segmented,demo.rate_card).safeParse(JSON.parse(result.text));
-console.log(JSON.stringify({wall_ms:Math.round(performance.now()-started),...result,valid:valid.success,issues:valid.success?[]:valid.error.issues},null,2));if(!valid.success)process.exitCode=1;
+import {getModel} from '../src/model/models.js';
+const demo = JSON.parse(await readFile(new URL('../fixtures/demo/demo-1.json', import.meta.url), 'utf8'));
+const adapter = new LlamaServerAdapter();
+const health = await adapter.health();
+if (health.status !== 'ready' || health.model_file !== getModel('gemma-4-e2b')!.file) {
+  throw Error('Smoke requires the product model: pnpm model:start gemma-4-e2b');
+}
+const started = performance.now();
+const result = await analyse({brief:demo.brief, message:demo.message, rate_card:RateCardSchema.parse(demo.rate_card)}, adapter);
+if (!result.ok) {console.error(JSON.stringify(result)); process.exitCode = 1;}
+else {
+  AnalysisSchema.parse(result.analysis);
+  if (!isDeepStrictEqual(result.analysis.clauses, segmentBrief(result.analysis.input.brief).clauses)) {
+    throw Error('Analysis clauses differ from domain segmentation');
+  }
+  console.log(JSON.stringify({wall_ms:Math.round(performance.now()-started), ok:true, valid:true,
+    reconciled_labels:result.analysis.items.map(i => ({id:i.id, request:i.request, model_label:i.model_label, label:i.label, review:i.review, reason_codes:i.reason_codes})),
+    analysis:result.analysis,
+  }, null, 2));
+}
