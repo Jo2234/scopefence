@@ -5,6 +5,42 @@ import path from "node:path";
 const screenshots = path.resolve("docs/screenshots");
 async function shot(page: Page, name: string) {
   await mkdir(screenshots, { recursive: true });
+  // Let React's new layout and scroll anchoring settle before positioning the
+  // viewport. Capture the real UI, including the complete fixture notice.
+  await page.evaluate(async () => {
+    await new Promise(requestAnimationFrame);
+    await new Promise(requestAnimationFrame);
+  });
+  const target =
+    name === "change-order-panel"
+      ? ".change-order"
+      : name === "results-demo-1"
+        ? ".evidence-panel"
+        : null;
+  await page.evaluate(async (selector) => {
+    const panel = selector ? document.querySelector(selector) : null;
+    const banner = document.querySelector(".fixture-banner");
+    if (panel) {
+      window.scrollBy(
+        0,
+        panel.getBoundingClientRect().top -
+          (banner?.getBoundingClientRect().height ?? 0) -
+          16,
+      );
+    } else {
+      window.scrollTo(0, 0);
+    }
+    await new Promise(requestAnimationFrame);
+    if (!panel) window.scrollTo(0, 0);
+    await new Promise(requestAnimationFrame);
+  }, target);
+  const fixtureNotice = page.locator(".fixture-banner strong");
+  if (await fixtureNotice.count()) {
+    const box = await fixtureNotice.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.y).toBeGreaterThanOrEqual(0);
+    expect(box!.y + box!.height).toBeLessThanOrEqual(800);
+  }
   await page.screenshot({
     path: path.join(screenshots, `${name}.png`),
     animations: "disabled",
@@ -536,6 +572,19 @@ test("1280px results and rate-card controls fit their panels and viewport", asyn
       .locator(".evidence-panel .scroll-table")
       .evaluate((node) => node.scrollWidth <= node.clientWidth),
   ).toBe(true);
+  const labelRoom = await page
+    .getByLabel("Row 4 label", { exact: true })
+    .evaluate((node) => {
+      const select = node as HTMLSelectElement;
+      const context = document.createElement("canvas").getContext("2d")!;
+      context.font = getComputedStyle(select).font;
+      return (
+        select.clientWidth -
+        context.measureText(select.selectedOptions[0]!.text).width
+      );
+    });
+  // Preserve space for native-select padding and its arrow as well as the text.
+  expect(labelRoom).toBeGreaterThanOrEqual(28);
 });
 
 test("input and Markdown fields have associated labels and exact accessible names", async ({

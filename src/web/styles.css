@@ -945,7 +945,7 @@ footer {
   width: 16%;
 }
 .evidence-table th:nth-child(3) {
-  width: 14%;
+  width: 17%;
 }
 .evidence-table th:nth-child(4) {
   width: 16%;
@@ -960,7 +960,7 @@ footer {
   width: 10%;
 }
 .evidence-table th:nth-child(8) {
-  width: 16%;
+  width: 13%;
 }
 .evidence-table td:last-child button {
   display: block;
