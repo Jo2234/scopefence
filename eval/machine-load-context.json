@@ -1,0 +1,49 @@
+{
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "measurement_provenance": "Real lead-reported machine snapshots for runs with synthetic inputs. These are not per-case load measurements.",
+  "source": "Lead follow-up 3 and control/RESOURCE-POLICY.md, 2026-10-17",
+  "result_files": [
+    "gemma-4-e2b-dev-20261017T022254730Z.json",
+    "gemma-4-e2b-test-20261017T022844411Z.json",
+    "gemma-3-1b-test-20261017T023611684Z.json",
+    "gemma-3-1b-dev-20261017T024344937Z.json"
+  ],
+  "periods_minutes": [
+    1,
+    5,
+    15
+  ],
+  "lead_uptime_snapshots": [
+    {
+      "time_sgt": "2026-10-17 10:25 SGT",
+      "loadavg": [
+        44.45,
+        43.18,
+        29.74
+      ]
+    },
+    {
+      "time_sgt": "2026-10-17 10:46 SGT",
+      "loadavg": [
+        36.64,
+        35.44,
+        28.96
+      ]
+    },
+    {
+      "time_sgt": "2026-10-17 10:55 SGT",
+      "loadavg": [
+        34.75,
+        28.79,
+        29.19
+      ]
+    }
+  ],
+  "swap_gb": {
+    "used_approx": 4.9,
+    "total_approx": 6.1
+  },
+  "lead_decision": "No quiet-machine rerun: the E2B held-out median and p90 meet the gate under load. No idle-machine latency estimate is claimed.",
+  "results_commit": "a42d7d1287b25972e70e1ad4d0a59bc7173c7f3d"
+}

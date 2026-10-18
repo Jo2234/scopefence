@@ -1,4 +1,3 @@
-import { existsSync } from 'node:fs';
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -6,14 +5,13 @@ import { afterEach, describe, it, expect, vi } from 'vitest';
 import { loadCases } from '../../eval/cases.js';
 import { getModel } from '../../src/model/models.js';
 import { parseArgs, runEvaluation, verifyModelIdentity, streamSha256, loadBindings, cannedOutput, main, EvalSetupError } from '../../eval/run.js';
-import type { Adapter, Bindings } from '../../eval/run.js';
+import type { Adapter, Bindings, LoadAverage } from '../../eval/run.js';
 import { analysis, item } from './helpers.js';
 const cases=(await loadCases()).slice(0,2);
 const folders:string[]=[];
 async function temp() {const p=await mkdtemp(join(tmpdir(),'scopefence-eval-'));folders.push(p);return p;}
 afterEach(async()=>{await Promise.all(folders.splice(0).map(p=>rm(p,{recursive:true,force:true})));vi.restoreAllMocks();});
-/** Runner dependency harness only. The real analyse + ScriptedAdapter test below
- * stays TODO until slot 1 lands; this does not claim reconciliation integration. */
+/** Runner dependency harness only; the test below also exercises the actual pipeline. */
 function harness():Bindings {
   class Queue implements Adapter {
     readonly mode='fixture' as const;
@@ -69,13 +67,32 @@ describe('evaluation CLI and offline runner orchestration',()=> {
     const bindings=harness(),original=bindings.analyse;
     let calls=0;
     bindings.analyse=async(...args:Parameters<Bindings['analyse']>)=>++calls===1?{ok:false,error:{code:'model_output_invalid',message:'Three invalid replies',attempts:3,raw:'invalid raw'}}:original(...args);
-    const {result}=await runEvaluation({model:'gemma-4-e2b',split:'dev',out:await temp(),dryRun:true},{bindings,cases});
+    const readLoadAverage=vi.fn<()=>LoadAverage>(()=>[1,2,3]);
+    const {result}=await runEvaluation({model:'gemma-4-e2b',split:'dev',out:await temp(),dryRun:true},{bindings,cases,readLoadAverage});
     expect(calls).toBe(2);
     expect(result.cases[0]!.error?.code).toBe('model_output_invalid');
     expect(result.cases[0]!.raw_model_output).toBe('invalid raw');
     expect(result.cases[1]!.analysis).not.toBeNull();
     expect(result.aggregate.label_accuracy_system).toEqual({numerator:1,denominator:2,value:0.5});
     expect(result.aggregate.attempts_histogram).toEqual({'1':1,'3':1});
+    expect(readLoadAverage).toHaveBeenCalledTimes(4);
+    expect(result.cases[0]!.machine_load).toEqual({before:[1,2,3],after:[1,2,3]});
+    expect(result.machine_load?.sample_count).toBe(4);
+  });
+  it('records every case boundary load and aggregates each 1/5/15-minute dimension in a dry run',async()=> {
+    const samples:LoadAverage[]=[[4,20,5],[8,10,7],[2,40,9],[6,30,3]];
+    const events:string[]=[];
+    let sampleIndex=0;
+    const readLoadAverage=vi.fn<()=>LoadAverage>(()=>{events.push('sample');return samples[sampleIndex++]!;});
+    const bindings=harness(),original=bindings.analyse;
+    bindings.analyse=async(...args)=>{events.push('analyse');return original(...args);};
+    const {result,path}=await runEvaluation({model:'gemma-4-e2b',split:'dev',out:await temp(),dryRun:true},{bindings,cases,readLoadAverage});
+    expect(events).toEqual(['sample','analyse','sample','sample','analyse','sample']);
+    expect(result.cases.map(c=>c.machine_load)).toEqual([{before:[4,20,5],after:[8,10,7]},{before:[2,40,9],after:[6,30,3]}]);
+    expect(result.machine_load).toEqual({periods_minutes:[1,5,15],sample_count:4,min:[2,10,3],median:[5,25,6],max:[8,40,9]});
+    const saved=JSON.parse(await readFile(path,'utf8'));
+    expect(saved.machine_load).toEqual(result.machine_load);
+    expect(saved.cases.map((c:{machine_load:unknown})=>c.machine_load)).toEqual(result.cases.map(c=>c.machine_load));
   });
   it('rejects unknown registry slugs and mismatched case/split before analysis',async()=> {
     const bindings=harness();bindings.analyse=vi.fn(bindings.analyse);
@@ -149,15 +166,12 @@ describe('evaluation CLI and offline runner orchestration',()=> {
     expect(log).toHaveBeenCalledWith('Unknown model slug: not-registered');
   });
 });
-const modules=['analyse.ts','llama-server.ts','scripted.ts','prompt.ts'];
-if(modules.every(f=>existsSync(new URL('../../src/model/'+f,import.meta.url)))&&existsSync(new URL('../../src/domain/index.ts',import.meta.url))) {
-  it('runs two dry-run cases through the real analyse and ScriptedAdapter without llama-server',async()=> {
-    const bindings=await loadBindings();
-    const {result}=await runEvaluation({model:'gemma-4-e2b',split:'dev',caseIds:cases.map(c=>c.id),dryRun:true,out:await temp()},{bindings,cases});
-    expect(result.cases.every(c=>c.error===null)).toBe(true);
-    expect(result.aggregate.label_accuracy_system).toEqual({numerator:2,denominator:2,value:1});
-    expect(result.cases[0]!.analysis!.items[0]!.citation_status).toBe('verified');
-    expect(result.cases[0]!.analysis!.items[0]!.included_basis).toBe('revision');
-    expect(result.cases[1]!.analysis!.items[0]!.label).toBe('extra_work');
-  });
-} else it.todo('run two dry-run cases through the real analyse + ScriptedAdapter after slot 1 and slot 2 modules land');
+it('runs two dry-run cases through the real analyse and ScriptedAdapter without llama-server',async()=> {
+  const bindings=await loadBindings();
+  const {result}=await runEvaluation({model:'gemma-4-e2b',split:'dev',caseIds:cases.map(c=>c.id),dryRun:true,out:await temp()},{bindings,cases});
+  expect(result.cases.map(c=>c.error)).toEqual([null,null]);
+  expect(result.aggregate.label_accuracy_system).toEqual({numerator:2,denominator:2,value:1});
+  expect(result.cases[0]!.analysis!.items[0]!.citation_status).toBe('verified');
+  expect(result.cases[0]!.analysis!.items[0]!.included_basis).toBe('revision');
+  expect(result.cases[1]!.analysis!.items[0]!.label).toBe('extra_work');
+});

@@ -1,0 +1,47 @@
+{
+  "synthetic": true,
+  "note": "Invented example for testing; not a real client or project.",
+  "protocol": "Lead-authorized preregistered eval follow-up 2; dev only tuning, then once-per-model held-out tests.",
+  "max_prompt_iterations_after_pv1": 2,
+  "selection_rule": "Best E2B dev label_accuracy_system; ties use lower median wall latency.",
+  "frozen_prompt_version": "pv1",
+  "frozen_source_run": "D0",
+  "runs": [
+    {
+      "id": "D0",
+      "role": "development",
+      "model_slug": "gemma-4-e2b",
+      "split": "dev",
+      "prompt_version": "pv1",
+      "result_file": "gemma-4-e2b-dev-20261017T022254730Z.json"
+    },
+    {
+      "id": "T-E2B",
+      "role": "held_out",
+      "model_slug": "gemma-4-e2b",
+      "split": "test",
+      "prompt_version": "pv1",
+      "result_file": "gemma-4-e2b-test-20261017T022844411Z.json"
+    },
+    {
+      "id": "T-1B",
+      "role": "held_out",
+      "model_slug": "gemma-3-1b",
+      "split": "test",
+      "prompt_version": "pv1",
+      "result_file": "gemma-3-1b-test-20261017T023611684Z.json"
+    },
+    {
+      "id": "D-1B",
+      "role": "comparison_dev",
+      "model_slug": "gemma-3-1b",
+      "split": "dev",
+      "prompt_version": "pv1",
+      "result_file": "gemma-3-1b-dev-20261017T024344937Z.json"
+    }
+  ],
+  "infrastructure_retries": [],
+  "prompt_iterations_used": 0,
+  "freeze_reason": "D0 achieved 6/6 system labels with no recorded metric failures. Zero optional prompt iterations used; pv1 is the only candidate and therefore the registered dev winner.",
+  "frozen_prompt_file_sha256": "9421640218223175c37720ef93e113beaa397dcdcaec7855740acfc727e3bd94"
+}

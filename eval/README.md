@@ -55,14 +55,63 @@ Generation tokens/second uses reported prediction time, not wall time. Repeated
 runs and prompt versions stay separate in the report. Unknown runtime build or
 server flags are stored as `null`; the pinned expected build is a separate field.
 
-## Integration status of the offline checkpoint
+## Domain and offline integration checks
 
-The scaffold main did not yet export `src/domain/index.ts`, `analyse.ts`,
-`llama-server.ts`, `scripted.ts`, or `prompt.ts`. `types.ts` therefore holds the
-structural §4 contracts and `cases.ts` has a temporary local §4.2 rate-card
-validator. The tests automatically use `RateCardSchema` and the real two-case
-ScriptedAdapter pipeline when those exports land; until then exactly those two
-checks remain TODO. Other runner tests use explicit dependency stubs and assert
-serial execution, guards, saved metadata and continuation after a case error.
-They do not claim product integration. No server was started and no live eval
-was run for this checkpoint.
+Case validation imports the product RateCardSchema directly. Metrics, runner and
+test helpers import the product Analysis and AnalysisItem types; there are no
+local domain fallbacks. The two-case analyse + ScriptedAdapter test always runs,
+so a missing or incomplete orchestrator is a failing integration check.
+Other runner tests use explicit dependency stubs to assert serial execution,
+guards, saved metadata and continuation after a case error.
+
+The report loads the full case corpus to derive its Case design caveats section:
+explicit exclusion-list counts, message lengths (short means at most 100 words),
+and longer-message ids and word counts. These caveats describe the invented,
+build-team-labelled corpus even when a result file contains only one split.
+No server or live eval is needed for any of these checks.
+
+## Measured checkpoint (2026-10-17)
+
+`protocol.json` records the registered D0, the pre-test pv1 freeze, the single
+held-out run for each model, and the 1B dev comparison. D0 had no scored failures,
+so zero of the two optional prompt iterations were used. The prompt stayed pv1;
+existing pv1 demo fixtures were retained.
+
+`observations.md` is the hand-written post-run section appended by the generator.
+Regenerate and independently verify the measured report with:
+
+```sh
+pnpm eval:report
+pnpm exec tsx eval/audit-results.ts
+```
+
+The audit imports no metric implementation. It independently checks exact quote
+matching, counts, denominators, duplicate/spurious items, latency, split
+completeness, AnalysisSchema validity, registry identity, historical prompt-file
+hashes, and the held-out numbers printed in the report. Run results and raw model
+text are committed; local execution logs under `eval/work/` are not deliverables.
+Do not repeat either held-out split or change the frozen prompt for this checkpoint.
+
+## Machine-load context amendment (no new model runs)
+
+Future result JSONs include `cases[].machine_load.before` and `.after`, each an
+`os.loadavg()` tuple in 1/5/15-minute order. Top-level `machine_load` records
+`periods_minutes: [1,5,15]`, `sample_count`, and per-dimension `min`, `median`,
+`max` across every before/after boundary sample, including failed cases. Full
+numeric precision is retained in JSON. These additive fields are absent in the
+four original files; no historical result was edited or given invented samples.
+
+`machine-load-context.json` stores the lead's separately supplied uptime
+snapshots, approximate swap usage and no-rerun decision. The report places that
+historical context next to every original latency figure, including case rows.
+Future reports use the runner's actual boundary samples and run summaries.
+Snapshots do not establish individual case loads or an idle-machine latency.
+
+Follow `control/RESOURCE-POLICY.md` and bound verification workers:
+
+```sh
+pnpm typecheck
+pnpm exec vitest run --pool=forks --maxWorkers=2
+pnpm eval:report
+pnpm exec tsx eval/audit-results.ts
+```

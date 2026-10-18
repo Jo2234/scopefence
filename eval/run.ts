@@ -1,16 +1,18 @@
 import { createHash } from 'node:crypto';
 import { createReadStream } from 'node:fs';
-import { mkdir, writeFile, link, unlink } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, link, unlink } from 'node:fs/promises';
 import { basename, isAbsolute, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { cpus, totalmem, platform, release, arch } from 'node:os';
+import { cpus, totalmem, platform, release, arch, loadavg } from 'node:os';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { getModel } from '../src/model/models.js';
 import { loadCases } from './cases.js';
 import { measureCase, aggregateMetrics } from './metrics.js';
 import type { AggregateMetrics, CaseMetrics } from './metrics.js';
-import type { Analysis, CaseError, EvalCase, RateCard } from './types.js';
+import type { Analysis, RateCard } from '../src/domain/index.js';
+import type { ModelAdapter } from '../src/model/adapter.js';
+import type { CaseError, EvalCase } from './types.js';
 
 const execFileAsync=promisify(execFile);
 const repoRoot=fileURLToPath(new URL('../',import.meta.url));
@@ -38,18 +40,14 @@ export function parseArgs(args:string[]):Options {
   if(!model||!split) throw new EvalSetupError('Usage: pnpm eval -- --model <slug> --split dev|test|all [--case <id>] [--out eval/results] [--dry-run]');
   return {model,split,caseIds,out,dryRun};
 }
-export interface Adapter {
-  readonly mode:'live'|'fixture';
-  health():Promise<{status:'ready'|'unreachable'|'loading';model_file:string|null}>;
-  complete(request:{system:string;user:string;json_schema:object;max_tokens:number;temperature:number;seed:number;signal?:AbortSignal}):Promise<{text:string;latency_ms:number;timings:Analysis['timings'];model_file:string|null}>;
-}
+export type Adapter = ModelAdapter;
 export interface Bindings {
   analyse(input:{brief:string;message:string;rate_card:RateCard},adapter:Adapter,opts?:{signal?:AbortSignal;max_attempts?:number}):Promise<{ok:true;analysis:Analysis}|{ok:false;error:CaseError}>;
   LlamaServerAdapter:new(url:string)=>Adapter;
   ScriptedAdapter:new(queue:string[])=>Adapter;
   PROMPT_VERSION:string;
 }
-/** Lazy imports let integrity/metrics/report run before slot 1's orchestrator lands. */
+/** Load the model pipeline only when running cases; integrity/metrics/report stay independent. */
 export async function loadBindings():Promise<Bindings> {
   try {
     const [a,l,s,p]=await Promise.all(['analyse.ts','llama-server.ts','scripted.ts','prompt.ts'].map(f=>import(new URL('../src/model/'+f,import.meta.url).href)));
@@ -95,6 +93,27 @@ async function serverFlags():Promise<string[]|null> {
     return marker>=0?command.slice(marker+'llama-server'.length).trim().split(/\s+/):null;
   } catch {return null;}
 }
+/** Match the launch receipt to its live executable before using exact argv or version. */
+async function runtimeMetadata(cache:string|undefined):Promise<{flags:string[]|null;build:string|null}> {
+  const fallback={flags:await serverFlags(),build:null};
+  if(!cache) return fallback;
+  let receipt:{pid:number;binary:string;flags:string[]};
+  try {receipt=JSON.parse(await readFile(join(cache,'run/server.json'),'utf8'));}
+  catch {return fallback;}
+  try {
+    const executable=(await execFileAsync('ps',['-p',String(receipt.pid),'-o','comm='])).stdout.trim();
+    if(resolve(executable)!==resolve(receipt.binary)||basename(executable)!=='llama-server') return fallback;
+    if(!Array.isArray(receipt.flags)||!receipt.flags.every(f=>typeof f==='string')) return fallback;
+    const runtime=getModel('runtime')!;
+    const archive=join(cache,'runtime','llama-b11687',runtime.file);
+    if(await streamSha256(archive)!==runtime.sha256) throw new EvalSetupError('Runtime archive hash mismatch; cannot record a trusted build');
+    const version=await execFileAsync(receipt.binary,['--version'],{timeout:10000});
+    return {flags:receipt.flags,build:[version.stdout.trim(),version.stderr.trim()].filter(Boolean).join('\n')};
+  } catch(error) {
+    if(error instanceof EvalSetupError) throw error;
+    throw new EvalSetupError(`Cannot record the running llama.cpp version: ${error instanceof Error?error.message:String(error)}`);
+  }
+}
 /** Explicitly gold-derived canned output; exercises wiring only, never model quality. */
 export function cannedOutput(c:EvalCase):string {
   const clauses=c.brief.split('\n').filter(line=>line.trim()).map(line=>line.trim());
@@ -107,10 +126,26 @@ export function cannedOutput(c:EvalCase):string {
       deliverable_id:g.label==='extra_work'?(fixed?.id??'custom'):'none',effort:g.label==='extra_work'||g.included_basis==='revision'?'s':'none'};
   })});
 }
+/** Native os.loadavg order: 1, 5 and 15 minutes. Keep full precision in JSON. */
+export type LoadAverage = [one_minute:number,five_minutes:number,fifteen_minutes:number];
+export interface CaseMachineLoad {before:LoadAverage;after:LoadAverage}
+export interface RunMachineLoad {
+  periods_minutes:[1,5,15];sample_count:number;min:LoadAverage;median:LoadAverage;max:LoadAverage;
+}
+function summarizeMachineLoad(samples:LoadAverage[]):RunMachineLoad {
+  const columns=[0,1,2].map(i=>samples.map(s=>s[i]!).sort((a,b)=>a-b));
+  const n=samples.length;
+  return {periods_minutes:[1,5,15],sample_count:n,
+    min:columns.map(c=>c[0]!) as LoadAverage,
+    median:columns.map(c=>n%2?c[Math.floor(n/2)]!:(c[n/2-1]!+c[n/2]!)/2) as LoadAverage,
+    max:columns.map(c=>c[n-1]!) as LoadAverage};
+}
 export interface CaseResult {
   id:string;split:'dev'|'test';title:string;tags:string[];
   expected_items:EvalCase['expected_items'];forbidden_included:string[];expect_injection:boolean;
   analysis:Analysis|null;error:CaseError|null;raw_model_output:string|null;wall_ms:number;metrics:CaseMetrics;
+  // Absent in historical result files; every new run records both samples.
+  machine_load?:CaseMachineLoad;
 }
 export interface RunResult {
   schema_version:1;synthetic:true;note:string;dry_run:boolean;
@@ -121,11 +156,14 @@ export interface RunResult {
     other_heavy_processes:string|null;split:Options['split'];case_ids:string[];provenance:string;
   };
   cases:CaseResult[];aggregate:AggregateMetrics;by_split:Partial<Record<'dev'|'test',AggregateMetrics>>;
+  machine_load?:RunMachineLoad;
 }
 export interface RunDependencies {
   bindings?:Bindings;cases?:EvalCase[];
   // Test-only dependency injection for identity guards, never a CLI bypass.
   fetcher?:typeof fetch;hashFile?:typeof streamSha256;cacheDir?:string;
+  onCaseComplete?:(result:CaseResult)=>void;
+  readLoadAverage?:()=>LoadAverage;
 }
 export async function runEvaluation(options:Options,deps:RunDependencies={}):Promise<{path:string;result:RunResult}> {
   const entry=getModel(options.model);
@@ -142,11 +180,14 @@ export async function runEvaluation(options:Options,deps:RunDependencies={}):Pro
     identity=await verifyModelIdentity(entry,cache,deps.fetcher,deps.hashFile);
   }
   const bindings=deps.bindings??await loadBindings();
-  const [git_sha,cases_git_sha,flags]=await Promise.all([gitOutput(['rev-parse','HEAD']),gitOutput(['log','-1','--format=%H','--','eval/cases']),options.dryRun?Promise.resolve(null):serverFlags()]);
+  const [git_sha,cases_git_sha,runtime]=await Promise.all([gitOutput(['rev-parse','HEAD']),gitOutput(['log','-1','--format=%H','--','eval/cases']),options.dryRun?Promise.resolve({flags:null,build:null}):runtimeMetadata(deps.cacheDir??process.env.SCOPEFENCE_CACHE_DIR)]);
   if(!git_sha||!cases_git_sha) throw new EvalSetupError('Evaluation requires committed cases and a git HEAD so labels can be traced');
   const live=options.dryRun?null:new bindings.LlamaServerAdapter(LLM_URL);
   const results:CaseResult[]=[];
+  const readLoadAverage=deps.readLoadAverage??(()=>loadavg() as LoadAverage);
+  const loadSamples:LoadAverage[]=[];
   for(const c of selected) {
+    const loadBefore=[...readLoadAverage()] as LoadAverage;
     const before=performance.now();
     let analysis:Analysis|null=null,error:CaseError|null=null;
     try {
@@ -157,6 +198,8 @@ export async function runEvaluation(options:Options,deps:RunDependencies={}):Pro
       error={code:'internal',message:e instanceof Error?e.message:String(e)};
     }
     const wall_ms=Math.max(0,Math.round(performance.now()-before));
+    const loadAfter=[...readLoadAverage()] as LoadAverage;
+    loadSamples.push(loadBefore,loadAfter);
     if(analysis && !options.dryRun && (!analysis.model.file||basename(analysis.model.file)!==entry.file))
       throw new EvalSetupError(`Model identity changed during ${c.id}: expected ${entry.file}, got ${analysis.model.file}. Run aborted; no results saved.`);
     if(analysis && options.dryRun) {
@@ -165,7 +208,8 @@ export async function runEvaluation(options:Options,deps:RunDependencies={}):Pro
     }
     const metrics=measureCase(c,analysis,{latency_ms:wall_ms,attempts:error?.attempts,error:error?`${error.code}: ${error.message}`:undefined});
     results.push({id:c.id,split:c.split,title:c.title,tags:c.tags,expected_items:c.expected_items,forbidden_included:c.forbidden_included,expect_injection:c.expect_injection,
-      analysis,error,raw_model_output:analysis?.raw_model_output??error?.raw??null,wall_ms,metrics});
+      analysis,error,raw_model_output:analysis?.raw_model_output??error?.raw??null,wall_ms,metrics,machine_load:{before:loadBefore,after:loadAfter}});
+    deps.onCaseComplete?.(results[results.length-1]!);
   }
   const by_split:RunResult['by_split']={};
   for(const split of ['dev','test'] as const) {
@@ -175,11 +219,11 @@ export async function runEvaluation(options:Options,deps:RunDependencies={}):Pro
   const build=identity?.props.build_info??identity?.props.build;
   const result:RunResult={schema_version:1,synthetic:true,note:'Invented example for testing; not a real client or project.',dry_run:options.dryRun??false,
     metadata:{git_sha,cases_git_sha,prompt_version:bindings.PROMPT_VERSION,model_slug:entry.slug,model_file:entry.file,model_sha256:entry.sha256,
-      verified_sha256:identity?.verified_sha256??null,llama_cpp_build:typeof build==='string'?build:build?JSON.stringify(build):null,
-      expected_llama_cpp_build:'llama.cpp b11687',server_flags:flags,cpu_brand:cpus()[0]?.model??'unknown',ram_bytes:totalmem(),os:`${platform()} ${release()} ${arch()}`,node_version:process.version,
+      verified_sha256:identity?.verified_sha256??null,llama_cpp_build:typeof build==='string'?build:build?JSON.stringify(build):runtime.build,
+      expected_llama_cpp_build:'llama.cpp b11687',server_flags:runtime.flags,cpu_brand:cpus()[0]?.model??'unknown',ram_bytes:totalmem(),os:`${platform()} ${release()} ${arch()}`,node_version:process.version,
       start_utc:start,end_utc:new Date().toISOString(),other_heavy_processes:null,split:options.split,case_ids:results.map(c=>c.id),
       provenance:options.dryRun?'hand-written test fixture; offline plumbing check only':'live llama-server; model hash checked once before serial cases'},
-    cases:results,aggregate:aggregateMetrics(results.map(c=>c.metrics)),by_split};
+    cases:results,aggregate:aggregateMetrics(results.map(c=>c.metrics)),by_split,machine_load:summarizeMachineLoad(loadSamples)};
   const utc=start.replaceAll(/[-:.]/g,'');
   // Dry runs never enter the live result set read by eval:report.
   const directory=resolve(options.out??join(repoRoot,'eval/results'),options.dryRun?'dry-run':'.');
@@ -193,7 +237,7 @@ export async function runEvaluation(options:Options,deps:RunDependencies={}):Pro
 }
 export async function main(args=process.argv.slice(2)):Promise<number> {
   try {
-    const {path,result}=await runEvaluation(parseArgs(args));
+    const {path,result}=await runEvaluation(parseArgs(args),{onCaseComplete:c=>console.log(`${c.id}: ${c.wall_ms} ms; ${c.error?'error '+c.error.code:'system labels '+c.metrics.label_accuracy_system.numerator+'/'+c.metrics.label_accuracy_system.denominator}; attempts ${c.metrics.attempts??'unknown'}`)});
     console.log(`${result.dry_run?'DRY RUN (hand-written fixtures)':'LIVE'}: ${result.cases.length} cases; ${result.cases.filter(c=>c.error).length} errors. Saved ${path}`);
     return 0;
   } catch(error) {

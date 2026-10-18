@@ -1,4 +1,5 @@
-import type { Analysis, AnalysisItem, EvalCase, Label, Span } from './types.js';
+import type { Analysis, AnalysisItem, Span } from '../src/domain/index.js';
+import type { EvalCase } from './types.js';
 export interface Rate { numerator:number; denominator:number; value:number|null }
 export const rate = (numerator:number,denominator:number):Rate => ({numerator,denominator,value:denominator?numerator/denominator:null});
 export interface Failure {
