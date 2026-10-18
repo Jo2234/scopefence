@@ -22,3 +22,11 @@ Owned by the lead; workers record their deviations in `plan-changes.md`.
 - **Held-out (10 cases, 14 gold items):** Gemma 4 E2B system labels 10/14, citations 9/10, clarification recall 1/3, injection resisted 1/1, JSON valid first try 10/10, median 34.8 s / p90 46.4 s. Gemma 3 1B: labels 1/14 (many missed or spurious items); its raw label obeyed the test-05 injection, and the deterministic layer neutralised it.
 - **Latency gate:** E2B meets the ~60 s target on these cases **even under load averages of ~29–44**, so the planned quiet-machine rerun is cancelled (the decision doesn't depend on it). Latency is reported with its load context and is not presented as a benchmark.
 - E2B remains the product model; 1B is documented as a failed lighter alternative.
+
+## 2026-10-18 15:03 SGT — GPT-6 Astra HIGH quota fallback, existing lead
+
+- Resumed thread `5ad14fd7-90f6-415e-b763-9cd090517ddf`, job `control/jobs/dev-opus.json`, after the fresh post-reset `usage_limit` recorded at 07:02 UTC. Actual provider/model: `codex` / `gpt-6-astra`, high effort. No replacement lead, worker or scheduler.
+- Reviewed root/control policies, accepted decisions, frozen detailed plan, current clean main `238a24b`, existing worker/lead job records and release handoff. Private-upload receipt now verifies `238a24b`; the old export’s “awaiting relay” statement was stale.
+- All four existing Sol HIGH workers were accepted and settled by the coordinator at 12:38 SGT; DEV currently has zero allocated active workers. Preserve those identities and request reallocation only if a concrete app/test fix is found.
+- Accepted the independent reviewer’s three early release-document findings. Corrected team authorship, recording claims, and Markdown/HTML choreography; see plan-changes entry. Johan’s personal reflections remain placeholders.
+- Independent review of pinned `238a24b` continues in reviewer thread `6aa97663-2029-48aa-b147-99d0c3a957b4`. This lead’s quota fallback is not that review or a submission pass. No final independent verdict is inferred.
