@@ -73,6 +73,10 @@ SCOPEFENCE_MODE=fixture SCOPEFENCE_FIXTURE_DIR=/absolute/path/to/fixtures SCOPEF
 
 Open `http://127.0.0.1:5278`. The Vite development proxy targets 5178; use the default application port for `pnpm dev`, or use the built server when overriding the port.
 
+## Apple Silicon performance follow-up
+
+On an M5 MacBook Air with 32 GB RAM, the unchanged bakery demo took **11.0–12.1 seconds** across five live API calls, median **11.4 seconds**, using the same Gemma weights and native llama.cpp b11687 with GPU offload. Model startup was measured separately. See [the measurements and reproduction instructions](docs/m5-performance.md). The historical Intel accuracy evaluation below is unchanged; its CPU timings describe that older shared machine.
+
 ## Checks and evaluation
 
 ```sh

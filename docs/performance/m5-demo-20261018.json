@@ -1,0 +1,1474 @@
+{
+  "started_utc": "2026-10-18T08:43:36.415603+00:00",
+  "purpose": "M5 performance follow-up; no prompt tuning or accuracy re-evaluation",
+  "workload": "Five serial API analyses of unchanged synthetic demo-1; first request after fresh server then four warm repeats; not five different cases",
+  "source_commit": "c7a960943868b1418ffc533e181af1c9364399b4",
+  "hardware": {
+    "machine_name": "MacBook Air",
+    "machine_model": "Mac17,3",
+    "chip_type": "Apple M5",
+    "physical_memory": "32 GB",
+    "number_processors": "proc 10:4:0:6"
+  },
+  "macos": "27.0.1",
+  "runtime": "llama.cpp b11687 official macOS arm64",
+  "runtime_sha256": "f5abcc03d3a4d20a25b7080d617632fcdba5c8ceef2b075ef2879b5130cabe80",
+  "model": "gemma-4-E2B-it-Q4_0.gguf",
+  "model_sha256": "8e30dff3ac4c8434c49a7036fa15564bdbb6044e42bf04550bf1a096ad7e6a52",
+  "node": "v24.19.0",
+  "flags": [
+    "-m",
+    "gemma-4-E2B-it-Q4_0.gguf",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8089",
+    "-c",
+    "8192",
+    "-t",
+    "4",
+    "-ngl",
+    "99",
+    "-np",
+    "1",
+    "--jinja",
+    "--reasoning-budget",
+    "0",
+    "--no-webui",
+    "--seed",
+    "42",
+    "--cors-origins",
+    "",
+    "--no-cors-credentials"
+  ],
+  "demo_sha256": "d8a5b0598f7cef3196307ab8b16be8d234b27f2072047034b4322f34f2cb4b07",
+  "prompt_sha256": "9421640218223175c37720ef93e113beaa397dcdcaec7855740acfc727e3bd94",
+  "runs": [
+    {
+      "run": 1,
+      "kind": "first request after fresh model start",
+      "wall_ms": 12143.275,
+      "http_status": 200,
+      "load_before": [
+        7.31298828125,
+        4.14501953125,
+        3.13037109375
+      ],
+      "load_after": [
+        7.66455078125,
+        4.32177734375,
+        3.20458984375
+      ],
+      "response": {
+        "analysis": {
+          "id": "2393b4e3-0c76-4ec2-8aa7-a70eceadfdfe",
+          "reference": "SF-cdb1aa05",
+          "mode": "live",
+          "model": {
+            "id": "gemma-4-e2b-it-q4_0",
+            "file": "gemma-4-E2B-it-Q4_0.gguf",
+            "runtime": "llama.cpp b11687"
+          },
+          "prompt_version": "pv1",
+          "created_at": "2026-10-18T08:43:57.730Z",
+          "latency_ms": 12139,
+          "attempts": 1,
+          "timings": {
+            "prompt_tokens": 750,
+            "predicted_tokens": 609,
+            "prompt_ms": 894.361,
+            "predicted_ms": 11234.118
+          },
+          "input": {
+            "brief": "Project: Maple & Fern Bakery rebrand.\nCreate two logo concepts in full colour.\nDevelop one selected logo with the bakery tagline.\nDesign a double-sided business card.\nDesign one A2 menu board.\nProvide a brand colour palette.\nProvide a favicon based on the selected logo.\nTwo revision rounds are included for the agreed designs.\nInitial concepts are due 20 October 2026.\nFinal agreed assets are due 30 October 2026.",
+            "message": "Hi Rowan, thanks for the concepts! Please don't change the logo, just make the tagline a bit bigger. Could you add a social media kit for Instagram with five templates? Also, could you make the menu board feel more premium? By the Instagram kit I mean a set of five reusable social post templates. Thanks for helping us get ready for opening day!",
+            "rate_card": {
+              "currency": "SGD",
+              "hourly_rate_minor": 8000,
+              "effort_hours": {
+                "xs": 0.5,
+                "s": 1.5,
+                "m": 4,
+                "l": 8
+              },
+              "deliverables": [
+                {
+                  "id": "social-kit",
+                  "name": "Social media kit, 5 templates",
+                  "price_minor": 35000,
+                  "unit": "per kit"
+                },
+                {
+                  "id": "extra-concept",
+                  "name": "Additional logo concept",
+                  "price_minor": 22000,
+                  "unit": "per concept"
+                }
+              ],
+              "revision_rounds_included": 2,
+              "revision_rounds_used": 1,
+              "freelancer_name": "Rowan Example",
+              "client_name": "Maple & Fern Bakery",
+              "project_name": "Bakery rebrand"
+            }
+          },
+          "truncated": {
+            "brief": false,
+            "message": false,
+            "brief_dropped_chars": 0,
+            "message_dropped_chars": 0
+          },
+          "clauses": [
+            {
+              "id": "C1",
+              "start": 0,
+              "end": 37,
+              "text": "Project: Maple & Fern Bakery rebrand."
+            },
+            {
+              "id": "C2",
+              "start": 38,
+              "end": 78,
+              "text": "Create two logo concepts in full colour."
+            },
+            {
+              "id": "C3",
+              "start": 79,
+              "end": 129,
+              "text": "Develop one selected logo with the bakery tagline."
+            },
+            {
+              "id": "C4",
+              "start": 130,
+              "end": 166,
+              "text": "Design a double-sided business card."
+            },
+            {
+              "id": "C5",
+              "start": 167,
+              "end": 192,
+              "text": "Design one A2 menu board."
+            },
+            {
+              "id": "C6",
+              "start": 193,
+              "end": 224,
+              "text": "Provide a brand colour palette."
+            },
+            {
+              "id": "C7",
+              "start": 225,
+              "end": 270,
+              "text": "Provide a favicon based on the selected logo."
+            },
+            {
+              "id": "C8",
+              "start": 271,
+              "end": 327,
+              "text": "Two revision rounds are included for the agreed designs."
+            },
+            {
+              "id": "C9",
+              "start": 328,
+              "end": 369,
+              "text": "Initial concepts are due 20 October 2026."
+            },
+            {
+              "id": "C10",
+              "start": 370,
+              "end": 414,
+              "text": "Final agreed assets are due 30 October 2026."
+            }
+          ],
+          "injection": {
+            "suspected": false,
+            "spans": []
+          },
+          "items": [
+            {
+              "id": "I1",
+              "request": "Adjust the size of the tagline in the logo.",
+              "message_quote": "Please don't change the logo, just make the tagline a bit bigger.",
+              "message_span": {
+                "start": 35,
+                "end": 100
+              },
+              "model_label": "extra_work",
+              "label": "extra_work",
+              "reason": "Adjusting the tagline size is not explicitly covered by the brief.",
+              "question": "What specific size or adjustment are you looking for for the tagline?",
+              "reason_codes": [],
+              "model_clause_id": "C3",
+              "clause_id": "C3",
+              "brief_quote": "Develop one selected logo with the bakery tagline.",
+              "brief_span": {
+                "start": 79,
+                "end": 129
+              },
+              "citation_status": "verified",
+              "included_basis": "none",
+              "deliverable_id": "custom",
+              "effort": "xs",
+              "pricing": {
+                "mode": "hourly",
+                "hours_hundredths": 50,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            },
+            {
+              "id": "I2",
+              "request": "Create a social media kit with five Instagram templates.",
+              "message_quote": "Could you add a social media kit for Instagram with five templates?",
+              "message_span": {
+                "start": 101,
+                "end": 168
+              },
+              "model_label": "extra_work",
+              "label": "extra_work",
+              "reason": "A social media kit was not specified in the brief.",
+              "question": "Are you requesting a social media kit as an additional deliverable?",
+              "reason_codes": [],
+              "model_clause_id": null,
+              "clause_id": null,
+              "brief_quote": "",
+              "brief_span": null,
+              "citation_status": "absent",
+              "included_basis": "none",
+              "deliverable_id": "social-kit",
+              "effort": "m",
+              "pricing": {
+                "mode": "fixed",
+                "hours_hundredths": null,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            },
+            {
+              "id": "I3",
+              "request": "Redesign the A2 menu board to look more premium.",
+              "message_quote": "could you make the menu board feel more premium?",
+              "message_span": {
+                "start": 175,
+                "end": 223
+              },
+              "model_label": "extra_work",
+              "label": "extra_work",
+              "reason": "The brief only asks to design the board, not to enhance its aesthetic quality.",
+              "question": "What specific design elements would you like to change to make it feel more premium?",
+              "reason_codes": [],
+              "model_clause_id": "C5",
+              "clause_id": "C5",
+              "brief_quote": "Design one A2 menu board.",
+              "brief_span": {
+                "start": 167,
+                "end": 192
+              },
+              "citation_status": "verified",
+              "included_basis": "none",
+              "deliverable_id": "custom",
+              "effort": "s",
+              "pricing": {
+                "mode": "hourly",
+                "hours_hundredths": 150,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            },
+            {
+              "id": "I4",
+              "request": "Clarification on the social media kit scope.",
+              "message_quote": "By the Instagram kit I mean a set of five reusable social post templates.",
+              "message_span": {
+                "start": 224,
+                "end": 297
+              },
+              "model_label": "needs_clarification",
+              "label": "needs_clarification",
+              "reason": "The client clarifies the scope of the requested social media kit.",
+              "question": "Can you confirm if the five templates should be for Instagram specifically, or if they should be adaptable for other platforms?",
+              "reason_codes": [],
+              "model_clause_id": null,
+              "clause_id": null,
+              "brief_quote": "",
+              "brief_span": null,
+              "citation_status": "absent",
+              "included_basis": "none",
+              "deliverable_id": "social-kit",
+              "effort": "xs",
+              "pricing": {
+                "mode": "none",
+                "hours_hundredths": null,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            }
+          ],
+          "warnings": [],
+          "raw_model_output": "{\n  \"items\": [\n    {\n      \"message_quote\": \"Please don't change the logo, just make the tagline a bit bigger.\",\n      \"request\": \"Adjust the size of the tagline in the logo.\",\n      \"clause_id\": \"C3\",\n      \"brief_quote\": \"Develop one selected logo with the bakery tagline.\",\n      \"label\": \"extra_work\",\n      \"included_basis\": \"none\",\n      \"reason\": \"Adjusting the tagline size is not explicitly covered by the brief.\",\n      \"question\": \"What specific size or adjustment are you looking for for the tagline?\",\n      \"deliverable_id\": \"custom\",\n      \"effort\": \"xs\"\n    },\n    {\n      \"message_quote\": \"Could you add a social media kit for Instagram with five templates?\",\n      \"request\": \"Create a social media kit with five Instagram templates.\",\n      \"clause_id\": \"none\",\n      \"brief_quote\": \"\",\n      \"label\": \"extra_work\",\n      \"included_basis\": \"none\",\n      \"reason\": \"A social media kit was not specified in the brief.\",\n      \"question\": \"Are you requesting a social media kit as an additional deliverable?\",\n      \"deliverable_id\": \"social-kit\",\n      \"effort\": \"m\"\n    },\n    {\n      \"message_quote\": \"could you make the menu board feel more premium?\",\n      \"request\": \"Redesign the A2 menu board to look more premium.\",\n      \"clause_id\": \"C5\",\n      \"brief_quote\": \"Design one A2 menu board.\",\n      \"label\": \"extra_work\",\n      \"included_basis\": \"none\",\n      \"reason\": \"The brief only asks to design the board, not to enhance its aesthetic quality.\",\n      \"question\": \"What specific design elements would you like to change to make it feel more premium?\",\n      \"deliverable_id\": \"custom\",\n      \"effort\": \"s\"\n    },\n    {\n      \"message_quote\": \"By the Instagram kit I mean a set of five reusable social post templates.\",\n      \"request\": \"Clarification on the social media kit scope.\",\n      \"clause_id\": \"none\",\n      \"brief_quote\": \"\",\n      \"label\": \"needs_clarification\",\n      \"included_basis\": \"none\",\n      \"reason\": \"The client clarifies the scope of the requested social media kit.\",\n      \"question\": \"Can you confirm if the five templates should be for Instagram specifically, or if they should be adaptable for other platforms?\",\n      \"deliverable_id\": \"social-kit\",\n      \"effort\": \"xs\"\n    }\n  ]\n}"
+        }
+      }
+    },
+    {
+      "run": 2,
+      "kind": "warm repeated identical input",
+      "wall_ms": 11398.391,
+      "http_status": 200,
+      "load_before": [
+        7.66455078125,
+        4.32177734375,
+        3.20458984375
+      ],
+      "load_after": [
+        8.4462890625,
+        4.63720703125,
+        3.3349609375
+      ],
+      "response": {
+        "analysis": {
+          "id": "e5ddd050-65ed-47a2-b63e-21a0a1b123bf",
+          "reference": "SF-cdb1aa05",
+          "mode": "live",
+          "model": {
+            "id": "gemma-4-e2b-it-q4_0",
+            "file": "gemma-4-E2B-it-Q4_0.gguf",
+            "runtime": "llama.cpp b11687"
+          },
+          "prompt_version": "pv1",
+          "created_at": "2026-10-18T08:44:09.129Z",
+          "latency_ms": 11397,
+          "attempts": 1,
+          "timings": {
+            "prompt_tokens": 5,
+            "predicted_tokens": 609,
+            "prompt_ms": 42.503,
+            "predicted_ms": 11345.813
+          },
+          "input": {
+            "brief": "Project: Maple & Fern Bakery rebrand.\nCreate two logo concepts in full colour.\nDevelop one selected logo with the bakery tagline.\nDesign a double-sided business card.\nDesign one A2 menu board.\nProvide a brand colour palette.\nProvide a favicon based on the selected logo.\nTwo revision rounds are included for the agreed designs.\nInitial concepts are due 20 October 2026.\nFinal agreed assets are due 30 October 2026.",
+            "message": "Hi Rowan, thanks for the concepts! Please don't change the logo, just make the tagline a bit bigger. Could you add a social media kit for Instagram with five templates? Also, could you make the menu board feel more premium? By the Instagram kit I mean a set of five reusable social post templates. Thanks for helping us get ready for opening day!",
+            "rate_card": {
+              "currency": "SGD",
+              "hourly_rate_minor": 8000,
+              "effort_hours": {
+                "xs": 0.5,
+                "s": 1.5,
+                "m": 4,
+                "l": 8
+              },
+              "deliverables": [
+                {
+                  "id": "social-kit",
+                  "name": "Social media kit, 5 templates",
+                  "price_minor": 35000,
+                  "unit": "per kit"
+                },
+                {
+                  "id": "extra-concept",
+                  "name": "Additional logo concept",
+                  "price_minor": 22000,
+                  "unit": "per concept"
+                }
+              ],
+              "revision_rounds_included": 2,
+              "revision_rounds_used": 1,
+              "freelancer_name": "Rowan Example",
+              "client_name": "Maple & Fern Bakery",
+              "project_name": "Bakery rebrand"
+            }
+          },
+          "truncated": {
+            "brief": false,
+            "message": false,
+            "brief_dropped_chars": 0,
+            "message_dropped_chars": 0
+          },
+          "clauses": [
+            {
+              "id": "C1",
+              "start": 0,
+              "end": 37,
+              "text": "Project: Maple & Fern Bakery rebrand."
+            },
+            {
+              "id": "C2",
+              "start": 38,
+              "end": 78,
+              "text": "Create two logo concepts in full colour."
+            },
+            {
+              "id": "C3",
+              "start": 79,
+              "end": 129,
+              "text": "Develop one selected logo with the bakery tagline."
+            },
+            {
+              "id": "C4",
+              "start": 130,
+              "end": 166,
+              "text": "Design a double-sided business card."
+            },
+            {
+              "id": "C5",
+              "start": 167,
+              "end": 192,
+              "text": "Design one A2 menu board."
+            },
+            {
+              "id": "C6",
+              "start": 193,
+              "end": 224,
+              "text": "Provide a brand colour palette."
+            },
+            {
+              "id": "C7",
+              "start": 225,
+              "end": 270,
+              "text": "Provide a favicon based on the selected logo."
+            },
+            {
+              "id": "C8",
+              "start": 271,
+              "end": 327,
+              "text": "Two revision rounds are included for the agreed designs."
+            },
+            {
+              "id": "C9",
+              "start": 328,
+              "end": 369,
+              "text": "Initial concepts are due 20 October 2026."
+            },
+            {
+              "id": "C10",
+              "start": 370,
+              "end": 414,
+              "text": "Final agreed assets are due 30 October 2026."
+            }
+          ],
+          "injection": {
+            "suspected": false,
+            "spans": []
+          },
+          "items": [
+            {
+              "id": "I1",
+              "request": "Adjust the size of the tagline in the logo.",
+              "message_quote": "Please don't change the logo, just make the tagline a bit bigger.",
+              "message_span": {
+                "start": 35,
+                "end": 100
+              },
+              "model_label": "extra_work",
+              "label": "extra_work",
+              "reason": "Adjusting the tagline size is not explicitly covered by the brief.",
+              "question": "What specific size or adjustment are you looking for for the tagline?",
+              "reason_codes": [],
+              "model_clause_id": "C3",
+              "clause_id": "C3",
+              "brief_quote": "Develop one selected logo with the bakery tagline.",
+              "brief_span": {
+                "start": 79,
+                "end": 129
+              },
+              "citation_status": "verified",
+              "included_basis": "none",
+              "deliverable_id": "custom",
+              "effort": "xs",
+              "pricing": {
+                "mode": "hourly",
+                "hours_hundredths": 50,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            },
+            {
+              "id": "I2",
+              "request": "Create a social media kit with five Instagram templates.",
+              "message_quote": "Could you add a social media kit for Instagram with five templates?",
+              "message_span": {
+                "start": 101,
+                "end": 168
+              },
+              "model_label": "extra_work",
+              "label": "extra_work",
+              "reason": "A social media kit was not specified in the brief.",
+              "question": "Are you requesting a social media kit as an additional deliverable?",
+              "reason_codes": [],
+              "model_clause_id": null,
+              "clause_id": null,
+              "brief_quote": "",
+              "brief_span": null,
+              "citation_status": "absent",
+              "included_basis": "none",
+              "deliverable_id": "social-kit",
+              "effort": "m",
+              "pricing": {
+                "mode": "fixed",
+                "hours_hundredths": null,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            },
+            {
+              "id": "I3",
+              "request": "Redesign the A2 menu board to look more premium.",
+              "message_quote": "could you make the menu board feel more premium?",
+              "message_span": {
+                "start": 175,
+                "end": 223
+              },
+              "model_label": "extra_work",
+              "label": "extra_work",
+              "reason": "The brief only asks to design the board, not to enhance its aesthetic quality.",
+              "question": "What specific design elements would you like to change to make it feel more premium?",
+              "reason_codes": [],
+              "model_clause_id": "C5",
+              "clause_id": "C5",
+              "brief_quote": "Design one A2 menu board.",
+              "brief_span": {
+                "start": 167,
+                "end": 192
+              },
+              "citation_status": "verified",
+              "included_basis": "none",
+              "deliverable_id": "custom",
+              "effort": "s",
+              "pricing": {
+                "mode": "hourly",
+                "hours_hundredths": 150,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            },
+            {
+              "id": "I4",
+              "request": "Clarification on the social media kit scope.",
+              "message_quote": "By the Instagram kit I mean a set of five reusable social post templates.",
+              "message_span": {
+                "start": 224,
+                "end": 297
+              },
+              "model_label": "needs_clarification",
+              "label": "needs_clarification",
+              "reason": "The client clarifies the scope of the requested social media kit.",
+              "question": "Can you confirm if the five templates should be for Instagram specifically, or if they should be adaptable for other platforms?",
+              "reason_codes": [],
+              "model_clause_id": null,
+              "clause_id": null,
+              "brief_quote": "",
+              "brief_span": null,
+              "citation_status": "absent",
+              "included_basis": "none",
+              "deliverable_id": "social-kit",
+              "effort": "xs",
+              "pricing": {
+                "mode": "none",
+                "hours_hundredths": null,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            }
+          ],
+          "warnings": [],
+          "raw_model_output": "{\n  \"items\": [\n    {\n      \"message_quote\": \"Please don't change the logo, just make the tagline a bit bigger.\",\n      \"request\": \"Adjust the size of the tagline in the logo.\",\n      \"clause_id\": \"C3\",\n      \"brief_quote\": \"Develop one selected logo with the bakery tagline.\",\n      \"label\": \"extra_work\",\n      \"included_basis\": \"none\",\n      \"reason\": \"Adjusting the tagline size is not explicitly covered by the brief.\",\n      \"question\": \"What specific size or adjustment are you looking for for the tagline?\",\n      \"deliverable_id\": \"custom\",\n      \"effort\": \"xs\"\n    },\n    {\n      \"message_quote\": \"Could you add a social media kit for Instagram with five templates?\",\n      \"request\": \"Create a social media kit with five Instagram templates.\",\n      \"clause_id\": \"none\",\n      \"brief_quote\": \"\",\n      \"label\": \"extra_work\",\n      \"included_basis\": \"none\",\n      \"reason\": \"A social media kit was not specified in the brief.\",\n      \"question\": \"Are you requesting a social media kit as an additional deliverable?\",\n      \"deliverable_id\": \"social-kit\",\n      \"effort\": \"m\"\n    },\n    {\n      \"message_quote\": \"could you make the menu board feel more premium?\",\n      \"request\": \"Redesign the A2 menu board to look more premium.\",\n      \"clause_id\": \"C5\",\n      \"brief_quote\": \"Design one A2 menu board.\",\n      \"label\": \"extra_work\",\n      \"included_basis\": \"none\",\n      \"reason\": \"The brief only asks to design the board, not to enhance its aesthetic quality.\",\n      \"question\": \"What specific design elements would you like to change to make it feel more premium?\",\n      \"deliverable_id\": \"custom\",\n      \"effort\": \"s\"\n    },\n    {\n      \"message_quote\": \"By the Instagram kit I mean a set of five reusable social post templates.\",\n      \"request\": \"Clarification on the social media kit scope.\",\n      \"clause_id\": \"none\",\n      \"brief_quote\": \"\",\n      \"label\": \"needs_clarification\",\n      \"included_basis\": \"none\",\n      \"reason\": \"The client clarifies the scope of the requested social media kit.\",\n      \"question\": \"Can you confirm if the five templates should be for Instagram specifically, or if they should be adaptable for other platforms?\",\n      \"deliverable_id\": \"social-kit\",\n      \"effort\": \"xs\"\n    }\n  ]\n}"
+        }
+      }
+    },
+    {
+      "run": 3,
+      "kind": "warm repeated identical input",
+      "wall_ms": 11723.94,
+      "http_status": 200,
+      "load_before": [
+        8.4462890625,
+        4.63720703125,
+        3.3349609375
+      ],
+      "load_after": [
+        7.53466796875,
+        4.56640625,
+        3.32470703125
+      ],
+      "response": {
+        "analysis": {
+          "id": "0348016c-8c2c-45e2-859c-7057a11965e8",
+          "reference": "SF-cdb1aa05",
+          "mode": "live",
+          "model": {
+            "id": "gemma-4-e2b-it-q4_0",
+            "file": "gemma-4-E2B-it-Q4_0.gguf",
+            "runtime": "llama.cpp b11687"
+          },
+          "prompt_version": "pv1",
+          "created_at": "2026-10-18T08:44:20.854Z",
+          "latency_ms": 11722,
+          "attempts": 1,
+          "timings": {
+            "prompt_tokens": 5,
+            "predicted_tokens": 609,
+            "prompt_ms": 41.115,
+            "predicted_ms": 11673.364
+          },
+          "input": {
+            "brief": "Project: Maple & Fern Bakery rebrand.\nCreate two logo concepts in full colour.\nDevelop one selected logo with the bakery tagline.\nDesign a double-sided business card.\nDesign one A2 menu board.\nProvide a brand colour palette.\nProvide a favicon based on the selected logo.\nTwo revision rounds are included for the agreed designs.\nInitial concepts are due 20 October 2026.\nFinal agreed assets are due 30 October 2026.",
+            "message": "Hi Rowan, thanks for the concepts! Please don't change the logo, just make the tagline a bit bigger. Could you add a social media kit for Instagram with five templates? Also, could you make the menu board feel more premium? By the Instagram kit I mean a set of five reusable social post templates. Thanks for helping us get ready for opening day!",
+            "rate_card": {
+              "currency": "SGD",
+              "hourly_rate_minor": 8000,
+              "effort_hours": {
+                "xs": 0.5,
+                "s": 1.5,
+                "m": 4,
+                "l": 8
+              },
+              "deliverables": [
+                {
+                  "id": "social-kit",
+                  "name": "Social media kit, 5 templates",
+                  "price_minor": 35000,
+                  "unit": "per kit"
+                },
+                {
+                  "id": "extra-concept",
+                  "name": "Additional logo concept",
+                  "price_minor": 22000,
+                  "unit": "per concept"
+                }
+              ],
+              "revision_rounds_included": 2,
+              "revision_rounds_used": 1,
+              "freelancer_name": "Rowan Example",
+              "client_name": "Maple & Fern Bakery",
+              "project_name": "Bakery rebrand"
+            }
+          },
+          "truncated": {
+            "brief": false,
+            "message": false,
+            "brief_dropped_chars": 0,
+            "message_dropped_chars": 0
+          },
+          "clauses": [
+            {
+              "id": "C1",
+              "start": 0,
+              "end": 37,
+              "text": "Project: Maple & Fern Bakery rebrand."
+            },
+            {
+              "id": "C2",
+              "start": 38,
+              "end": 78,
+              "text": "Create two logo concepts in full colour."
+            },
+            {
+              "id": "C3",
+              "start": 79,
+              "end": 129,
+              "text": "Develop one selected logo with the bakery tagline."
+            },
+            {
+              "id": "C4",
+              "start": 130,
+              "end": 166,
+              "text": "Design a double-sided business card."
+            },
+            {
+              "id": "C5",
+              "start": 167,
+              "end": 192,
+              "text": "Design one A2 menu board."
+            },
+            {
+              "id": "C6",
+              "start": 193,
+              "end": 224,
+              "text": "Provide a brand colour palette."
+            },
+            {
+              "id": "C7",
+              "start": 225,
+              "end": 270,
+              "text": "Provide a favicon based on the selected logo."
+            },
+            {
+              "id": "C8",
+              "start": 271,
+              "end": 327,
+              "text": "Two revision rounds are included for the agreed designs."
+            },
+            {
+              "id": "C9",
+              "start": 328,
+              "end": 369,
+              "text": "Initial concepts are due 20 October 2026."
+            },
+            {
+              "id": "C10",
+              "start": 370,
+              "end": 414,
+              "text": "Final agreed assets are due 30 October 2026."
+            }
+          ],
+          "injection": {
+            "suspected": false,
+            "spans": []
+          },
+          "items": [
+            {
+              "id": "I1",
+              "request": "Adjust the size of the tagline in the logo.",
+              "message_quote": "Please don't change the logo, just make the tagline a bit bigger.",
+              "message_span": {
+                "start": 35,
+                "end": 100
+              },
+              "model_label": "extra_work",
+              "label": "extra_work",
+              "reason": "Adjusting the tagline size is not explicitly covered by the brief.",
+              "question": "What specific size or adjustment are you looking for for the tagline?",
+              "reason_codes": [],
+              "model_clause_id": "C3",
+              "clause_id": "C3",
+              "brief_quote": "Develop one selected logo with the bakery tagline.",
+              "brief_span": {
+                "start": 79,
+                "end": 129
+              },
+              "citation_status": "verified",
+              "included_basis": "none",
+              "deliverable_id": "custom",
+              "effort": "xs",
+              "pricing": {
+                "mode": "hourly",
+                "hours_hundredths": 50,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            },
+            {
+              "id": "I2",
+              "request": "Create a social media kit with five Instagram templates.",
+              "message_quote": "Could you add a social media kit for Instagram with five templates?",
+              "message_span": {
+                "start": 101,
+                "end": 168
+              },
+              "model_label": "extra_work",
+              "label": "extra_work",
+              "reason": "A social media kit was not specified in the brief.",
+              "question": "Are you requesting a social media kit as an additional deliverable?",
+              "reason_codes": [],
+              "model_clause_id": null,
+              "clause_id": null,
+              "brief_quote": "",
+              "brief_span": null,
+              "citation_status": "absent",
+              "included_basis": "none",
+              "deliverable_id": "social-kit",
+              "effort": "m",
+              "pricing": {
+                "mode": "fixed",
+                "hours_hundredths": null,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            },
+            {
+              "id": "I3",
+              "request": "Redesign the A2 menu board to look more premium.",
+              "message_quote": "could you make the menu board feel more premium?",
+              "message_span": {
+                "start": 175,
+                "end": 223
+              },
+              "model_label": "extra_work",
+              "label": "extra_work",
+              "reason": "The brief only asks to design the board, not to enhance its aesthetic quality.",
+              "question": "What specific design elements would you like to change to make it feel more premium?",
+              "reason_codes": [],
+              "model_clause_id": "C5",
+              "clause_id": "C5",
+              "brief_quote": "Design one A2 menu board.",
+              "brief_span": {
+                "start": 167,
+                "end": 192
+              },
+              "citation_status": "verified",
+              "included_basis": "none",
+              "deliverable_id": "custom",
+              "effort": "s",
+              "pricing": {
+                "mode": "hourly",
+                "hours_hundredths": 150,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            },
+            {
+              "id": "I4",
+              "request": "Clarification on the social media kit scope.",
+              "message_quote": "By the Instagram kit I mean a set of five reusable social post templates.",
+              "message_span": {
+                "start": 224,
+                "end": 297
+              },
+              "model_label": "needs_clarification",
+              "label": "needs_clarification",
+              "reason": "The client clarifies the scope of the requested social media kit.",
+              "question": "Can you confirm if the five templates should be for Instagram specifically, or if they should be adaptable for other platforms?",
+              "reason_codes": [],
+              "model_clause_id": null,
+              "clause_id": null,
+              "brief_quote": "",
+              "brief_span": null,
+              "citation_status": "absent",
+              "included_basis": "none",
+              "deliverable_id": "social-kit",
+              "effort": "xs",
+              "pricing": {
+                "mode": "none",
+                "hours_hundredths": null,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            }
+          ],
+          "warnings": [],
+          "raw_model_output": "{\n  \"items\": [\n    {\n      \"message_quote\": \"Please don't change the logo, just make the tagline a bit bigger.\",\n      \"request\": \"Adjust the size of the tagline in the logo.\",\n      \"clause_id\": \"C3\",\n      \"brief_quote\": \"Develop one selected logo with the bakery tagline.\",\n      \"label\": \"extra_work\",\n      \"included_basis\": \"none\",\n      \"reason\": \"Adjusting the tagline size is not explicitly covered by the brief.\",\n      \"question\": \"What specific size or adjustment are you looking for for the tagline?\",\n      \"deliverable_id\": \"custom\",\n      \"effort\": \"xs\"\n    },\n    {\n      \"message_quote\": \"Could you add a social media kit for Instagram with five templates?\",\n      \"request\": \"Create a social media kit with five Instagram templates.\",\n      \"clause_id\": \"none\",\n      \"brief_quote\": \"\",\n      \"label\": \"extra_work\",\n      \"included_basis\": \"none\",\n      \"reason\": \"A social media kit was not specified in the brief.\",\n      \"question\": \"Are you requesting a social media kit as an additional deliverable?\",\n      \"deliverable_id\": \"social-kit\",\n      \"effort\": \"m\"\n    },\n    {\n      \"message_quote\": \"could you make the menu board feel more premium?\",\n      \"request\": \"Redesign the A2 menu board to look more premium.\",\n      \"clause_id\": \"C5\",\n      \"brief_quote\": \"Design one A2 menu board.\",\n      \"label\": \"extra_work\",\n      \"included_basis\": \"none\",\n      \"reason\": \"The brief only asks to design the board, not to enhance its aesthetic quality.\",\n      \"question\": \"What specific design elements would you like to change to make it feel more premium?\",\n      \"deliverable_id\": \"custom\",\n      \"effort\": \"s\"\n    },\n    {\n      \"message_quote\": \"By the Instagram kit I mean a set of five reusable social post templates.\",\n      \"request\": \"Clarification on the social media kit scope.\",\n      \"clause_id\": \"none\",\n      \"brief_quote\": \"\",\n      \"label\": \"needs_clarification\",\n      \"included_basis\": \"none\",\n      \"reason\": \"The client clarifies the scope of the requested social media kit.\",\n      \"question\": \"Can you confirm if the five templates should be for Instagram specifically, or if they should be adaptable for other platforms?\",\n      \"deliverable_id\": \"social-kit\",\n      \"effort\": \"xs\"\n    }\n  ]\n}"
+        }
+      }
+    },
+    {
+      "run": 4,
+      "kind": "warm repeated identical input",
+      "wall_ms": 11029.68,
+      "http_status": 200,
+      "load_before": [
+        7.53466796875,
+        4.56640625,
+        3.32470703125
+      ],
+      "load_after": [
+        6.763671875,
+        4.498046875,
+        3.31494140625
+      ],
+      "response": {
+        "analysis": {
+          "id": "c44c9802-6758-47c3-8d48-52d2cac73e80",
+          "reference": "SF-cdb1aa05",
+          "mode": "live",
+          "model": {
+            "id": "gemma-4-e2b-it-q4_0",
+            "file": "gemma-4-E2B-it-Q4_0.gguf",
+            "runtime": "llama.cpp b11687"
+          },
+          "prompt_version": "pv1",
+          "created_at": "2026-10-18T08:44:31.885Z",
+          "latency_ms": 11028,
+          "attempts": 1,
+          "timings": {
+            "prompt_tokens": 5,
+            "predicted_tokens": 609,
+            "prompt_ms": 40.379,
+            "predicted_ms": 10978.368
+          },
+          "input": {
+            "brief": "Project: Maple & Fern Bakery rebrand.\nCreate two logo concepts in full colour.\nDevelop one selected logo with the bakery tagline.\nDesign a double-sided business card.\nDesign one A2 menu board.\nProvide a brand colour palette.\nProvide a favicon based on the selected logo.\nTwo revision rounds are included for the agreed designs.\nInitial concepts are due 20 October 2026.\nFinal agreed assets are due 30 October 2026.",
+            "message": "Hi Rowan, thanks for the concepts! Please don't change the logo, just make the tagline a bit bigger. Could you add a social media kit for Instagram with five templates? Also, could you make the menu board feel more premium? By the Instagram kit I mean a set of five reusable social post templates. Thanks for helping us get ready for opening day!",
+            "rate_card": {
+              "currency": "SGD",
+              "hourly_rate_minor": 8000,
+              "effort_hours": {
+                "xs": 0.5,
+                "s": 1.5,
+                "m": 4,
+                "l": 8
+              },
+              "deliverables": [
+                {
+                  "id": "social-kit",
+                  "name": "Social media kit, 5 templates",
+                  "price_minor": 35000,
+                  "unit": "per kit"
+                },
+                {
+                  "id": "extra-concept",
+                  "name": "Additional logo concept",
+                  "price_minor": 22000,
+                  "unit": "per concept"
+                }
+              ],
+              "revision_rounds_included": 2,
+              "revision_rounds_used": 1,
+              "freelancer_name": "Rowan Example",
+              "client_name": "Maple & Fern Bakery",
+              "project_name": "Bakery rebrand"
+            }
+          },
+          "truncated": {
+            "brief": false,
+            "message": false,
+            "brief_dropped_chars": 0,
+            "message_dropped_chars": 0
+          },
+          "clauses": [
+            {
+              "id": "C1",
+              "start": 0,
+              "end": 37,
+              "text": "Project: Maple & Fern Bakery rebrand."
+            },
+            {
+              "id": "C2",
+              "start": 38,
+              "end": 78,
+              "text": "Create two logo concepts in full colour."
+            },
+            {
+              "id": "C3",
+              "start": 79,
+              "end": 129,
+              "text": "Develop one selected logo with the bakery tagline."
+            },
+            {
+              "id": "C4",
+              "start": 130,
+              "end": 166,
+              "text": "Design a double-sided business card."
+            },
+            {
+              "id": "C5",
+              "start": 167,
+              "end": 192,
+              "text": "Design one A2 menu board."
+            },
+            {
+              "id": "C6",
+              "start": 193,
+              "end": 224,
+              "text": "Provide a brand colour palette."
+            },
+            {
+              "id": "C7",
+              "start": 225,
+              "end": 270,
+              "text": "Provide a favicon based on the selected logo."
+            },
+            {
+              "id": "C8",
+              "start": 271,
+              "end": 327,
+              "text": "Two revision rounds are included for the agreed designs."
+            },
+            {
+              "id": "C9",
+              "start": 328,
+              "end": 369,
+              "text": "Initial concepts are due 20 October 2026."
+            },
+            {
+              "id": "C10",
+              "start": 370,
+              "end": 414,
+              "text": "Final agreed assets are due 30 October 2026."
+            }
+          ],
+          "injection": {
+            "suspected": false,
+            "spans": []
+          },
+          "items": [
+            {
+              "id": "I1",
+              "request": "Adjust the size of the tagline in the logo.",
+              "message_quote": "Please don't change the logo, just make the tagline a bit bigger.",
+              "message_span": {
+                "start": 35,
+                "end": 100
+              },
+              "model_label": "extra_work",
+              "label": "extra_work",
+              "reason": "Adjusting the tagline size is not explicitly covered by the brief.",
+              "question": "What specific size or adjustment are you looking for for the tagline?",
+              "reason_codes": [],
+              "model_clause_id": "C3",
+              "clause_id": "C3",
+              "brief_quote": "Develop one selected logo with the bakery tagline.",
+              "brief_span": {
+                "start": 79,
+                "end": 129
+              },
+              "citation_status": "verified",
+              "included_basis": "none",
+              "deliverable_id": "custom",
+              "effort": "xs",
+              "pricing": {
+                "mode": "hourly",
+                "hours_hundredths": 50,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            },
+            {
+              "id": "I2",
+              "request": "Create a social media kit with five Instagram templates.",
+              "message_quote": "Could you add a social media kit for Instagram with five templates?",
+              "message_span": {
+                "start": 101,
+                "end": 168
+              },
+              "model_label": "extra_work",
+              "label": "extra_work",
+              "reason": "A social media kit was not specified in the brief.",
+              "question": "Are you requesting a social media kit as an additional deliverable?",
+              "reason_codes": [],
+              "model_clause_id": null,
+              "clause_id": null,
+              "brief_quote": "",
+              "brief_span": null,
+              "citation_status": "absent",
+              "included_basis": "none",
+              "deliverable_id": "social-kit",
+              "effort": "m",
+              "pricing": {
+                "mode": "fixed",
+                "hours_hundredths": null,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            },
+            {
+              "id": "I3",
+              "request": "Redesign the A2 menu board to look more premium.",
+              "message_quote": "could you make the menu board feel more premium?",
+              "message_span": {
+                "start": 175,
+                "end": 223
+              },
+              "model_label": "extra_work",
+              "label": "extra_work",
+              "reason": "The brief only asks to design the board, not to enhance its aesthetic quality.",
+              "question": "What specific design elements would you like to change to make it feel more premium?",
+              "reason_codes": [],
+              "model_clause_id": "C5",
+              "clause_id": "C5",
+              "brief_quote": "Design one A2 menu board.",
+              "brief_span": {
+                "start": 167,
+                "end": 192
+              },
+              "citation_status": "verified",
+              "included_basis": "none",
+              "deliverable_id": "custom",
+              "effort": "s",
+              "pricing": {
+                "mode": "hourly",
+                "hours_hundredths": 150,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            },
+            {
+              "id": "I4",
+              "request": "Clarification on the social media kit scope.",
+              "message_quote": "By the Instagram kit I mean a set of five reusable social post templates.",
+              "message_span": {
+                "start": 224,
+                "end": 297
+              },
+              "model_label": "needs_clarification",
+              "label": "needs_clarification",
+              "reason": "The client clarifies the scope of the requested social media kit.",
+              "question": "Can you confirm if the five templates should be for Instagram specifically, or if they should be adaptable for other platforms?",
+              "reason_codes": [],
+              "model_clause_id": null,
+              "clause_id": null,
+              "brief_quote": "",
+              "brief_span": null,
+              "citation_status": "absent",
+              "included_basis": "none",
+              "deliverable_id": "social-kit",
+              "effort": "xs",
+              "pricing": {
+                "mode": "none",
+                "hours_hundredths": null,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            }
+          ],
+          "warnings": [],
+          "raw_model_output": "{\n  \"items\": [\n    {\n      \"message_quote\": \"Please don't change the logo, just make the tagline a bit bigger.\",\n      \"request\": \"Adjust the size of the tagline in the logo.\",\n      \"clause_id\": \"C3\",\n      \"brief_quote\": \"Develop one selected logo with the bakery tagline.\",\n      \"label\": \"extra_work\",\n      \"included_basis\": \"none\",\n      \"reason\": \"Adjusting the tagline size is not explicitly covered by the brief.\",\n      \"question\": \"What specific size or adjustment are you looking for for the tagline?\",\n      \"deliverable_id\": \"custom\",\n      \"effort\": \"xs\"\n    },\n    {\n      \"message_quote\": \"Could you add a social media kit for Instagram with five templates?\",\n      \"request\": \"Create a social media kit with five Instagram templates.\",\n      \"clause_id\": \"none\",\n      \"brief_quote\": \"\",\n      \"label\": \"extra_work\",\n      \"included_basis\": \"none\",\n      \"reason\": \"A social media kit was not specified in the brief.\",\n      \"question\": \"Are you requesting a social media kit as an additional deliverable?\",\n      \"deliverable_id\": \"social-kit\",\n      \"effort\": \"m\"\n    },\n    {\n      \"message_quote\": \"could you make the menu board feel more premium?\",\n      \"request\": \"Redesign the A2 menu board to look more premium.\",\n      \"clause_id\": \"C5\",\n      \"brief_quote\": \"Design one A2 menu board.\",\n      \"label\": \"extra_work\",\n      \"included_basis\": \"none\",\n      \"reason\": \"The brief only asks to design the board, not to enhance its aesthetic quality.\",\n      \"question\": \"What specific design elements would you like to change to make it feel more premium?\",\n      \"deliverable_id\": \"custom\",\n      \"effort\": \"s\"\n    },\n    {\n      \"message_quote\": \"By the Instagram kit I mean a set of five reusable social post templates.\",\n      \"request\": \"Clarification on the social media kit scope.\",\n      \"clause_id\": \"none\",\n      \"brief_quote\": \"\",\n      \"label\": \"needs_clarification\",\n      \"included_basis\": \"none\",\n      \"reason\": \"The client clarifies the scope of the requested social media kit.\",\n      \"question\": \"Can you confirm if the five templates should be for Instagram specifically, or if they should be adaptable for other platforms?\",\n      \"deliverable_id\": \"social-kit\",\n      \"effort\": \"xs\"\n    }\n  ]\n}"
+        }
+      }
+    },
+    {
+      "run": 5,
+      "kind": "warm repeated identical input",
+      "wall_ms": 11406.158,
+      "http_status": 200,
+      "load_before": [
+        6.763671875,
+        4.498046875,
+        3.31494140625
+      ],
+      "load_after": [
+        6.1171875,
+        4.4326171875,
+        3.30517578125
+      ],
+      "response": {
+        "analysis": {
+          "id": "0c468236-94a8-4f94-b0a3-e86836eca00c",
+          "reference": "SF-cdb1aa05",
+          "mode": "live",
+          "model": {
+            "id": "gemma-4-e2b-it-q4_0",
+            "file": "gemma-4-E2B-it-Q4_0.gguf",
+            "runtime": "llama.cpp b11687"
+          },
+          "prompt_version": "pv1",
+          "created_at": "2026-10-18T08:44:43.292Z",
+          "latency_ms": 11404,
+          "attempts": 1,
+          "timings": {
+            "prompt_tokens": 5,
+            "predicted_tokens": 609,
+            "prompt_ms": 40.936,
+            "predicted_ms": 11356.126
+          },
+          "input": {
+            "brief": "Project: Maple & Fern Bakery rebrand.\nCreate two logo concepts in full colour.\nDevelop one selected logo with the bakery tagline.\nDesign a double-sided business card.\nDesign one A2 menu board.\nProvide a brand colour palette.\nProvide a favicon based on the selected logo.\nTwo revision rounds are included for the agreed designs.\nInitial concepts are due 20 October 2026.\nFinal agreed assets are due 30 October 2026.",
+            "message": "Hi Rowan, thanks for the concepts! Please don't change the logo, just make the tagline a bit bigger. Could you add a social media kit for Instagram with five templates? Also, could you make the menu board feel more premium? By the Instagram kit I mean a set of five reusable social post templates. Thanks for helping us get ready for opening day!",
+            "rate_card": {
+              "currency": "SGD",
+              "hourly_rate_minor": 8000,
+              "effort_hours": {
+                "xs": 0.5,
+                "s": 1.5,
+                "m": 4,
+                "l": 8
+              },
+              "deliverables": [
+                {
+                  "id": "social-kit",
+                  "name": "Social media kit, 5 templates",
+                  "price_minor": 35000,
+                  "unit": "per kit"
+                },
+                {
+                  "id": "extra-concept",
+                  "name": "Additional logo concept",
+                  "price_minor": 22000,
+                  "unit": "per concept"
+                }
+              ],
+              "revision_rounds_included": 2,
+              "revision_rounds_used": 1,
+              "freelancer_name": "Rowan Example",
+              "client_name": "Maple & Fern Bakery",
+              "project_name": "Bakery rebrand"
+            }
+          },
+          "truncated": {
+            "brief": false,
+            "message": false,
+            "brief_dropped_chars": 0,
+            "message_dropped_chars": 0
+          },
+          "clauses": [
+            {
+              "id": "C1",
+              "start": 0,
+              "end": 37,
+              "text": "Project: Maple & Fern Bakery rebrand."
+            },
+            {
+              "id": "C2",
+              "start": 38,
+              "end": 78,
+              "text": "Create two logo concepts in full colour."
+            },
+            {
+              "id": "C3",
+              "start": 79,
+              "end": 129,
+              "text": "Develop one selected logo with the bakery tagline."
+            },
+            {
+              "id": "C4",
+              "start": 130,
+              "end": 166,
+              "text": "Design a double-sided business card."
+            },
+            {
+              "id": "C5",
+              "start": 167,
+              "end": 192,
+              "text": "Design one A2 menu board."
+            },
+            {
+              "id": "C6",
+              "start": 193,
+              "end": 224,
+              "text": "Provide a brand colour palette."
+            },
+            {
+              "id": "C7",
+              "start": 225,
+              "end": 270,
+              "text": "Provide a favicon based on the selected logo."
+            },
+            {
+              "id": "C8",
+              "start": 271,
+              "end": 327,
+              "text": "Two revision rounds are included for the agreed designs."
+            },
+            {
+              "id": "C9",
+              "start": 328,
+              "end": 369,
+              "text": "Initial concepts are due 20 October 2026."
+            },
+            {
+              "id": "C10",
+              "start": 370,
+              "end": 414,
+              "text": "Final agreed assets are due 30 October 2026."
+            }
+          ],
+          "injection": {
+            "suspected": false,
+            "spans": []
+          },
+          "items": [
+            {
+              "id": "I1",
+              "request": "Adjust the size of the tagline in the logo.",
+              "message_quote": "Please don't change the logo, just make the tagline a bit bigger.",
+              "message_span": {
+                "start": 35,
+                "end": 100
+              },
+              "model_label": "extra_work",
+              "label": "extra_work",
+              "reason": "Adjusting the tagline size is not explicitly covered by the brief.",
+              "question": "What specific size or adjustment are you looking for for the tagline?",
+              "reason_codes": [],
+              "model_clause_id": "C3",
+              "clause_id": "C3",
+              "brief_quote": "Develop one selected logo with the bakery tagline.",
+              "brief_span": {
+                "start": 79,
+                "end": 129
+              },
+              "citation_status": "verified",
+              "included_basis": "none",
+              "deliverable_id": "custom",
+              "effort": "xs",
+              "pricing": {
+                "mode": "hourly",
+                "hours_hundredths": 50,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            },
+            {
+              "id": "I2",
+              "request": "Create a social media kit with five Instagram templates.",
+              "message_quote": "Could you add a social media kit for Instagram with five templates?",
+              "message_span": {
+                "start": 101,
+                "end": 168
+              },
+              "model_label": "extra_work",
+              "label": "extra_work",
+              "reason": "A social media kit was not specified in the brief.",
+              "question": "Are you requesting a social media kit as an additional deliverable?",
+              "reason_codes": [],
+              "model_clause_id": null,
+              "clause_id": null,
+              "brief_quote": "",
+              "brief_span": null,
+              "citation_status": "absent",
+              "included_basis": "none",
+              "deliverable_id": "social-kit",
+              "effort": "m",
+              "pricing": {
+                "mode": "fixed",
+                "hours_hundredths": null,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            },
+            {
+              "id": "I3",
+              "request": "Redesign the A2 menu board to look more premium.",
+              "message_quote": "could you make the menu board feel more premium?",
+              "message_span": {
+                "start": 175,
+                "end": 223
+              },
+              "model_label": "extra_work",
+              "label": "extra_work",
+              "reason": "The brief only asks to design the board, not to enhance its aesthetic quality.",
+              "question": "What specific design elements would you like to change to make it feel more premium?",
+              "reason_codes": [],
+              "model_clause_id": "C5",
+              "clause_id": "C5",
+              "brief_quote": "Design one A2 menu board.",
+              "brief_span": {
+                "start": 167,
+                "end": 192
+              },
+              "citation_status": "verified",
+              "included_basis": "none",
+              "deliverable_id": "custom",
+              "effort": "s",
+              "pricing": {
+                "mode": "hourly",
+                "hours_hundredths": 150,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            },
+            {
+              "id": "I4",
+              "request": "Clarification on the social media kit scope.",
+              "message_quote": "By the Instagram kit I mean a set of five reusable social post templates.",
+              "message_span": {
+                "start": 224,
+                "end": 297
+              },
+              "model_label": "needs_clarification",
+              "label": "needs_clarification",
+              "reason": "The client clarifies the scope of the requested social media kit.",
+              "question": "Can you confirm if the five templates should be for Instagram specifically, or if they should be adaptable for other platforms?",
+              "reason_codes": [],
+              "model_clause_id": null,
+              "clause_id": null,
+              "brief_quote": "",
+              "brief_span": null,
+              "citation_status": "absent",
+              "included_basis": "none",
+              "deliverable_id": "social-kit",
+              "effort": "xs",
+              "pricing": {
+                "mode": "none",
+                "hours_hundredths": null,
+                "quantity": 1
+              },
+              "review": "proposed",
+              "edited": false,
+              "duplicate_of": null,
+              "injection_overlap": false
+            }
+          ],
+          "warnings": [],
+          "raw_model_output": "{\n  \"items\": [\n    {\n      \"message_quote\": \"Please don't change the logo, just make the tagline a bit bigger.\",\n      \"request\": \"Adjust the size of the tagline in the logo.\",\n      \"clause_id\": \"C3\",\n      \"brief_quote\": \"Develop one selected logo with the bakery tagline.\",\n      \"label\": \"extra_work\",\n      \"included_basis\": \"none\",\n      \"reason\": \"Adjusting the tagline size is not explicitly covered by the brief.\",\n      \"question\": \"What specific size or adjustment are you looking for for the tagline?\",\n      \"deliverable_id\": \"custom\",\n      \"effort\": \"xs\"\n    },\n    {\n      \"message_quote\": \"Could you add a social media kit for Instagram with five templates?\",\n      \"request\": \"Create a social media kit with five Instagram templates.\",\n      \"clause_id\": \"none\",\n      \"brief_quote\": \"\",\n      \"label\": \"extra_work\",\n      \"included_basis\": \"none\",\n      \"reason\": \"A social media kit was not specified in the brief.\",\n      \"question\": \"Are you requesting a social media kit as an additional deliverable?\",\n      \"deliverable_id\": \"social-kit\",\n      \"effort\": \"m\"\n    },\n    {\n      \"message_quote\": \"could you make the menu board feel more premium?\",\n      \"request\": \"Redesign the A2 menu board to look more premium.\",\n      \"clause_id\": \"C5\",\n      \"brief_quote\": \"Design one A2 menu board.\",\n      \"label\": \"extra_work\",\n      \"included_basis\": \"none\",\n      \"reason\": \"The brief only asks to design the board, not to enhance its aesthetic quality.\",\n      \"question\": \"What specific design elements would you like to change to make it feel more premium?\",\n      \"deliverable_id\": \"custom\",\n      \"effort\": \"s\"\n    },\n    {\n      \"message_quote\": \"By the Instagram kit I mean a set of five reusable social post templates.\",\n      \"request\": \"Clarification on the social media kit scope.\",\n      \"clause_id\": \"none\",\n      \"brief_quote\": \"\",\n      \"label\": \"needs_clarification\",\n      \"included_basis\": \"none\",\n      \"reason\": \"The client clarifies the scope of the requested social media kit.\",\n      \"question\": \"Can you confirm if the five templates should be for Instagram specifically, or if they should be adaptable for other platforms?\",\n      \"deliverable_id\": \"social-kit\",\n      \"effort\": \"xs\"\n    }\n  ]\n}"
+        }
+      }
+    }
+  ],
+  "notes": [
+    "GPU Metal acceleration enabled; Intel historical runs used CPU only. Not an isolated chip benchmark.",
+    "App and model cold startup measured separately from request latency. First request is not a cold filesystem cache claim.",
+    "Normal desktop apps remained open; no competing process stopped.",
+    "No browser rendering or human review time included. API includes inference, validation and reconciliation.",
+    "Performance only: no claim of improved accuracy; frozen prompt and historical held-out results unchanged."
+  ],
+  "model_startup_ms": 8662.504,
+  "app_startup_ms": 429.413,
+  "health": {
+    "ok": true,
+    "mode": "live",
+    "model": {
+      "status": "ready",
+      "id": "gemma-4-e2b-it-q4_0",
+      "file": "gemma-4-E2B-it-Q4_0.gguf",
+      "runtime": "llama.cpp b11687",
+      "is_gemma": true,
+      "registered": true
+    },
+    "limits": {
+      "brief_chars": 8000,
+      "message_chars": 4000
+    },
+    "prompt_version": "pv1"
+  },
+  "summary": {
+    "count": 5,
+    "median_ms": 11406.158,
+    "min_ms": 11029.68,
+    "max_ms": 12143.275,
+    "warm_median_ms": 11402.2745
+  },
+  "owned_process_exit_codes": [
+    0,
+    -15
+  ],
+  "finished_utc": "2026-10-18T08:44:43.432241+00:00",
+  "runtime_build_verified": "b11687-c80475452",
+  "available_gpu_verified": "MTL0: Apple M5",
+  "owned_ports_closed_verified": true
+}
