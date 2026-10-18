@@ -7,7 +7,7 @@ tags: devchallenge, hf26challenge, gemma, opensource
 <!--
 DRAFT for Johan. Rules for this draft:
 - Every [JOHAN: …] placeholder is yours to write in your own voice. Delete any you don't want.
-- Every number in this post comes from docs/eval-report.md / eval/results/*.json at commit {{SHA}}. If you re-run the eval, update the numbers from the new report; never round them up.
+- Every number in this post comes from docs/eval-report.md / eval/results/*.json at commit a42d7d1 (eval results; merged to main in b4de51e). If you re-run the eval, update the numbers from the new report; never round them up.
 - No testimonials, no earnings claims, no legal claims. "My First User" stays only if it really happened.
 - Writing quality is weighted most by the judges: cut anything that doesn't help a reader.
 -->
@@ -38,13 +38,13 @@ You review every row, fix anything Gemma got wrong, and download an editable cha
 
 [JOHAN: video link, ≤ 2 min, recorded with docs/demo-script.md]
 
-The video is real-time apart from one cut while Gemma is thinking. On the machine used for testing (Intel Core i5-8257U Mac, 8 GB RAM, CPU only), one analysis took **34.8 s** (median over the 10 held-out cases, on a busy machine; numbers below).
+The video is real-time apart from one cut while Gemma is thinking. On the machine used for testing (Intel Core i5-8257U Mac, 8 GB RAM, CPU only), one analysis took **34.8 s** (median over the 10 held-out cases, on a busy machine; numbers below). The demo message is longer than most test cases: in a live check it took 87 s on the first call and 62 s once warm (single runs, not a benchmark).
 
 ## Code
 
 {% github Jo2234/hackathon-2026-dev-side-hustle %}
 
-MIT licensed. `pnpm install`, `pnpm runtime:fetch`, `pnpm model:download gemma-4-e2b`, `pnpm model:start`, `pnpm dev`, and it runs fully offline after the downloads.
+MIT licensed. `pnpm install`, `pnpm runtime:fetch`, `pnpm model:download gemma-4-e2b`, `pnpm model:start gemma-4-e2b`, `pnpm build && pnpm start`, and it runs fully offline after the downloads.
 
 ## How I Built It
 
@@ -82,7 +82,7 @@ I wrote 16 small **invented** client scenarios (a bakery, a yoga studio, a bike 
 | Valid JSON on first try | 10/10 | 10/10 |
 | Time per case, median / p90 | 34.8 s / 46.4 s | 35.9 s / 51.3 s |
 
-On the 6 tuning cases Gemma 4 E2B got 6/6, so I never changed the prompt. The timings were taken on a shared, busy machine (load average around 30–44 on 8 threads), so treat them as "roughly half a minute", not as a benchmark.
+On the 6 tuning cases Gemma 4 E2B got 6/6, so I never changed the prompt. The timings were taken on a shared, busy machine (1-minute load average about 35–44 on 8 threads), so treat them as "roughly half a minute", not as a benchmark.
 
 What this does and doesn't show:
 - 10 held-out cases is a smoke test, not a benchmark. I wrote both the cases and the tool.
