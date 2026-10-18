@@ -20,7 +20,7 @@ body{font-family:system-ui,sans-serif;color:#17212b;background:#fff;max-width:96
 <h2>Total: ${money(order.total_minor)}</h2>
 <h2>Already covered by the agreed brief</h2>${covered ? `<ul>${covered}</ul>` : '<p>None.</p>'}
 <h2>Questions before we proceed</h2>${questions ? `<ul>${questions}</ul>` : '<p>None.</p>'}
-<h2>Revision rounds</h2><p>${escape(order.revision.used_before)} of ${escape(order.revision.included)} used before this message; this message uses ${escape(order.revision.used_by_this_message)} round; ${escape(order.revision.remaining_after)} remaining.</p><p>${order.revision.beyond_allowance ? 'Revisions in this message exceed the included allowance and are charged above.' : 'Revisions in this message are within the included allowance.'}</p>
+<h2>Revision rounds</h2><p>${escape(order.revision.used_before)} of ${escape(order.revision.included)} used before this message; this message uses ${order.revision.used_by_this_message === 0 ? 'no revision round' : '1 revision round'}; ${escape(order.revision.remaining_after)} remaining.</p><p>${order.revision.beyond_allowance ? 'Revisions in this message exceed the included allowance and are charged above.' : 'Revisions in this message are within the included allowance.'}</p>
 <footer>Draft prepared with ScopeFence. Please review before sending. This is not legal advice.</footer>
 </body></html>`;
 }
