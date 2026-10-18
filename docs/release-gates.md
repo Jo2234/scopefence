@@ -8,7 +8,7 @@ The authorized main-Mac relay handles the private upload. The lead may review co
 |---|---|---|---|
 | 1 | Main pushed to the private repo | The main-Mac relay pushes `repository.bundle` to `Jo2234/hackathon-2026-dev-side-hustle` and verifies the commit | ☐ |
 | 2 | Code review | Skim the README, `docs/eval-report.md` and `THIRD_PARTY_NOTICES.md`. Run `pnpm install && pnpm test` once if you like | ☐ |
-| 3 | Make the repo **public** | GitHub → Settings → General → Danger Zone → Change visibility → Public. Required, because the post must link to or embed the code | ☐ |
+| 3 | Arrange judging access to the code | The current release plan is to make the repo **public**, only when Johan authorizes/performs that step. The rules require a code link/embed; that clause does not explicitly mandate public visibility. Confirm an acceptable access route before choosing any alternative. Until then, keep the repo private | ☐ |
 | 4 | Record the video (≤ 2 min) | Follow `docs/demo-script.md`. Run `pnpm model:start` first, and turn Wi-Fi off during the analysis to show it is local. Do not show any real client data | ☐ |
 | 5 | Upload the video | YouTube (unlisted is fine) or another host you choose. Copy the link | ☐ |
 | 6 | Write your parts of the post | In `docs/post-draft.md`, replace every `[JOHAN: …]` placeholder in your own words. Fill "My First User" **only** with something that really happened; otherwise delete that section. Decide on "My Agent Session" (default: delete it, or describe the process in a sentence) | ☐ |

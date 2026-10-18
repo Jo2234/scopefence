@@ -30,3 +30,9 @@ Owned by the lead; workers record their deviations in `plan-changes.md`.
 - All four existing Sol HIGH workers were accepted and settled by the coordinator at 12:38 SGT; DEV currently has zero allocated active workers. Preserve those identities and request reallocation only if a concrete app/test fix is found.
 - Accepted the independent reviewer’s three early release-document findings. Corrected team authorship, recording claims, and Markdown/HTML choreography; see plan-changes entry. Johan’s personal reflections remain placeholders.
 - Independent review of pinned `238a24b` continues in reviewer thread `6aa97663-2029-48aa-b147-99d0c3a957b4`. This lead’s quota fallback is not that review or a submission pass. No final independent verdict is inferred.
+
+## 2026-10-18 — independent review accepted and recorded by fallback lead
+
+Read the independent `dev-final-review.md` and `dev-review-status.json` exported by reviewer `6aa97663`. Verdict: **technical pass with stated limitations**, zero blockers, no code fix requested. Reviewer’s runtime checks at `238a24b`: 32-analysis saved-output audit, 70/70 targeted units and 5/5 E1–E5 browser checks with build/typecheck. Separate documentation retest at `61dbb5d` resolves D1/D2/D3 with diff and non-document invariance checks. These are the reviewer’s runs, not new lead runs. D4 model quality/latency and D5 edited-Markdown stale-total behavior remain explicit limitations.
+
+The reviewer confirmed that official text requires a code link/embed without explicitly prescribing public visibility in that clause. Public release remains the chosen plan and Johan’s gated action, not a literal rule quoted here. Updated the release checklist accordingly. Preserve all privacy/submission gates; no workers, heavy jobs or new review round needed for recording this result.
