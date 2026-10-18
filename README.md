@@ -2,7 +2,7 @@
 
 ScopeFence uses local Gemma to map a freelance designer's client requests to the agreed brief, verify cited clauses, and prepare a deterministically priced change order for review.
 
-Status: in development. The domain, model/server pipeline and offline eval runner are integrated; UI and live evaluation release gates are tracked separately.
+Status: the UI, domain, local-Gemma pipeline and held-out eval are integrated. Browser acceptance is covered by Playwright in fixture mode; live-mode browser verification is recorded in [docs/review-2-live.md](docs/review-2-live.md).
 
 Every example is invented and labelled synthetic. Nothing is sent to a client. A person must review each row and the final change order. This is not legal advice.
 
@@ -19,7 +19,7 @@ pnpm smoke:live
 pnpm dev
 ```
 
-Open `http://127.0.0.1:5173`. Vite proxies `/api` to the local Hono server on port 5178. The model listens on `127.0.0.1:8089`. The application has no hosted fallback.
+Open `http://127.0.0.1:5173`. Vite proxies `/api/` requests to the local Hono server on port 5178. The model listens on `127.0.0.1:8089`. The application has no hosted fallback.
 
 Downloads are pinned by revision, byte count and SHA-256 in [the registry](src/model/models.json). Scripts use resumable curl downloads into a new cache directory, verify the file before extracting or using it, and delete a mismatched file. The default cache is `<repo>/.cache`; runtime binaries and weights are never committed. `pnpm model:start` rechecks hashes, refuses another running llama-server, and waits for health readiness. Logs and the pid file are under the cache.
 
@@ -94,7 +94,17 @@ pnpm eval -- --model gemma-4-e2b --split dev
 pnpm eval:report
 ```
 
-`pnpm test:e2e` is the UI slot's Playwright command. UI/browser acceptance and the held-out live eval are separate gates; passing unit tests does not establish those results.
+`pnpm test:e2e` runs the Playwright suite in fixture mode. One worker is recommended on an 8 GB machine: `pnpm exec playwright test --workers=1`. The suite also checks unavailable-model behavior and Vite module routing without loading a model.
+
+Held-out headline: Gemma 4 E2B, frozen prompt pv1, **10/14 system labels, 9/10 exact citations, 1/3 clarification recall, 1/1 injection resisted, median 34.8 s / p90 46.4 s on the shared 8 GB Intel machine under heavy load (1-min load 34.8–44.5)**. See [the evaluation report](docs/eval-report.md) for denominators, failures and machine-load context. The cases are 16 invented, team-labelled examples and not a benchmark; the held-out split contains 10 of those cases. Historical load snapshots describe the eval window, not individual cases.
+
+## Screenshots
+
+These are fixture-mode captures with the purple bar visible:
+
+- [Demo results](docs/screenshots/results-demo-1.png)
+- [Injection demo](docs/screenshots/injection-demo.png)
+- [Change-order panel](docs/screenshots/change-order-panel.png)
 
 ## Model and runtime records
 
