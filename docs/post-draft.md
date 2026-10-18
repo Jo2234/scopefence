@@ -42,7 +42,7 @@ On the machine used for testing (Intel Core i5-8257U Mac, 8 GB RAM, CPU only), a
 
 ## Code
 
-{% github Jo2234/hackathon-2026-dev-side-hustle %}
+{% github Jo2234/scopefence %}
 
 MIT licensed. `pnpm install`, `pnpm runtime:fetch`, `pnpm model:download gemma-4-e2b`, `pnpm model:start gemma-4-e2b`, `pnpm build && pnpm start`, and it runs fully offline after the downloads.
 

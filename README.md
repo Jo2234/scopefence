@@ -127,13 +127,17 @@ The [G0 report](docs/g0-report.md) records the exact flags, verified hashes, str
 - Every included verdict needs a verified exact quote unless the person reviewing overrides it. The deterministic layer checks request quotes, flags instruction-like client text, and excludes detected duplicates. Nothing is auto-approved.
 - Money comes only from the user's rate card and deterministic domain code. Model output never supplies prices or hours.
 - The browser persistence contract saves only the rate card under `scopefence.rate_card.v1`, with a forget action; briefs and messages must not be persisted. UI acceptance is tracked separately.
-- `.gitignore` excludes dependencies, build output, local caches, weights, archives, environment files, logs and browser test output. The repository remains private until Johan's release gate.
+- `.gitignore` excludes dependencies, build output, local caches, weights, archives, environment files, logs and browser test output. The release repository is https://github.com/Jo2234/scopefence; the original development archive remains private.
 
 ## Credits and release status
 
 ScopeFence code is [MIT licensed](LICENSE). Runtime, model and dependency credits are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md), with the installed npm inventory in [docs/licenses.json](docs/licenses.json). Synthetic fixtures are recordings or explicitly marked hand-written test fixtures; there are no real clients, testimonials or user-research claims.
 
-Public release, the video demo and the DEV submission are manual gates in [docs/release-gates.md](docs/release-gates.md).
+Release preparation is tracked in [docs/release-gates.md](docs/release-gates.md). The final DEV submission is performed by Johan.
+
+### Release history
+
+This release preserves the 75 original development commits and their authors, dates, messages and merge structure. Before publication, three internal cross-project planning documents were removed from every historical tree with the owner's approval. This changed commit hashes; the original history is retained privately. Application, test and evaluation file contents are unchanged by that cleanup. Subsequent release-documentation commits are dated when actually made.
 
 ## Commit timeline and deadline note
 

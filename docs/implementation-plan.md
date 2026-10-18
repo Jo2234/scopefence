@@ -27,7 +27,7 @@ Sources (re-fetched on 16 Oct 2026 with `curl -sL -A "Mozilla/5.0 …"`, all HTT
 | R2 | "A brand-new project built during the Entry Period that uses open-weight models and/or open-source AI tools … as a core part" | First commit is 16 Oct 2026, inside the window. Gemma (open weights) runs locally in llama.cpp (MIT) and does the clause mapping. Without the model the product has no analysis step | git history; `docs/g0-report.md`; eval results | slot1, slot3 |
 | R3 | "addresses the Week 2 theme, 'Side Hustle,' by offering something a real person or business would plausibly pay for" | Freelance designers lose money to unpriced scope creep. ScopeFence turns a client message into a priced change order in about a minute. *Who would pay* is a hypothesis; no user claims are made | post draft "What I Built" | Johan validates |
 | R4 | "A link to a deployed project or a video demo" | Deployment is out of scope (privacy rules plus local Gemma). Johan records a **≤2 min video** using `docs/demo-script.md` | video (manual step) | Johan |
-| R5 | "A link to, or embed of, the project's code repository" | Private repo `Jo2234/hackathon-2026-dev-side-hustle`; Johan makes it public at the release gate | bundle → relay | Lead/relay, Johan |
+| R5 | "A link to, or embed of, the project's code repository" | Private repo `Jo2234/scopefence`; Johan makes it public at the release gate | bundle → relay | Lead/relay, Johan |
 | R6 | "An explanation of why open innovation matters for the project" | Post section, grounded in measured facts: client data never leaves the laptop, zero marginal cost per analysis, swappable model (the eval runs on ≥2 Gemma variants) | post draft | Lead drafts, Johan edits |
 | R7 | FAQ: "Commits made after the submission deadline must be noted in the project's readme" | README section "Commit timeline and deadline note" | README | slot1 |
 | R8 | FAQ: "Any non-generic, non-trivial usage of prior work … must be credited" | `THIRD_PARTY_NOTICES.md` plus a credits section in the post | notices | slot1 |
@@ -759,7 +759,7 @@ Commit message trailer for workers: `Co-Authored-By: GPT-6.1 Sol <noreply@openai
 ---
 
 ## 18. Release gates (none are done by agents)
-1. Johan reviews the code and makes `Jo2234/hackathon-2026-dev-side-hustle` **public** (after the relay has pushed main).
+1. Johan reviews the code and makes `Jo2234/scopefence` **public** (after the relay has pushed main).
 2. Johan records the ≤2 min video (Wi-Fi off during analysis), uploads it (YouTube unlisted or public, his choice), and puts the link in the post.
 3. Johan rewrites the `[JOHAN: …]` sections in his own voice; removes or fills "My First User" truthfully; decides on "My Agent Session".
 4. Johan publishes the DEV post with tags `devchallenge, hf26challenge` **before Mon 19 Oct 14:59 SGT**.
