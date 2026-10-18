@@ -178,16 +178,34 @@ test("E2 injection demo is amber and has no Included label", async ({
 test("E3 live server with closed model port shows startup command and keeps inputs", async ({
   page,
 }) => {
+  let healthRequests = 0;
+  await page.route("**/api/health", async (route) => {
+    healthRequests += 1;
+    if (healthRequests === 1) {
+      // Begin with a ready chip, as if the model stopped after the last poll.
+      const response = await route.fetch();
+      const health = await response.json();
+      await route.fulfill({
+        response,
+        json: {
+          ...health,
+          model: {
+            ...health.model,
+            status: "ready",
+            id: "gemma-4-e2b-it-q4_0",
+            file: "gemma-4-E2B-it-Q4_0.gguf",
+            is_gemma: true,
+            registered: true,
+          },
+        },
+      });
+    } else {
+      await route.continue();
+    }
+  });
   await page.goto("http://127.0.0.1:5180");
-  await expect(
-    page.getByText("Local model is not running", { exact: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByText(
-      "Local model is not running. Start it in a terminal: pnpm model:start",
-      { exact: true },
-    ),
-  ).toBeVisible();
+  const chip = page.locator("header").getByRole("status");
+  await expect(chip).toContainText("ready");
   await page
     .getByRole("button", { name: "Load synthetic demo", exact: true })
     .click();
@@ -198,6 +216,18 @@ test("E3 live server with closed model port shows startup command and keeps inpu
     .getByRole("button", { name: "Analyse with local Gemma", exact: true })
     .click();
   await expect(page.getByRole("alert")).toContainText("pnpm model:start");
+  await expect(chip).toHaveText("Local model is not running");
+  await expect(chip).not.toContainText("ready");
+  expect(healthRequests).toBeGreaterThan(1);
+  const beforeRetry = healthRequests;
+  const retried = page.waitForResponse(
+    (response) => response.url().endsWith("/api/analyse"),
+  );
+  await page.getByRole("button", { name: "Retry", exact: true }).click();
+  expect((await retried).status()).toBe(503);
+  await expect.poll(() => healthRequests).toBeGreaterThan(beforeRetry);
+  await expect(chip).toHaveText("Local model is not running");
+  await expect(chip).not.toContainText("ready");
   await expect(
     page.getByRole("textbox", { name: "Brief", exact: true }),
   ).toHaveValue(original);

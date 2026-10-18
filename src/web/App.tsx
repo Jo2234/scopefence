@@ -144,14 +144,15 @@ export function App() {
       if (active.current === controller && !controller.signal.aborted) {
         if (error instanceof AnalyseError && error.error.code === "cancelled")
           dispatch({ type: "cancel" });
-        else
-          dispatch({
-            type: "failure",
-            error:
-              error instanceof AnalyseError
-                ? error.error
-                : { code: "internal" },
-          });
+        else {
+          const failure =
+            error instanceof AnalyseError
+              ? error.error
+              : { code: "internal" as const };
+          dispatch({ type: "failure", error: failure });
+          if (failure.code === "model_unreachable")
+            setHealthVersion((v) => v + 1);
+        }
       }
     } finally {
       if (active.current === controller) active.current = null;
