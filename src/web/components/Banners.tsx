@@ -1,5 +1,6 @@
 import type { Analysis } from "../../domain";
 import { errorCopy, type ApiError } from "../client";
+import { formatInjectionBanner } from "../injection-banner";
 
 export function ErrorBanner({
   error,
@@ -56,12 +57,10 @@ export function Banners({
           data-testid="injection-banner"
           role="alert"
         >
-          This message contains text that looks like instructions to an AI ("
-          {[...new Set(analysis.injection.spans.map((s) => s.pattern))].join(
-            ", ",
+          {formatInjectionBanner(
+            analysis.input.message,
+            analysis.injection.spans,
           )}
-          "). ScopeFence treats it as client text only. Items marked included
-          need your manual confirmation.
         </p>
       )}
       {analysis.truncated.brief && (
