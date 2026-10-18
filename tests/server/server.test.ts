@@ -8,8 +8,17 @@ import {ScriptedAdapter} from '../../src/model/scripted.js';
 import {AdapterError,type CompletionRequest} from '../../src/model/adapter.js';
 import {loadConfig} from '../../src/server/config.js';
 import {FixtureAdapter} from '../../src/model/fixture.js';
+import {LlamaServerAdapter} from '../../src/model/llama-server.js';
 const app=()=>createApp({adapter:new FixtureAdapter()});
-it('reports fixture mode, limits, and prompt version without a live server',async()=>{const response=await app().request('/api/health');expect(response.status).toBe(200);const data=await response.json();expect(data).toMatchObject({ok:true,mode:'fixture',model:{status:'ready'},limits:{brief_chars:8000,message_chars:4000},prompt_version:'pv1'});expect(response.headers.has('access-control-allow-origin')).toBe(false);});
+it('reports fixture mode, limits, and prompt version without a live server',async()=>{const response=await app().request('/api/health');expect(response.status).toBe(200);const data=await response.json();expect(data).toMatchObject({ok:true,mode:'fixture',model:{status:'ready',id:'fixture'},limits:{brief_chars:8000,message_chars:4000},prompt_version:'pv1'});expect(response.headers.has('access-control-allow-origin')).toBe(false);});
+it('reports an unknown live identity rather than fixture when the model is unreachable',async()=>{
+ const adapter=new LlamaServerAdapter('http://127.0.0.1:8089',async()=>{throw new TypeError('Model connection unavailable');});
+ const response=await createApp({adapter,config:loadConfig({SCOPEFENCE_MODE:'live'})}).request('/api/health');
+ expect(response.status).toBe(200);
+ const data=await response.json();
+ expect(data).toMatchObject({ok:true,mode:'live',model:{status:'unreachable',id:'unknown',file:null,registered:false,is_gemma:false}});
+ expect(data.model.id).not.toBe('fixture');
+});
 it('returns structured invalid input details on an empty brief',async()=>{const response=await app().request('/api/analyse',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({brief:' ',message:'Add a card',rate_card:{}})});expect(response.status).toBe(400);expect(await response.json()).toMatchObject({error:{code:'invalid_input',details:[{path:'brief'}]}});});
 it('rejects malformed JSON and handles unknown API paths as JSON',async()=>{const response=await app().request('/api/analyse',{method:'POST',body:'{'});expect(response.status).toBe(400);const missing=await app().request('/api/unknown');expect(missing.status).toBe(404);expect(missing.headers.get('Content-Type')).toContain('application/json');});
 it('rejects bodies over 256 KB',async()=>{const response=await app().request('/api/analyse',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({brief:'x'.repeat(262145),message:'message',rate_card:{}})});expect([400,413]).toContain(response.status);});

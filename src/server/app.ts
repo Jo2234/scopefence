@@ -25,7 +25,7 @@ export function createApp(options:AppOptions = {}) {
     const entry = MODELS.find(m => m.slug !== 'runtime' && m.file === health.model_file);
     return c.json({ok:true, mode:adapter.mode, model:{
       status:health.status,
-      id:entry ? entry.file.replace(/\.gguf$/i, '').toLowerCase() : health.model_file ?? 'fixture',
+      id:entry ? entry.file.replace(/\.gguf$/i, '').toLowerCase() : health.model_file ?? (adapter.mode === 'fixture' ? 'fixture' : 'unknown'),
       file:health.model_file, runtime:adapter.mode === 'live' ? 'llama.cpp b11687' : 'fixture',
       is_gemma:entry?.slug.startsWith('gemma-') ?? false, registered:!!entry,
     }, limits:{brief_chars:8000, message_chars:4000}, prompt_version:PROMPT_VERSION});
