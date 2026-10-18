@@ -94,6 +94,11 @@ test("E1 recorded demo, deterministic pricing edits, approval, Markdown and HTML
   await page
     .getByRole("button", { name: "Approve all remaining", exact: true })
     .click();
+  const approvedMarkdown = page.getByRole("textbox", {
+    name: "Editable Markdown",
+  });
+  await expect(approvedMarkdown).toHaveValue(/Maple & Fern Bakery/);
+  await expect(approvedMarkdown).not.toHaveValue(/&(amp|lt|gt);/);
   // Hand calculation from demo-1's rate card and the recorded output:
   // tagline: edited 3 h × SGD 80; social kit: 1 × SGD 350;
   // menu board: effort s = 1.5 h × SGD 80. Clarification costs nothing.
